@@ -54,6 +54,9 @@
 (defmethod claraoke:durationp ((duration duration))
   t)
 
+(defmethod claraoke:durationp (duration)
+  nil)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Duration string
@@ -82,6 +85,9 @@
        (when (ignore-errors (claraoke:duration string))
          t)))
 
+(defmethod claraoke:durationstringp (string)
+  nil)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Duration integer (centiseconds)
@@ -92,6 +98,12 @@
      (* #.(* 60 100) (claraoke:minutes duration))
      (* #.(* 60 60 100) (claraoke:hours duration))))
 
+(defmethod claraoke:durationinteger ((duration string))
+  (claraoke:durationinteger (claraoke:duration duration)))
+
+(defmethod claraoke:durationinteger ((duration integer))
+  duration)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Duration integer predicate
@@ -101,6 +113,9 @@
 
 (defmethod claraoke:durationintegerp ((duration string))
   (every 'digit-char-p duration))
+
+(defmethod claraoke:durationintegerp (duration)
+  nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
