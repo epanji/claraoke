@@ -11,17 +11,17 @@
   (check-type string string)
   (let* ((ssc (split-sequence:split-sequence #\: string :remove-empty-subseqs t))
          (rssc (reverse ssc))
-         (s.ms (first rssc))
+         (s.cs (first rssc))
          (m (integer-from-string (second rssc)))
          (h (integer-from-string (third rssc)))
-         (ssd (split-sequence:split-sequence #\. s.ms :remove-empty-subseqs t))
+         (ssd (split-sequence:split-sequence #\. s.cs :remove-empty-subseqs t))
          (s (integer-from-string (first ssd)))
-         (ms (integer-from-string (second ssd))))
+         (cs (integer-from-string (second ssd))))
     (check-type h integer)
     (check-type m (integer 0 59))
     (check-type s (integer 0 59))
-    (check-type ms (integer 0 999))
-    (make-instance 'duration :h h :m m :s s :ms ms)))
+    (check-type cs (integer 0 99))
+    (make-instance 'duration :h h :m m :s s :cs cs)))
 
 (defmethod claraoke:duration ((duration string))
   (if (claraoke:durationintegerp duration)
@@ -29,17 +29,17 @@
       (duration duration)))
 
 (defmethod claraoke:duration ((duration integer))
-  (let ((mssmh '())
-        (hmsms '(#.(* 60 60 1000) #.(* 60 1000) #.(* 1000) 1))
+  (let ((cssmh '())
+        (hmscs '(#.(* 60 60 100) #.(* 60 100) #.(* 100) 1))
         (initial-value (max 0 duration)))
     (reduce (lambda (last-value divisor)
               (multiple-value-bind (quotient remainder)
                   (floor last-value divisor)
-                (push quotient mssmh) remainder))
-            hmsms
+                (push quotient cssmh) remainder))
+            hmscs
             :initial-value initial-value)
-    (destructuring-bind (ms s m h) mssmh
-      (make-instance 'duration :h h :m m :s s :ms ms))))
+    (destructuring-bind (cs s m h) cssmh
+      (make-instance 'duration :h h :m m :s s :cs cs))))
 
 (defmethod claraoke:duration ((duration duration))
   duration)
@@ -59,11 +59,11 @@
 ;;; Duration string
 ;;;
 (defmethod claraoke:durationstring ((duration duration))
-  (format nil "~2,'0D:~2,'0D:~2,'0D.~3,'0D"
+  (format nil "~2,'0D:~2,'0D:~2,'0D.~2,'0D"
           (claraoke:hours duration)
           (claraoke:minutes duration)
           (claraoke:seconds duration)
-          (claraoke:miliseconds duration)))
+          (claraoke:centiseconds duration)))
 
 (defmethod print-object ((duration duration) stream)
   (prin1 (claraoke:durationstring duration) stream))
@@ -84,13 +84,13 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Duration integer (miliseconds)
+;;; Duration integer (centiseconds)
 ;;;
 (defmethod claraoke:durationinteger ((duration duration))
-  (+ (* 1 (claraoke:miliseconds duration))
-     (* 1000 (claraoke:seconds duration))
-     (* #.(* 60 1000) (claraoke:minutes duration))
-     (* #.(* 60 60 1000) (claraoke:hours duration))))
+  (+ (* 1 (claraoke:centiseconds duration))
+     (* 100 (claraoke:seconds duration))
+     (* #.(* 60 100) (claraoke:minutes duration))
+     (* #.(* 60 60 100) (claraoke:hours duration))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;

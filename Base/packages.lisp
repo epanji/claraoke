@@ -8,7 +8,7 @@
    #:hours
    #:minutes
    #:seconds
-   #:miliseconds
+   #:centiseconds
    #:duration
    #:durationp
    #:durationstring

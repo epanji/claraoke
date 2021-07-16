@@ -4,23 +4,23 @@
   ((%hours
     :initform 0
     :initarg :h
-    :initarg :hour
+    :initarg :hours
     :accessor claraoke:hours)
    (%minutes
     :initform 0
     :initarg :m
-    :initarg :minute
+    :initarg :minutes
     :accessor claraoke:minutes)
    (%seconds
     :initform 0
     :initarg :s
-    :initarg :second
+    :initarg :seconds
     :accessor claraoke:seconds)
-   (%miliseconds
+   (%centiseconds
     :initform 0
-    :initarg :ms
-    :initarg :milisecond
-    :accessor claraoke:miliseconds)))
+    :initarg :cs
+    :initarg :centiseconds
+    :accessor claraoke:centiseconds)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -29,7 +29,7 @@
 ;;; (defgeneric claraoke:hours (duration))
 ;;; (defgeneric claraoke:minutes (duration))
 ;;; (defgeneric claraoke:seconds (duration))
-;;; (defgeneric claraoke:miliseconds (duration))
+;;; (defgeneric claraoke:centiseconds (duration))
 ;;;
 
 (defgeneric claraoke:duration (duration))
