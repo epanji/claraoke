@@ -156,4 +156,42 @@
 
 (defmethod claraoke:decrease-duration (duration (subtraction integer))
   (claraoke:decrease-duration duration (claraoke:duration subtraction)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Duration lessp
+;;;
+(defmethod claraoke:duration-lessp ((duration1 integer) (duration2 integer))
+  (< duration1 duration2))
+
+(defmethod claraoke:duration-lessp ((duration1 duration) duration2)
+  (claraoke:duration-lessp (claraoke:durationinteger duration1) duration2))
+
+(defmethod claraoke:duration-lessp (duration1 (duration2 duration))
+  (claraoke:duration-lessp duration1 (claraoke:durationinteger duration2)))
+
+(defmethod claraoke:duration-lessp ((duration1 string) duration2)
+  (claraoke:duration-lessp (claraoke:duration duration1) duration2))
+
+(defmethod claraoke:duration-lessp (duration1 (duration2 string))
+  (claraoke:duration-lessp duration1 (claraoke:duration duration2)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Duration greaterp
+;;;
+(defmethod claraoke:duration-greaterp ((duration1 integer) (duration2 integer))
+  (> duration1 duration2))
+
+(defmethod claraoke:duration-greaterp ((duration1 duration) duration2)
+  (claraoke:duration-greaterp (claraoke:durationinteger duration1) duration2))
+
+(defmethod claraoke:duration-greaterp (duration1 (duration2 duration))
+  (claraoke:duration-greaterp duration1 (claraoke:durationinteger duration2)))
+
+(defmethod claraoke:duration-greaterp ((duration1 string) duration2)
+  (claraoke:duration-greaterp (claraoke:duration duration1) duration2))
+
+(defmethod claraoke:duration-greaterp (duration1 (duration2 string))
+  (claraoke:duration-greaterp duration1 (claraoke:duration duration2)))
 

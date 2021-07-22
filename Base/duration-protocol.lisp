@@ -47,4 +47,8 @@
 (defgeneric claraoke:increase-duration (duration addition))
 
 (defgeneric claraoke:decrease-duration (duration subtraction))
+
+(defgeneric claraoke:duration-lessp (duration1 duration2))
+
+(defgeneric claraoke:duration-greaterp (duration1 duration2))
 
