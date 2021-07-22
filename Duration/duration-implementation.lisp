@@ -69,7 +69,7 @@
           (claraoke:centiseconds duration)))
 
 (defmethod print-object ((duration duration) stream)
-  (prin1 (claraoke:durationstring duration) stream))
+  (princ (claraoke:durationstring duration) stream))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
