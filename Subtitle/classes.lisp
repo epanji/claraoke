@@ -1,6 +1,10 @@
 (cl:in-package #:claraoke-subtitle)
 
-(defclass claraoke:subtitle ()
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Subtitle
+;;;
+(defclass subtitle ()
   ((%script-info
     :initform nil
     :initarg :script-info
@@ -15,7 +19,7 @@
     :accessor claraoke:events)))
 
 (defmethod initialize-instance :after
-    ((instance claraoke:subtitle) &rest initargs &key &allow-other-keys)
+    ((instance subtitle) &rest initargs &key &allow-other-keys)
   (let ((args (append initargs (list :allow-other-keys t))))
     ;; Use more specific keys
     (remf args :name)
@@ -30,6 +34,10 @@
     (setf (claraoke:events instance)
           (list (apply 'make-instance 'claraoke:dialogue args)))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Script info
+;;;
 (defclass claraoke:script-info ()
   ((%title
     :initform "ASS file"
@@ -80,6 +88,28 @@
     :initarg :collisions
     :accessor claraoke:collisions)))
 
+(macrolet ((subtitle-specializer (name)
+             `(progn (defmethod ,name ((subtitle subtitle))
+                       (,name (claraoke:script-info subtitle)))
+                     (defmethod (setf ,name) (new-value (subtitle subtitle))
+                       (setf (,name (claraoke:script-info subtitle)) new-value)))))
+  (subtitle-specializer claraoke:title)
+  (subtitle-specializer claraoke:script-type)
+  (subtitle-specializer claraoke:wrap-style)
+  (subtitle-specializer claraoke:play-res-x)
+  (subtitle-specializer claraoke:play-res-y)
+  (subtitle-specializer claraoke:scaled-border-and-shadow)
+  (subtitle-specializer claraoke:last-style-storage)
+  (subtitle-specializer claraoke:video-aspect-ratio)
+  (subtitle-specializer claraoke:video-zoom)
+  (subtitle-specializer claraoke:video-position)
+  (subtitle-specializer claraoke:original-translation)
+  (subtitle-specializer claraoke:collisions))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Style
+;;;
 (defclass claraoke:style ()
   ((%name
     :initform "Default"
@@ -178,6 +208,25 @@
     :initarg :encoding
     :accessor claraoke:encoding)))
 
+(defmethod initialize-instance :after
+    ((instance claraoke:style) &rest initargs &key &allow-other-keys)
+  (let ((primary (claraoke:primary-colour instance))
+        (secondary (claraoke:secondary-colour instance))
+        (outline (claraoke:outline-colour instance))
+        (back (claraoke:back-colour instance)))
+    (setf (claraoke:primary-colour instance)
+          (claraoke:color primary))
+    (setf (claraoke:secondary-colour instance)
+          (claraoke:color secondary))
+    (setf (claraoke:outline-colour instance)
+          (claraoke:color outline))
+    (setf (claraoke:back-colour instance)
+          (claraoke:color back))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Event
+;;;
 (defclass event ()
   ((%layer
     :initarg :layer
@@ -193,7 +242,7 @@
     :initform "00:00:03.00")
    (%style
     :initarg :style
-    :accessor claraoke:style
+    :accessor claraoke:.style
     :initform "Default")
    (%name
     :initarg :name
@@ -225,19 +274,34 @@
     :initform "")))
 
 (defmethod initialize-instance :after
-    ((instance event) &rest initargs &key &allow-other-keys)
+    ((instance event) &key &allow-other-keys)
   (let ((duration1 (claraoke:duration (claraoke:start instance)))
         (duration2 (claraoke:duration (claraoke:end instance))))
     (setf (claraoke:start instance) duration1)
     (setf (claraoke:end instance)
           (if (claraoke:duration-greaterp duration1 duration2)
-              duration1
+              (claraoke:increase-duration duration1 "1.25")
               duration2))))
 
-(defclass claraoke:dialogue (event claraoke:text)
+(defmethod print-object ((event event) stream)
+  (let ((start (claraoke:start event))
+        (end (claraoke:end event))
+        (text (claraoke:text event)))
+    (format stream "~A --> ~A ~S" start end text)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Dialogue, comment, picture, sound, movie and
+;;; command class with default initargs.
+;;;
+(defclass claraoke:dialogue (event)
   ()
   (:default-initargs
-   :text "{\k25}Text {\k30}Here"))
+   :text "Text Here"))
+
+(defmethod initialize-instance :after ((instance claraoke:dialogue) &key &allow-other-keys)
+  (let ((string (claraoke:text instance)))
+    (setf (claraoke:text instance) (make-instance 'claraoke:text :text string))))
 
 (defclass claraoke:comment (event)
   ()

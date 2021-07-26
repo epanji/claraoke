@@ -1,6 +1,8 @@
 (cl:in-package #:claraoke-base)
 
-(defgeneric claraoke:print-subtitle (subtitle &optional stream))
+(defgeneric claraoke:subtitle (title &rest initargs &key &allow-other-keys))
+
+(defgeneric claraoke:style (name &rest initargs &key &allow-other-keys))
 
 (defgeneric claraoke:insert-style (subtitle style))
 
@@ -20,7 +22,7 @@
 ;;;
 ;;; Position will not be arranged manually.
 ;;; Because event depends on start duration, sort event
-;;; will re-arranged using duration.
+;;; will re-arranged using start duration.
 ;;;
 (defgeneric claraoke:sort-event (subtitle))
 
