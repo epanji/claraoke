@@ -6,4 +6,7 @@
   :description "Karaoke type helper on ASS format (Advanced Substation Alpha)"
   :license  ""
   :depends-on ("claraoke-base"
-               "claraoke-duration"))
+               "claraoke-color"
+               "claraoke-text"
+               "claraoke-duration"
+               "claraoke-subtitle"))
