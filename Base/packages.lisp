@@ -5,15 +5,18 @@
   (:export
    ;; claraoke-base
    #:version
-   #:claraoke-error
+   #:print-script
+   #:style-not-found
+   #:failed-to-create-duration
+   #:failed-to-create-subtitle
+   #:failed-to-create-style
    #:object-must-be-subtitle
+   #:object-must-be-duration
    #:object-must-be-style
    #:object-must-be-event
    #:object-must-be-integer
-   #:style-not-found
-   ;; #:file-not-found
-   ;; #:failed-writing-to-file
-   ;; #:abort-writing-to-file
+   #:object-must-be-text
+   #:object-must-be-override
    ;; claraoke-duration
    #:hours
    #:minutes
@@ -25,10 +28,12 @@
    #:durationstringp
    #:durationinteger
    #:durationintegerp
+   #:sync-duration
    #:increase-duration
    #:decrease-duration
    #:duration-lessp
    #:duration-greaterp
+   #:duration-difference
    ;; claraoke-subtitle
    #:subtitle
    #:script-info
@@ -41,7 +46,6 @@
    #:sound
    #:movie
    #:command
-   #:print-subtitle
    #:insert-style
    #:delete-style
    #:find-style
@@ -50,7 +54,6 @@
    #:find-event
    #:last-event
    #:sort-event
-   #:contents
    #:name
    #:title
    #:wrap-style
@@ -63,7 +66,6 @@
    #:video-position
    #:original-translation
    #:collisions
-   ;; #:name
    #:fontname
    #:fontsize
    #:primary-colour
@@ -90,20 +92,38 @@
    #:start
    #:end
    #:style
-   ;; #:name
+   #:.style
    #:margin-l
    #:margin-r
    #:margin-v
    #:effect
    #:text
-   #|..Mores..|#))
+   ;; claraoke-color
+   #:color
+   #:colorstring
+   #:random-color
+   #:rgb
+   #:red
+   #:green
+   #:blue
+   #:alpha
+   ;; claraoke-text
+   #:overrides
+   #:override
+   #:insert-override
+   #:delete-override
+   #:find-override
+   #:position
+   #:sort-overrides
+   #:print-text
+   #| ... |#))
 
 (defpackage #:claraoke-internal
   (:use #:common-lisp)
   (:export
-   #|..Mores..|#))
+   #:output-stream-from-designator
+   #| ... |#))
 
 (defpackage #:claraoke-base
-  (:use #:common-lisp)
-  (:export))
+  (:use #:common-lisp))
 
