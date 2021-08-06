@@ -4,8 +4,9 @@
   (:use #:common-lisp)
   (:export
    #:duration
-   #:durationstring
-   #:increase-duration
-   #:decrease-duration
-   #|...|#))
+   #|...
+   #:integer-from-string
+   #:duration-character-p
+   #:+duration-characters+
+   ...|#))
 
