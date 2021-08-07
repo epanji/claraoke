@@ -212,7 +212,7 @@
     (princ #\, stream)
     (princ effect stream)
     (princ #\, stream)
-    (claraoke:print-text text stream)
+    (claraoke:print-script text stream)
     (terpri stream)
     object))
 
@@ -231,7 +231,7 @@
   nil)
 
 (defmethod claraoke:subtitle (object &key)
-  (error 'claraoke:failed-to-create-subtitle :input object))
+  (error 'claraoke:failed-to-create-subtitle :object object))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -248,7 +248,7 @@
   nil)
 
 (defmethod claraoke:style (object &key)
-  (error 'claraoke:failed-to-create-style :input object))
+  (error 'claraoke:failed-to-create-style :object object))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -281,7 +281,7 @@
 (defmethod claraoke:delete-style ((subtitle subtitle) (style string))
   (claraoke:delete-style
    subtitle (or (claraoke:find-style subtitle style)
-                (error 'claraoke:style-not-found :item style))))
+                (error 'claraoke:style-not-found :object style))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -352,7 +352,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Sort event (Dialogue, Comment, etc)
+;;; Sort events (Dialogue, Comment, etc)
 ;;;
 (defun sort-event-predicate (event1 event2)
   (check-type event1 event)
@@ -361,13 +361,18 @@
    (claraoke:start event1)
    (claraoke:start event2)))
 
-(defmethod claraoke:sort-event ((subtitle subtitle))
-  (let ((events (claraoke:events subtitle)))
-    (unless (null events)
-      (setf (claraoke:events subtitle)
-            (sort events 'sort-event-predicate)))))
+(defmethod claraoke:sort-events ((object subtitle))
+  (let ((sorted (claraoke:sort-events (claraoke:events object))))
+    (unless (null sorted)
+      (setf (claraoke:events object) sorted))))
 
-(defmethod claraoke:sort-event (subtitle)
+(defmethod claraoke:sort-events ((object cons))
+  (sort object 'sort-event-predicate))
+
+(defmethod claraoke:sort-events ((object null))
+  object)
+
+(defmethod claraoke:sort-events (subtitle)
   (error 'claraoke:object-must-be-subtitle :object subtitle))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

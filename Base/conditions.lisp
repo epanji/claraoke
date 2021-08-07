@@ -2,107 +2,30 @@
 
 (in-package #:claraoke-base)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; Abstract class
-;;;
-(defun report-object-error (condition stream)
-  (format stream "~&Object ~A is not type ~A.~%"
-          (object condition)
-          (expected-type condition)))
-
-(define-condition object-error (error)
-  ((%object
-    :initarg :object
-    :initform nil
-    :accessor object)
-   (%expected-type
-    :initform (error "Need to provide this from subclass.")
-    :initarg :expected-type
-    :reader expected-type))
-  (:report report-object-error))
-
-(defun report-creation-error (condition stream)
-  (format stream "~&Can not create ~A from ~A.~%"
-          (output-type condition)
-          (input condition)))
-
-(define-condition creation-error (error)
-  ((%output-type
-    :initform (error "Need to provide this from subclass.")
-    :initarg :output-type
-    :reader output-type)
-   (%input
-    :initarg :input
-    :initform nil
-    :accessor input))
-  (:report report-creation-error))
-
-(defun report-existent-error (condition stream)
-  (format stream "~&~A not found."
-          (item condition)))
-
-(define-condition existent-error (error)
-  ((%item
-    :initarg :item
-    :initform nil
-    :accessor item))
-  (:report report-existent-error))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; Concrete class
-;;;
-(define-condition claraoke:style-not-found (existent-error)
-  ())
-
-(define-condition claraoke:failed-to-create-duration (creation-error)
+(define-condition claraoke:null-object-warning (warning)
   ()
-  (:default-initargs
-   :output-type "DURATION"))
+  (:report (lambda (condition stream)
+             (declare (ignore condition))
+             (format stream "Provide NULL object always return NIL."))))
 
-(define-condition claraoke:failed-to-create-subtitle (creation-error)
-  ()
-  (:default-initargs
-   :output-type "SUBTITLE"))
-
-(define-condition claraoke:failed-to-create-style (creation-error)
-  ()
-  (:default-initargs
-   :output-type "STYLE"))
-
-(define-condition claraoke:object-must-be-subtitle (object-error)
-  ()
-  (:default-initargs
-   :expected-object "SUBTITLE"))
-
-(define-condition claraoke:object-must-be-duration (object-error)
-  ()
-  (:default-initargs
-   :expected-object "DURATION"))
-
-(define-condition claraoke:object-must-be-style (object-error)
-  ()
-  (:default-initargs
-   :expected-object "STYLE"))
-
-(define-condition claraoke:object-must-be-event (object-error)
-  ()
-  (:default-initargs
-   :expected-object "EVENT"))
-
-(define-condition claraoke:object-must-be-integer (object-error)
-  ()
-  (:default-initargs
-   :expected-object "INTEGER"))
-
-(define-condition claraoke:object-must-be-text (object-error)
-  ()
-  (:default-initargs
-   :expected-object "TEXT"))
-
-(define-condition claraoke:object-must-be-override (object-error)
-  ()
-  (:default-initargs
-   :expected-object "OVERRIDE"))
+(macrolet ((define-object-error (name target format-control reader1 reader2)
+             `(define-condition ,name (error)
+                ((%object :initarg :object :initform nil :accessor object)
+                 (%target :initform ,target :reader target))
+                (:report (lambda (condition stream)
+                           (format stream ,format-control (,reader1 condition) (,reader2 condition)))))))
+  (define-object-error claraoke:style-not-found "STYLE" "~&~A not found with searching input ~A~%" target object)
+  (define-object-error claraoke:failed-to-create-subtitle "SUBTITLE" "~&Can not create ~A from ~A.~%" target object)
+  (define-object-error claraoke:failed-to-create-color "COLOR" "~&Can not create ~A from ~A.~%" target object)
+  (define-object-error claraoke:failed-to-create-duration "DURATION" "~&Can not create ~A from ~A.~%" target object)
+  (define-object-error claraoke:failed-to-create-style "STYLE" "~&Can not create ~A from ~A.~%" target object)
+  (define-object-error claraoke:failed-to-create-integer "INTEGER" "~&Can not create ~A from ~A.~%" target object)
+  (define-object-error claraoke:object-must-be-subtitle "SUBTITLE" "~&Object ~A is not type ~A.~%" object target)
+  (define-object-error claraoke:object-must-be-color "COLOR" "~&Object ~A is not type ~A.~%" object target)
+  (define-object-error claraoke:object-must-be-duration "DURATION" "~&Object ~A is not type ~A.~%" object target)
+  (define-object-error claraoke:object-must-be-style "STYLE" "~&Object ~A is not type ~A.~%" object target)
+  (define-object-error claraoke:object-must-be-event "EVENT" "~&Object ~A is not type ~A.~%" object target)
+  (define-object-error claraoke:object-must-be-integer "INTEGER" "~&Object ~A is not type ~A.~%" object target)
+  (define-object-error claraoke:object-must-be-text "TEXT" "~&Object ~A is not type ~A.~%" object target)
+  (define-object-error claraoke:object-must-be-override "OVERRIDE" "~&Object ~A is not type ~A.~%" object target))
 

@@ -4,36 +4,31 @@
 ;;;
 ;;; Duration
 ;;;
-(defun integer-from-string (string &optional (default 0))
-  (check-type string (or null string))
-  (check-type default integer)
-  (or (parse-integer (string string) :junk-allowed t) default))
-
 (defun duration (string)
   (check-type string string)
   (let* ((ssc (split-sequence:split-sequence #\: string :remove-empty-subseqs t))
          (rssc (reverse ssc))
          (s.cs (first rssc))
-         (m (integer-from-string (second rssc)))
-         (h (integer-from-string (third rssc)))
+         (m (claraoke-internal:integer-from-string (second rssc)))
+         (h (claraoke-internal:integer-from-string (third rssc)))
          (ssd (split-sequence:split-sequence #\. s.cs :remove-empty-subseqs t))
-         (s (integer-from-string (first ssd)))
-         (cs (integer-from-string (second ssd))))
+         (s (claraoke-internal:integer-from-string (first ssd)))
+         (cs (claraoke-internal:integer-from-string (second ssd))))
     (check-type h integer)
     (check-type m (integer 0 59))
     (check-type s (integer 0 59))
     (check-type cs (integer 0 99))
     (make-instance 'duration :h h :m m :s s :cs cs)))
 
-(defmethod claraoke:duration ((duration string))
-  (if (claraoke:durationintegerp duration)
-      (claraoke:duration (integer-from-string duration))
-      (duration duration)))
+(defmethod claraoke:duration ((object string))
+  (if (claraoke:durationintegerp object)
+      (claraoke:duration (claraoke-internal:integer-from-string object))
+      (duration object)))
 
-(defmethod claraoke:duration ((duration integer))
+(defmethod claraoke:duration ((object integer))
   (let ((cssmh '())
         (hmscs `(,(* 60 60 100) ,(* 60 100) ,(* 100) 1))
-        (initial-value (max 0 duration)))
+        (initial-value (max 0 object)))
     (reduce (lambda (last-value divisor)
               (multiple-value-bind (quotient remainder)
                   (floor last-value divisor)
@@ -43,38 +38,41 @@
     (destructuring-bind (cs s m h) cssmh
       (make-instance 'duration :h h :m m :s s :cs cs))))
 
-(defmethod claraoke:duration ((duration duration))
-  duration)
+(defmethod claraoke:duration ((object duration))
+  object)
 
-(defmethod claraoke:duration ((duration null))
-  nil)
+(defmethod claraoke:duration ((object null))
+  (warn 'claraoke:null-object-warning))
 
 (defmethod claraoke:duration (duration)
-  (error 'claraoke:failed-to-create-duration :input duration))
+  (error 'claraoke:failed-to-create-duration :object duration))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Duration predicate
 ;;;
-(defmethod claraoke:durationp ((duration duration))
+(defmethod claraoke:durationp ((object duration))
   t)
 
-(defmethod claraoke:durationp (duration)
+(defmethod claraoke:durationp (object)
   nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Duration string
 ;;;
-(defmethod claraoke:durationstring ((duration duration))
+(defmethod claraoke:durationstring ((object duration))
   (format nil "~2,'0D:~2,'0D:~2,'0D.~2,'0D"
-          (claraoke:hours duration)
-          (claraoke:minutes duration)
-          (claraoke:seconds duration)
-          (claraoke:centiseconds duration)))
+          (claraoke:hours object)
+          (claraoke:minutes object)
+          (claraoke:seconds object)
+          (claraoke:centiseconds object)))
 
-(defmethod print-object ((duration duration) stream)
-  (princ (claraoke:durationstring duration) stream))
+(defmethod claraoke:durationstring ((object null))
+  (warn 'claraoke:null-object-warning))
+
+(defmethod claraoke:durationstring (object)
+  (error 'claraoke:object-must-be-duration :object object))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -85,56 +83,62 @@
 (defun duration-character-p (char)
   (when (find char +duration-characters+) t))
 
-(defmethod claraoke:durationstringp ((string string))
-  (and (every 'duration-character-p (string-trim '(#\space #\tab) string))
-       (when (ignore-errors (claraoke:duration string))
+(defmethod claraoke:durationstringp ((object string))
+  (and (every 'duration-character-p (string-trim '(#\space #\tab) object))
+       (when (ignore-errors (claraoke:duration object))
          t)))
 
-(defmethod claraoke:durationstringp (string)
+(defmethod claraoke:durationstringp (object)
   nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Duration integer (centiseconds)
 ;;;
-(defmethod claraoke:durationinteger ((duration duration))
-  (+ (* 1 (claraoke:centiseconds duration))
-     (* 100 (claraoke:seconds duration))
-     (* (* 60 100) (claraoke:minutes duration))
-     (* (* 60 60 100) (claraoke:hours duration))))
+(defmethod claraoke:durationinteger ((object duration))
+  (+ (* 1 (claraoke:centiseconds object))
+     (* 100 (claraoke:seconds object))
+     (* (* 60 100) (claraoke:minutes object))
+     (* (* 60 60 100) (claraoke:hours object))))
 
-(defmethod claraoke:durationinteger ((duration string))
-  (claraoke:durationinteger (claraoke:duration duration)))
+(defmethod claraoke:durationinteger ((object string))
+  (claraoke:durationinteger (claraoke:duration object)))
 
-(defmethod claraoke:durationinteger ((duration integer))
-  duration)
+(defmethod claraoke:durationinteger ((object integer))
+  object)
+
+(defmethod claraoke:durationinteger ((object null))
+  (warn 'claraoke:null-object-warning))
+
+(defmethod claraoke:durationinteger (object)
+  (error 'claraoke:failed-to-create-integer :object object))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Duration integer predicate
 ;;;
-(defmethod claraoke:durationintegerp ((duration integer))
+(defmethod claraoke:durationintegerp ((object integer))
   t)
 
-(defmethod claraoke:durationintegerp ((duration string))
-  (every 'digit-char-p duration))
+(defmethod claraoke:durationintegerp ((object string))
+  (every 'digit-char-p object))
 
-(defmethod claraoke:durationintegerp (duration)
+(defmethod claraoke:durationintegerp (object)
   nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Sync duration
 ;;;
-(defmethod claraoke:sync-duration ((duration duration) (source duration))
-  (setf (claraoke:hours duration) (claraoke:hours source))
-  (setf (claraoke:minutes duration) (claraoke:minutes source))
-  (setf (claraoke:seconds duration) (claraoke:seconds source))
-  (setf (claraoke:centiseconds duration) (claraoke:centiseconds source))
-  duration)
+(defmethod claraoke:sync-duration ((object duration) (source duration))
+  (setf (claraoke:hours object) (claraoke:hours source))
+  (setf (claraoke:minutes object) (claraoke:minutes source))
+  (setf (claraoke:seconds object) (claraoke:seconds source))
+  (setf (claraoke:centiseconds object) (claraoke:centiseconds source))
+  object)
 
-(defmethod claraoke:sync-duration ((duration duration) source)
-  (claraoke:sync-duration duration (claraoke:duration source)))
+(defmethod claraoke:sync-duration ((object duration) source)
+  (claraoke:sync-duration object (claraoke:duration source)))
 
 (defmethod claraoke:sync-duration (duration source)
   (error 'claraoke:object-must-be-duration :object duration))
@@ -151,7 +155,7 @@
   (claraoke:increase-duration duration (claraoke:duration addition)))
 
 (defmethod claraoke:increase-duration (duration addition)
-  (claraoke:increase-duration (claraoke:duration duration) addition))
+  (error 'claraoke:object-must-be-duration :object duration))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -165,7 +169,7 @@
   (claraoke:decrease-duration duration (claraoke:duration subtraction)))
 
 (defmethod claraoke:decrease-duration (duration subtraction)
-  (claraoke:decrease-duration (claraoke:duration duration) subtraction))
+  (error 'claraoke:object-must-be-duration :object duration))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;

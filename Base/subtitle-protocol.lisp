@@ -24,5 +24,5 @@
 ;;; Because event depends on start duration, sort event
 ;;; will re-arranged using start duration.
 ;;;
-(defgeneric claraoke:sort-event (subtitle))
+(defgeneric claraoke:sort-events (subtitle))
 

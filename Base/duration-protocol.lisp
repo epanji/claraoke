@@ -1,16 +1,16 @@
 (cl:in-package #:claraoke-base)
 
-(defgeneric claraoke:duration (duration))
+(defgeneric claraoke:duration (object))
 
-(defgeneric claraoke:durationp (duration))
+(defgeneric claraoke:durationp (object))
 
-(defgeneric claraoke:durationstring (duration))
+(defgeneric claraoke:durationstring (object))
 
-(defgeneric claraoke:durationstringp (string))
+(defgeneric claraoke:durationstringp (object))
 
-(defgeneric claraoke:durationinteger (duration))
+(defgeneric claraoke:durationinteger (object))
 
-(defgeneric claraoke:durationintegerp (string))
+(defgeneric claraoke:durationintegerp (object))
 
 (defgeneric claraoke:sync-duration (duration source))
 

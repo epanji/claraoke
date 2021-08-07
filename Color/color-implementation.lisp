@@ -4,15 +4,6 @@
 ;;;
 ;;; Color (ASS color)
 ;;;
-(defmethod claraoke:color ((color color))
-  color)
-
-(defmethod claraoke:color ((color null))
-  nil)
-
-(defmethod claraoke:color ((color (eql 0)))
-  (claraoke:rgb 0 0 0 nil))
-
 (defun html-color-p (string)
   (and (stringp string)
        (or (= 4 (length string))
@@ -62,25 +53,43 @@
          (agbr (reverse (remove nil rgba))))
     (apply 'claraoke:rgb agbr)))
 
-(defmethod claraoke:color ((color string))
-  (cond ((html-color-p color)
-         (html-color color))
-        ((ass-color-p color)
-         (ass-color color))
+(defmethod claraoke:color ((object string))
+  (cond ((html-color-p object)
+         (html-color object))
+        ((ass-color-p object)
+         (ass-color object))
         (t (claraoke:color 0))))
+
+(defmethod claraoke:color ((object (eql 0)))
+  (claraoke:rgb 0 0 0 nil))
+
+(defmethod claraoke:color ((object color))
+  object)
+
+(defmethod claraoke:color ((object null))
+  (warn 'claraoke:null-object-warning))
+
+(defmethod claraoke:color (color)
+  (error 'claraoke:failed-to-create-color :object color))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Color string
 ;;;
-(defmethod claraoke:colorstring ((color color))
-  (let ((red (claraoke:red color))
-        (green (claraoke:green color))
-        (blue (claraoke:blue color))
-        (alpha (claraoke:alpha color)))
+(defmethod claraoke:colorstring ((object color))
+  (let ((red (claraoke:red object))
+        (green (claraoke:green object))
+        (blue (claraoke:blue object))
+        (alpha (claraoke:alpha object)))
     (if (null alpha)
         (format nil "&H~2,'0X~2,'0X~2,'0X&" blue green red)
         (format nil "&H~2,'0X~2,'0X~2,'0X~2,'0X" alpha blue green red))))
+
+(defmethod claraoke:colorstring ((object null))
+  (warn 'claraoke:null-object-warning))
+
+(defmethod claraoke:colorstring (color)
+  (error 'claraoke:object-must-be-color :object color))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -97,7 +106,7 @@
 ;;;
 ;;; Random color
 ;;;
-(defmethod claraoke:random-color (&optional (alpha nil))
+(defmethod claraoke:random-color (&optional alpha)
   (check-type alpha (or null (integer 0 255)))
   (claraoke:rgb (random 255) (random 255) (random 255) alpha))
 

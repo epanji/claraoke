@@ -2,56 +2,34 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Print text
+;;; Text
 ;;;
-(defmethod claraoke:print-text ((object claraoke:text) &optional stream)
-  (let ((overrides (claraoke:overrides object))
-        (string (claraoke:text object))
-        (stream (claraoke-internal:output-stream-from-designator stream)))
-    (loop for position from 0
-          for char across string
-          and override = (claraoke:find-override overrides position)
-          do (print-override override stream)
-             (princ char stream))
-    (values object)))
+(defmethod claraoke:text ((object string))
+  (make-instance 'text :text object))
 
-(defmethod claraoke:print-text ((object null) &optional stream)
-  (let ((stream (claraoke-internal:output-stream-from-designator stream)))
-    (values object)))
+(defmethod claraoke:text ((object null))
+  (warn 'claraoke:null-object-warning))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Print override (Internal)
+;;; Override
 ;;;
-(defmethod print-override ((object claraoke:override) &optional stream)
-  (let ((stream (claraoke-internal:output-stream-from-designator stream)))
-    (princ #\{ stream)
-    (print-override (claraoke:text object) stream)
-    (princ #\} stream)
-    (values object)))
+(defmethod claraoke:override ((position integer) (override-text string))
+  (make-instance 'override :position position :text override-text))
 
-(defmethod print-override ((object string) &optional stream)
-  ;; Function split-sequence always return CONS or NULL
-  (let ((stream (claraoke-internal:output-stream-from-designator stream))
-        (strings (split-sequence:split-sequence #\; object :remove-empty-subseqs t)))
-    (print-override strings stream)
-    (values object)))
+(defmethod claraoke:override ((position integer) override-text)
+  (claraoke:override position (write-to-string override-text)))
 
-(defmethod print-override ((object list) &optional stream)
-  ;; LISTP for CONS and NULL is T
-  (let ((stream (claraoke-internal:output-stream-from-designator stream)))
-    (loop for string in object
-          do (princ #\\ stream)
-             (princ string stream))
-    (values object)))
+(defmethod claraoke:override (position override-text)
+  (claraoke:override (claraoke-internal:integer-from-string position) override-text))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Override comparation (Internal)
 ;;;
 (defun %compare-override (override1 override2 operator)
-  (check-type override1 claraoke:override)
-  (check-type override2 claraoke:override)
+  (check-type override1 override)
+  (check-type override2 override)
   (funcall operator
            (claraoke:position override1)
            (claraoke:position override2)))
@@ -69,48 +47,60 @@
 ;;;
 ;;; Insert override
 ;;;
-(defmethod claraoke:insert-override ((text claraoke:text) (override claraoke:override))
-  (pushnew override (claraoke:overrides text) :test 'same-override-p))
+(defmethod claraoke:insert-override ((object text) (override override))
+  (pushnew override (claraoke:overrides object) :test 'same-override-p)
+  object)
+
+(defmethod claraoke:insert-override ((object text) override)
+  (error 'claraoke:object-must-be-override :object override))
 
 (defmethod claraoke:insert-override (text override)
   (error 'claraoke:object-must-be-text :object text))
-
-(defmethod claraoke:insert-override ((text claraoke:text) override)
-  (error 'claraoke:object-must-be-override :object override))
-
-(defmethod print-object ((text claraoke:text) stream)
-  (princ (claraoke:text text) stream))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Delete override
 ;;;
-(defmethod claraoke:delete-override ((text claraoke:text) (override claraoke:override))
-  (setf (claraoke:overrides text)
-        (remove override (claraoke:overrides text))))
+(defmethod claraoke:delete-override ((object text) (override override))
+  (setf (claraoke:overrides object)
+        (remove override (claraoke:overrides object)))
+  object)
+
+(defmethod claraoke:delete-override ((object text) override)
+  (error 'claraoke:object-must-be-override :object override))
 
 (defmethod claraoke:delete-override (text override)
   (error 'claraoke:object-must-be-text :object text))
-
-(defmethod claraoke:delete-override ((text claraoke:text) override)
-  (error 'claraoke:object-must-be-override :object override))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Find override
 ;;;
-(defmethod claraoke:find-override ((text claraoke:text) (position integer))
-  (claraoke:find-override (claraoke:overrides text) position))
+(defmethod claraoke:find-override ((object list) (position integer))
+  (find position object :key 'claraoke:position))
 
-(defmethod claraoke:find-override ((overrides list) (position integer))
-  (find position overrides :key 'claraoke:position))
+(defmethod claraoke:find-override ((object text) (position integer))
+  (claraoke:find-override (claraoke:overrides object) position))
+
+(defmethod claraoke:find-override ((object text) position)
+  (error 'claraoke:object-must-be-integer :object position))
+
+(defmethod claraoke:find-override (text position)
+  (error 'claraoke:object-must-be-text :object text))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Sort override
 ;;;
-(defmethod claraoke:sort-overrides ((text claraoke:text))
-  (let ((overrides (claraoke:overrides text)))
-    (setf (claraoke:overrides text)
-          (sort overrides 'override-lessp))))
+(defmethod claraoke:sort-overrides ((object text))
+  (let ((overrides (claraoke:overrides object)))
+    (setf (claraoke:overrides object)
+          (sort overrides 'override-lessp))
+    object))
+
+(defmethod claraoke:sort-overrides ((object null))
+  (warn 'claraoke:null-object-warning))
+
+(defmethod claraoke:sort-overrides (text)
+  (error 'claraoke:object-must-be-text :object text))
 

@@ -9,5 +9,6 @@
   :components
   ((:file "packages")
    (:file "classes")
-   (:file "subtitle-implementation")))
+   (:file "subtitle-implementation")
+   (:file "text-implementation")))
 

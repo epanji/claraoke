@@ -1,10 +1,14 @@
 (cl:in-package #:claraoke-base)
 
-(defgeneric claraoke:insert-override (claraoke-text override))
+(defgeneric claraoke:text (object))
 
-(defgeneric claraoke:delete-override (claraoke-text override))
+(defgeneric claraoke:override (position override-text))
 
-(defgeneric claraoke:find-override (claraoke-text override))
+(defgeneric claraoke:insert-override (object override))
+
+(defgeneric claraoke:delete-override (object override))
+
+(defgeneric claraoke:find-override (object override))
 
 (defgeneric claraoke:sort-overrides (claraoke-text))
 

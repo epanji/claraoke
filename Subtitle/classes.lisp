@@ -301,7 +301,7 @@
 
 (defmethod initialize-instance :after ((instance claraoke:dialogue) &key &allow-other-keys)
   (let ((string (claraoke:text instance)))
-    (setf (claraoke:text instance) (make-instance 'claraoke:text :text string))))
+    (setf (claraoke:text instance) (claraoke:text string))))
 
 (defclass claraoke:comment (event)
   ()

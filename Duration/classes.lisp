@@ -21,4 +21,7 @@
     :initarg :cs
     :initarg :centiseconds
     :accessor claraoke:centiseconds)))
+
+(defmethod print-object ((object duration) stream)
+  (princ (claraoke:durationstring object) stream))
 

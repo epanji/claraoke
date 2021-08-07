@@ -6,11 +6,15 @@
    ;; claraoke-base
    #:version
    #:print-script
+   #:null-object-warning
    #:style-not-found
-   #:failed-to-create-duration
    #:failed-to-create-subtitle
+   #:failed-to-create-color
+   #:failed-to-create-duration
    #:failed-to-create-style
+   #:failed-to-create-integer
    #:object-must-be-subtitle
+   #:object-must-be-color
    #:object-must-be-duration
    #:object-must-be-style
    #:object-must-be-event
@@ -53,7 +57,7 @@
    #:delete-event
    #:find-event
    #:last-event
-   #:sort-event
+   #:sort-events
    #:name
    #:title
    #:wrap-style
@@ -115,13 +119,13 @@
    #:find-override
    #:position
    #:sort-overrides
-   #:print-text
    #| ... |#))
 
 (defpackage #:claraoke-internal
   (:use #:common-lisp)
   (:export
    #:output-stream-from-designator
+   #:integer-from-string
    #| ... |#))
 
 (defpackage #:claraoke-base
