@@ -4,24 +4,24 @@
 ;;;
 ;;; Text
 ;;;
-(defmethod claraoke:text ((object string))
-  (make-instance 'text :text object))
+(defmethod claraoke:text ((object string) &rest initargs)
+  (apply 'make-instance 'text :allow-other-keys t :text object initargs))
 
-(defmethod claraoke:text ((object null))
-  (warn 'claraoke:null-object-warning))
+(claraoke-internal:mimic-accessor claraoke:text (claraoke:.text)
+  (error 'claraoke:failed-to-create-text :object object))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Override
 ;;;
-(defmethod claraoke:override ((position integer) (override-text string))
-  (make-instance 'override :position position :text override-text))
+(defmethod claraoke:override ((override-string string) (position integer))
+  (make-instance 'override :text override-string :position position ))
 
-(defmethod claraoke:override ((position integer) override-text)
-  (claraoke:override position (write-to-string override-text)))
+(defmethod claraoke:override ((override-string string) position)
+  (claraoke:override override-string (claraoke-internal:integer-from-string position)))
 
-(defmethod claraoke:override (position override-text)
-  (claraoke:override (claraoke-internal:integer-from-string position) override-text))
+(defmethod claraoke:override (override-string position)
+  (claraoke:override (write-to-string override-string) position))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -54,8 +54,8 @@
 (defmethod claraoke:insert-override ((object text) override)
   (error 'claraoke:object-must-be-override :object override))
 
-(defmethod claraoke:insert-override (text override)
-  (error 'claraoke:object-must-be-text :object text))
+(defmethod claraoke:insert-override (object override)
+  (error 'claraoke:object-must-be-text :object object))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -69,8 +69,8 @@
 (defmethod claraoke:delete-override ((object text) override)
   (error 'claraoke:object-must-be-override :object override))
 
-(defmethod claraoke:delete-override (text override)
-  (error 'claraoke:object-must-be-text :object text))
+(defmethod claraoke:delete-override (object override)
+  (error 'claraoke:object-must-be-text :object object))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -85,8 +85,8 @@
 (defmethod claraoke:find-override ((object text) position)
   (error 'claraoke:object-must-be-integer :object position))
 
-(defmethod claraoke:find-override (text position)
-  (error 'claraoke:object-must-be-text :object text))
+(defmethod claraoke:find-override (object position)
+  (error 'claraoke:object-must-be-text :object object))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;

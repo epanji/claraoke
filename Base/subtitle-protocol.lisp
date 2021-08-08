@@ -1,8 +1,10 @@
 (cl:in-package #:claraoke-base)
 
-(defgeneric claraoke:subtitle (title &rest initargs &key &allow-other-keys))
+(defgeneric claraoke:subtitle (object &rest initargs &key &allow-other-keys))
 
-(defgeneric claraoke:style (name &rest initargs &key &allow-other-keys))
+(defgeneric claraoke:script-info (object &rest initargs &key &allow-other-keys))
+
+(defgeneric claraoke:style (object &rest initargs &key &allow-other-keys))
 
 (defgeneric claraoke:insert-style (subtitle style))
 

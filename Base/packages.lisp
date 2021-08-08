@@ -8,19 +8,21 @@
    #:print-script
    #:null-object-warning
    #:style-not-found
-   #:failed-to-create-subtitle
+   #:failed-to-create-text
    #:failed-to-create-color
    #:failed-to-create-duration
+   #:failed-to-create-subtitle
+   #:failed-to-create-script-info
    #:failed-to-create-style
    #:failed-to-create-integer
-   #:object-must-be-subtitle
+   #:object-must-be-text
    #:object-must-be-color
    #:object-must-be-duration
+   #:object-must-be-subtitle
    #:object-must-be-style
    #:object-must-be-event
-   #:object-must-be-integer
-   #:object-must-be-text
    #:object-must-be-override
+   #:object-must-be-integer
    ;; claraoke-duration
    #:hours
    #:minutes
@@ -41,6 +43,7 @@
    ;; claraoke-subtitle
    #:subtitle
    #:script-info
+   #:.script-info
    #:script-type
    #:styles
    #:events
@@ -102,6 +105,7 @@
    #:margin-v
    #:effect
    #:text
+   #:.text
    ;; claraoke-color
    #:color
    #:colorstring
@@ -126,6 +130,7 @@
   (:export
    #:output-stream-from-designator
    #:integer-from-string
+   #:mimic-accessor
    #| ... |#))
 
 (defpackage #:claraoke-base

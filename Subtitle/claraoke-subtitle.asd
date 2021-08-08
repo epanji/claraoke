@@ -2,13 +2,16 @@
 
 (defsystem "claraoke-subtitle"
   :depends-on ("claraoke-base"
+               "claraoke-text"
                "claraoke-color"
-               "claraoke-duration"
-               "claraoke-text")
+               "claraoke-duration")
   :serial t
   :components
   ((:file "packages")
    (:file "classes")
-   (:file "subtitle-implementation")
-   (:file "text-implementation")))
+   (:file "base-implementation")
+   (:file "text-implementation")
+   (:file "color-implementation")
+   (:file "duration-implementation")
+   (:file "subtitle-implementation")))
 

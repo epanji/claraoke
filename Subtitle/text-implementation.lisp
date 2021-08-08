@@ -2,31 +2,39 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
+;;; After initialization
+;;;
+(defmethod initialize-instance :after ((instance dialogue) &key &allow-other-keys)
+  (let ((string (claraoke:text instance)))
+    (setf (claraoke:.text instance) (claraoke:text string))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
 ;;; Insert override
 ;;;
-(defmethod claraoke:insert-override ((object claraoke:dialogue) override)
-  (claraoke:insert-override (claraoke:text object) override)
+(defmethod claraoke:insert-override ((object dialogue) override)
+  (claraoke:insert-override (claraoke:.text object) override)
   object)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Delete override
 ;;;
-(defmethod claraoke:delete-override ((object claraoke:dialogue) override)
-  (claraoke:delete-override (claraoke:text object) override)
+(defmethod claraoke:delete-override ((object dialogue) override)
+  (claraoke:delete-override (claraoke:.text object) override)
   object)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Find override
 ;;;
-(defmethod claraoke:find-override ((object claraoke:dialogue) override)
-  (claraoke:find-override (claraoke:text object) override))
+(defmethod claraoke:find-override ((object dialogue) override)
+  (claraoke:find-override (claraoke:.text object) override))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Sort override
 ;;;
-(defmethod claraoke:sort-overrides ((object claraoke:dialogue))
-  (claraoke:sort-overrides (claraoke:text object))
+(defmethod claraoke:sort-overrides ((object dialogue))
+  (claraoke:sort-overrides (claraoke:.text object))
   object)

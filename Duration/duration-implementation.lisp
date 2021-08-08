@@ -41,9 +41,6 @@
 (defmethod claraoke:duration ((object duration))
   object)
 
-(defmethod claraoke:duration ((object null))
-  (warn 'claraoke:null-object-warning))
-
 (defmethod claraoke:duration (duration)
   (error 'claraoke:failed-to-create-duration :object duration))
 
@@ -68,9 +65,6 @@
           (claraoke:seconds object)
           (claraoke:centiseconds object)))
 
-(defmethod claraoke:durationstring ((object null))
-  (warn 'claraoke:null-object-warning))
-
 (defmethod claraoke:durationstring (object)
   (error 'claraoke:object-must-be-duration :object object))
 
@@ -93,7 +87,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Duration integer (centiseconds)
+;;; Duration integer (Centiseconds)
 ;;;
 (defmethod claraoke:durationinteger ((object duration))
   (+ (* 1 (claraoke:centiseconds object))
@@ -106,9 +100,6 @@
 
 (defmethod claraoke:durationinteger ((object integer))
   object)
-
-(defmethod claraoke:durationinteger ((object null))
-  (warn 'claraoke:null-object-warning))
 
 (defmethod claraoke:durationinteger (object)
   (error 'claraoke:failed-to-create-integer :object object))

@@ -22,24 +22,23 @@
 ;;;
 ;;; Print override (Internal)
 ;;;
-(defmethod print-override ((object override) &optional stream)
-  (let ((stream (claraoke-internal:output-stream-from-designator stream)))
-    (princ #\{ stream)
-    (print-override (claraoke:text object) stream)
-    (princ #\} stream)
-    object))
-
-(defmethod print-override ((object list) &optional stream)
-  ;; LISTP for CONS and NULL is T
-  (let ((stream (claraoke-internal:output-stream-from-designator stream)))
-    (loop for string in object
-          do (princ #\\ stream)
-             (princ string stream))
-    object))
-
-(defmethod print-override ((object string) &optional stream)
-  ;; Function split-sequence always return CONS or NULL
-  (let ((strings (split-sequence:split-sequence #\; object :remove-empty-subseqs t)))
-    (print-override strings stream)
-    object))
+(defgeneric print-override (object &optional stream)
+  (:method ((object override) &optional stream)
+    (let ((stream (claraoke-internal:output-stream-from-designator stream)))
+      (princ #\{ stream)
+      (print-override (claraoke:text object) stream)
+      (princ #\} stream)
+      object))
+  (:method ((object list) &optional stream)
+    ;; LISTP for CONS and NULL is T
+    (let ((stream (claraoke-internal:output-stream-from-designator stream)))
+      (loop for string in object
+            do (princ #\\ stream)
+               (princ string stream))
+      object))
+  (:method ((object string) &optional stream)
+    ;; Function split-sequence always return CONS or NULL
+    (let ((strings (split-sequence:split-sequence #\; object :remove-empty-subseqs t)))
+      (print-override strings stream)
+      object)))
 

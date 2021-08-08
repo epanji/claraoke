@@ -1,8 +1,8 @@
 (cl:in-package #:claraoke-base)
 
-(defgeneric claraoke:text (object))
+(defgeneric claraoke:text (object &rest initargs &key &allow-other-keys))
 
-(defgeneric claraoke:override (position override-text))
+(defgeneric claraoke:override (override-string position))
 
 (defgeneric claraoke:insert-override (object override))
 
@@ -10,5 +10,5 @@
 
 (defgeneric claraoke:find-override (object override))
 
-(defgeneric claraoke:sort-overrides (claraoke-text))
+(defgeneric claraoke:sort-overrides (text))
 

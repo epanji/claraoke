@@ -2,11 +2,13 @@
 
 (defpackage #:claraoke-text
   (:use #:common-lisp)
+  (:intern
+   #:%compare-override
+   #| ... |#)
   (:export
    #:text
    #:override
    #:print-override
-   #:%compare-override
    #:same-override-p
    #:override-lessp
    #:override-greaterp

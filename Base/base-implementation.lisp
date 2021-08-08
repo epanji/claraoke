@@ -1,5 +1,30 @@
 (cl:in-package #:claraoke-base)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Macros
+;;;
+(defmacro claraoke-internal:output-stream-from-designator (stream)
+  (let ((var (gensym "STREAM")))
+    `(let ((,var ,stream))
+       (cond ((null ,var) *standard-output*)
+             ((eq ,var t) *terminal-io*)
+             (t ,var)))))
+
+(defmacro claraoke-internal:mimic-accessor (name (accessor) &body body)
+  "Mimic generated ACCESSOR for NAME with specializer on OBJECT.
+Write BODY if necessary for returning specializer on T otherwise it will returning NIL."
+  `(progn (defmethod (setf ,name) (new-value object)
+            (setf (,accessor object) new-value))
+          (defmethod ,name (object &key)
+            (if (typep object 'standard-object)
+                (,accessor object)
+                (progn ,@body)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Functions
+;;;
 (defun claraoke:version ()
   "v0.0.1")
 
@@ -8,13 +33,10 @@
   (check-type default integer)
   (or (parse-integer (string string) :junk-allowed t) default))
 
-(defmacro claraoke-internal:output-stream-from-designator (stream)
-  (let ((var (gensym "STREAM")))
-    `(let ((,var ,stream))
-       (cond ((null ,var) *standard-output*)
-             ((eq ,var t) *terminal-io*)
-             (t ,var)))))
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Methods
+;;;
 (defmethod claraoke:print-script ((object null) &optional stream)
   (declare (ignore stream))
   (warn 'claraoke:null-object-warning))

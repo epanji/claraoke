@@ -2,11 +2,11 @@
 
 (defpackage #:claraoke-duration
   (:use #:common-lisp)
+  (:intern
+   #:+duration-characters+
+   #| ... |#)
   (:export
    #:duration
-   #|...
-   #:integer-from-string
    #:duration-character-p
-   #:+duration-characters+
-   ...|#))
+   #| ... |#))
 

@@ -9,8 +9,8 @@
    (:file "color-protocol")
    (:file "duration-protocol")
    (:file "subtitle-protocol")
-   (:file "base-protocol")
    (:file "conditions")
+   (:file "base-protocol")
    (:file "base-implementation")
    #| ... |#))
 

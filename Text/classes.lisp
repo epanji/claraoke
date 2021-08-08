@@ -4,14 +4,14 @@
   ((%text
     :initform ""
     :initarg :text
-    :accessor claraoke:text)
+    :accessor claraoke:.text)
    (%overrides
     :initform '()
     :initarg :overrides
     :accessor claraoke:overrides)))
 
 (defmethod print-object ((object text) stream)
-  (princ (claraoke:text object) stream))
+  (princ (claraoke:.text object) stream))
 
 (defclass override ()
   ((%position
@@ -21,7 +21,7 @@
    (%text
     :initform ""
     :initarg :text
-    :accessor claraoke:text)))
+    :accessor claraoke:.text)))
 
 (defmethod print-object ((object override) stream)
   (princ (claraoke:position object) stream)
