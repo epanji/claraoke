@@ -25,8 +25,10 @@ Write BODY if necessary for returning specializer on T otherwise it will returni
 ;;;
 ;;; Functions
 ;;;
-(defun claraoke:version ()
-  "v0.0.1")
+(defun claraoke-internal:version ()
+  "Return the CLARAOKE version."
+  #.(let ((file (merge-pathnames "../version.lisp-expr" (or *compile-file-pathname* *load-truename*))))
+      (format nil "CLARAOKE v~A" (with-open-file (stream file) (read stream)))))
 
 (defun claraoke-internal:integer-from-string (string &optional (default 0))
   (check-type string (or null string))

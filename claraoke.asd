@@ -1,12 +1,13 @@
-;;;; claraoke.asd
+(cl:in-package #:asdf-user)
 
 (defsystem "claraoke"
-  :version "0.0.1"
+  :version (:read-file-form "version.lisp-expr")
   :author "Panji Kusuma <epanji@gmail.com>"
   :description "Karaoke type helper on ASS format (Advanced Substation Alpha)"
   :license  ""
   :depends-on ("claraoke-base"
-               "claraoke-color"
                "claraoke-text"
+               "claraoke-color"
                "claraoke-duration"
                "claraoke-subtitle"))
+

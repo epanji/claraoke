@@ -4,7 +4,6 @@
   (:use)
   (:export
    ;; claraoke-base
-   #:version
    #:print-script
    #:null-object-warning
    #:style-not-found
@@ -23,6 +22,24 @@
    #:object-must-be-event
    #:object-must-be-override
    #:object-must-be-integer
+   ;; claraoke-text
+   #:text
+   #:position
+   #:override
+   #:overrides
+   #:insert-override
+   #:delete-override
+   #:find-override
+   #:sort-overrides
+   ;; claraoke-color
+   #:color
+   #:colorstring
+   #:random-color
+   #:rgb
+   #:red
+   #:green
+   #:blue
+   #:alpha
    ;; claraoke-duration
    #:hours
    #:minutes
@@ -53,6 +70,7 @@
    #:sound
    #:movie
    #:command
+   #:style
    #:insert-style
    #:delete-style
    #:find-style
@@ -98,39 +116,21 @@
    #:layer
    #:start
    #:end
-   #:style
    #:.style
    #:margin-l
    #:margin-r
    #:margin-v
    #:effect
-   #:text
    #:.text
-   ;; claraoke-color
-   #:color
-   #:colorstring
-   #:random-color
-   #:rgb
-   #:red
-   #:green
-   #:blue
-   #:alpha
-   ;; claraoke-text
-   #:overrides
-   #:override
-   #:insert-override
-   #:delete-override
-   #:find-override
-   #:position
-   #:sort-overrides
    #| ... |#))
 
 (defpackage #:claraoke-internal
   (:use #:common-lisp)
   (:export
-   #:output-stream-from-designator
-   #:integer-from-string
+   #:version
    #:mimic-accessor
+   #:integer-from-string
+   #:output-stream-from-designator
    #| ... |#))
 
 (defpackage #:claraoke-base
