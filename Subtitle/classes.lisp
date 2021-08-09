@@ -222,6 +222,7 @@
     :initform "00:00:00.00")
    (%end
     :initarg :end
+    :initarg :duration
     :accessor claraoke:end
     :initform "00:00:03.00")
    (%style

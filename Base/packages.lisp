@@ -122,6 +122,7 @@
    #:margin-v
    #:effect
    #:.text
+   #:duration-length
    #| ... |#))
 
 (defpackage #:claraoke-internal
