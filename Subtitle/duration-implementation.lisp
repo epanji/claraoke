@@ -9,14 +9,11 @@
         (duration2 (claraoke:duration (claraoke:end instance))))
     (setf (claraoke:start instance) duration1)
     (setf (claraoke:end instance) duration2)
-    (if (null duration)
-        (when (claraoke:duration-greaterp duration1 duration2)
-          (claraoke:sync-duration duration2 duration1)
-          (claraoke:increase-duration duration2 "0.25"))
-        (claraoke:sync-duration
-         duration2
-         (+ (claraoke:durationinteger duration1)
-            (claraoke:durationinteger duration))))))
+    (unless (null duration)
+      (claraoke:sync-duration
+       duration2
+       (+ (claraoke:durationinteger duration1)
+          (claraoke:durationinteger (claraoke:duration duration)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -24,7 +21,7 @@
 ;;;
 (defmethod (setf claraoke:start) :around (new-value (event event))
   (let ((duration1 (claraoke:duration new-value))
-        (duration2 (claraoke:end event)))
+        (duration2 (claraoke:duration (claraoke:end event))))
     (when (claraoke:duration-greaterp duration1 duration2)
       (claraoke:sync-duration duration2 duration1)
       (claraoke:increase-duration duration2 "0.25"))
