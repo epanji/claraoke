@@ -26,7 +26,8 @@
   (let ((duration1 (claraoke:duration new-value))
         (duration2 (claraoke:end event)))
     (when (claraoke:duration-greaterp duration1 duration2)
-      (setf (claraoke:end event) duration1))
+      (claraoke:sync-duration duration2 duration1)
+      (claraoke:increase-duration duration2 "0.25"))
     (call-next-method duration1 event)))
 
 (defmethod (setf claraoke:end) :around (new-value (event event))
