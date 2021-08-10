@@ -39,6 +39,9 @@ Write BODY if necessary for returning specializer on T otherwise it will returni
 ;;;
 ;;; Methods
 ;;;
+(defmethod claraoke:print-script ((object string) &optional stream)
+  (princ object (claraoke-internal:output-stream-from-designator stream)))
+
 (defmethod claraoke:print-script ((object null) &optional stream)
   (declare (ignore stream))
   (warn 'claraoke:null-object-warning))
