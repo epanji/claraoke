@@ -230,7 +230,7 @@
         (margin-r (claraoke:margin-r object))
         (margin-v (claraoke:margin-v object))
         (effect (claraoke:effect object))
-        (text (claraoke:text object))
+        (text (claraoke:.text object))
         (stream (claraoke-internal:output-stream-from-designator stream)))
     (princ (string-capitalize (type-of object)) stream)
     (princ ": " stream)
