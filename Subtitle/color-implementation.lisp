@@ -1,5 +1,9 @@
 (cl:in-package #:claraoke-subtitle)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; After initialization
+;;;
 (defmethod initialize-instance :after ((instance style) &rest initargs &key &allow-other-keys)
   (let ((primary (claraoke:primary-colour instance))
         (secondary (claraoke:secondary-colour instance))

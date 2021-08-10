@@ -6,7 +6,7 @@
 ;;;
 (defmethod claraoke:print-script ((object text) &optional stream)
   (let ((overrides (claraoke:overrides object))
-        (string (claraoke:text object))
+        (string (claraoke:.text object))
         (stream (claraoke-internal:output-stream-from-designator stream)))
     (loop for position from 0
           for char across string
@@ -26,7 +26,7 @@
   (:method ((object override) &optional stream)
     (let ((stream (claraoke-internal:output-stream-from-designator stream)))
       (princ #\{ stream)
-      (print-override (claraoke:text object) stream)
+      (print-override (claraoke:.text object) stream)
       (princ #\} stream)
       object))
   (:method ((object list) &optional stream)

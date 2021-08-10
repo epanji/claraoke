@@ -2,7 +2,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Initial after
+;;; After initialization
 ;;;
 (defmethod initialize-instance :after ((instance event) &key duration &allow-other-keys)
   (let ((duration1 (claraoke:duration (claraoke:start instance)))
