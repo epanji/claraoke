@@ -33,6 +33,12 @@
     (setf (claraoke:events instance)
           (list (apply 'make-instance 'dialogue args)))))
 
+(defmethod print-object ((object subtitle) stream)
+  (print-unreadable-object (object stream :type nil :identity t)
+    (princ "SUBTITLE" stream)
+    (princ #\Space stream)
+    (prin1 (claraoke:title object) stream)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Script info
@@ -251,6 +257,12 @@
     :initarg :encoding
     :accessor claraoke:encoding)))
 
+(defmethod print-object ((object style) stream)
+  (print-unreadable-object (object stream :type nil :identity t)
+    (princ "STYLE" stream)
+    (princ #\Space stream)
+    (prin1 (claraoke:name object) stream)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Event
@@ -306,7 +318,10 @@
   (let ((start (claraoke:start event))
         (end (claraoke:end event))
         (text (claraoke:.text event)))
-    (format stream "~A --> ~A ~S" start end text)))
+    (format stream "#<~A --> ~A ~S ~@[(~D)>~]" start end
+            (if (stringp text) text (claraoke:.text text))
+            (unless (stringp text)
+              (length (claraoke:overrides text))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
