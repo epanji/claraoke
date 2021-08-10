@@ -2,6 +2,16 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
+;;; Accessors
+;;;
+(defmethod claraoke:overrides ((object dialogue))
+  (claraoke:overrides (claraoke:.text object)))
+
+(defmethod (setf claraoke:overrides) (new-value (object dialogue))
+  (setf (claraoke:overrides (claraoke:.text object)) new-value))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
 ;;; After initialization
 ;;;
 (defmethod initialize-instance :after ((instance dialogue) &key &allow-other-keys)
