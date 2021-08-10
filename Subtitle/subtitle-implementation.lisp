@@ -47,6 +47,9 @@
   (define-method-instance claraoke:movie movie)
   (define-method-instance claraoke:command command))
 
+(defmethod claraoke:dialogue ((object claraoke-text:text) &rest initargs)
+  (apply 'make-instance 'dialogue :allow-other-keys t :text object initargs))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Insert style
