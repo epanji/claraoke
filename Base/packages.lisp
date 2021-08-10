@@ -81,16 +81,25 @@
    #:sort-events
    #:name
    #:title
-   #:wrap-style
+   #:original-script
+   #:original-translation
+   #:original-editing
+   #:original-timing
+   #:sync-point
+   #:scrypt-update-by
+   #:update-details
+   #:script-type
+   #:collisions
    #:play-res-x
    #:play-res-y
+   #:play-depth
+   #:timer
+   #:wrap-style
    #:scaled-border-and-shadow
    #:last-style-storage
    #:video-aspect-ratio
    #:video-zoom
    #:video-position
-   #:original-translation
-   #:collisions
    #:fontname
    #:fontsize
    #:primary-colour

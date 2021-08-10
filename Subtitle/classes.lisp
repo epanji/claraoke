@@ -42,14 +42,42 @@
     :initform "ASS file"
     :initarg :title
     :accessor claraoke:title)
+   (%original-script
+    :initform nil
+    :initarg :original-script
+    :accessor claraoke:original-script)
+   (%original-translation
+    :initform nil ; Optional
+    :initarg :original-translation
+    :accessor claraoke:original-translation)
+   (%original-editing
+    :initform nil ; Optional
+    :initarg :original-editing
+    :accessor claraoke:original-editing)
+   (%original-timing
+    :initform nil ; Optional
+    :initarg :original-timing
+    :accessor claraoke:original-timing)
+   (%sync-point
+    :initform nil ; Optional
+    :initarg :sync-point
+    :accessor claraoke:sync-point)
+   (%scrypt-update-by
+    :initform nil ; Optional
+    :initarg :scrypt-update-by
+    :accessor claraoke:scrypt-update-by)
+   (%update-details
+    :initform nil
+    :initarg :update-details
+    :accessor claraoke:update-details)
    (%script-type
     :initform "v4.00+"
     :initarg :script-type
     :accessor claraoke:script-type)
-   (%wrap-style
-    :initform 0
-    :initarg :wrap-style
-    :accessor claraoke:wrap-style)
+   (%collisions
+    :initform "Normal"
+    :initarg :collisions
+    :accessor claraoke:collisions)
    (%play-res-x
     :initform 1366
     :initarg :play-res-x
@@ -58,12 +86,28 @@
     :initform 768
     :initarg :play-res-y
     :accessor claraoke:play-res-y)
+   (%play-depth
+    :initform 0
+    :initarg :play-depth
+    :accessor claraoke:play-depth)
+   (%timer
+    :initform "100,0000"
+    :initarg :timer
+    :accessor claraoke:timer)
+   (%wrap-style
+    :initform 0
+    :initarg :wrap-style
+    :accessor claraoke:wrap-style)
+   ;;;;;;;;;;;;;;;;;;;;;;;;;
+   ;;
+   ;; Others
+   ;;
    (%scaled-border-and-shadow
-    :initform "yes"
+    :initform nil
     :initarg :scaled-border-and-shadow
     :accessor claraoke:scaled-border-and-shadow)
    (%last-style-storage
-    :initform nil                       ; optional
+    :initform nil
     :initarg :last-style-storage
     :accessor claraoke:last-style-storage)
    (%video-aspect-ratio
@@ -77,15 +121,7 @@
    (%video-position
     :initform 0
     :initarg :video-position
-    :accessor claraoke:video-position)
-   (%original-translation
-    :initform nil                       ; optional
-    :initarg :original-translation
-    :accessor claraoke:original-translation)
-   (%collisions
-    :initform "Normal"
-    :initarg :collisions
-    :accessor claraoke:collisions)))
+    :accessor claraoke:video-position)))
 
 (macrolet ((subtitle-specializer (name)
              `(progn (defmethod ,name ((object subtitle))
@@ -93,17 +129,25 @@
                      (defmethod (setf ,name) (new-value (object subtitle))
                        (setf (,name (claraoke:.script-info object)) new-value)))))
   (subtitle-specializer claraoke:title)
+  (subtitle-specializer claraoke:original-script)
+  (subtitle-specializer claraoke:original-translation)
+  (subtitle-specializer claraoke:original-editing)
+  (subtitle-specializer claraoke:original-timing)
+  (subtitle-specializer claraoke:sync-point)
+  (subtitle-specializer claraoke:scrypt-update-by)
+  (subtitle-specializer claraoke:update-details)
   (subtitle-specializer claraoke:script-type)
-  (subtitle-specializer claraoke:wrap-style)
+  (subtitle-specializer claraoke:collisions)
   (subtitle-specializer claraoke:play-res-x)
   (subtitle-specializer claraoke:play-res-y)
+  (subtitle-specializer claraoke:play-depth)
+  (subtitle-specializer claraoke:timer)
+  (subtitle-specializer claraoke:wrap-style)
   (subtitle-specializer claraoke:scaled-border-and-shadow)
   (subtitle-specializer claraoke:last-style-storage)
   (subtitle-specializer claraoke:video-aspect-ratio)
   (subtitle-specializer claraoke:video-zoom)
-  (subtitle-specializer claraoke:video-position)
-  (subtitle-specializer claraoke:original-translation)
-  (subtitle-specializer claraoke:collisions))
+  (subtitle-specializer claraoke:video-position))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
