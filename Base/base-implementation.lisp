@@ -11,14 +11,14 @@
              ((eq ,var t) *terminal-io*)
              (t ,var)))))
 
-(defmacro claraoke-internal:mimic-accessor (name (accessor) &body body)
+(defmacro claraoke-internal:mimic-accessor (name (accessor object) &body body)
   "Mimic generated ACCESSOR for NAME with specializer on OBJECT.
 Write BODY if necessary for returning specializer on T otherwise it will returning NIL."
-  `(progn (defmethod (setf ,name) (new-value object)
-            (setf (,accessor object) new-value))
-          (defmethod ,name (object &key)
-            (if (typep object 'standard-object)
-                (,accessor object)
+  `(progn (defmethod (setf ,name) (new-value ,object)
+            (setf (,accessor ,object) new-value))
+          (defmethod ,name (,object &key)
+            (if (typep ,object 'standard-object)
+                (,accessor ,object)
                 (progn ,@body)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

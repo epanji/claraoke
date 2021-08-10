@@ -4,7 +4,7 @@
 ;;;
 ;;; After initialization
 ;;;
-(defmethod initialize-instance :after ((instance style) &rest initargs &key &allow-other-keys)
+(defmethod initialize-instance :after ((instance style) &key)
   (let ((primary (claraoke:primary-colour instance))
         (secondary (claraoke:secondary-colour instance))
         (outline (claraoke:outline-colour instance))

@@ -18,7 +18,7 @@
     :initarg :events
     :accessor claraoke:events)))
 
-(defmethod initialize-instance :after ((instance subtitle) &rest initargs &key &allow-other-keys)
+(defmethod initialize-instance :after ((instance subtitle) &rest initargs)
   (let ((args (append initargs (list :allow-other-keys t))))
     ;; Use more specific keys
     (remf args :name)

@@ -20,7 +20,7 @@
 (defmethod claraoke:style ((object string) &rest initargs)
   (apply 'make-instance 'style :allow-other-keys t :name object initargs))
 
-(claraoke-internal:mimic-accessor claraoke:style (claraoke:.style)
+(claraoke-internal:mimic-accessor claraoke:style (claraoke:.style object)
   (error 'claraoke:failed-to-create-style :object object))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -30,7 +30,7 @@
 (defmethod claraoke:script-info ((object string) &rest initargs)
   (apply 'make-instance 'script-info :allow-other-keys t :title object initargs))
 
-(claraoke-internal:mimic-accessor claraoke:script-info (claraoke:.script-info)
+(claraoke-internal:mimic-accessor claraoke:script-info (claraoke:.script-info object)
   (error 'claraoke:failed-to-create-script-info :object object))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

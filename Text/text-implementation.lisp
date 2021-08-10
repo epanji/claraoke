@@ -7,7 +7,7 @@
 (defmethod claraoke:text ((object string) &rest initargs)
   (apply 'make-instance 'text :allow-other-keys t :text object initargs))
 
-(claraoke-internal:mimic-accessor claraoke:text (claraoke:.text)
+(claraoke-internal:mimic-accessor claraoke:text (claraoke:.text object)
   (error 'claraoke:failed-to-create-text :object object))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

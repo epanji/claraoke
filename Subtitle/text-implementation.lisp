@@ -14,7 +14,7 @@
 ;;;
 ;;; After initialization
 ;;;
-(defmethod initialize-instance :after ((instance dialogue) &key &allow-other-keys)
+(defmethod initialize-instance :after ((instance dialogue) &key)
   (let ((string (claraoke:.text instance)))
     (setf (claraoke:.text instance) (claraoke:text string))))
 
