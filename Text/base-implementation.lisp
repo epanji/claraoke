@@ -8,9 +8,9 @@
   (let ((overrides (claraoke:overrides object))
         (string (claraoke:.text object))
         (stream (claraoke-internal:output-stream-from-designator stream)))
-    (loop for position from 0
+    (loop for index from 0
           for char across string
-          and override = (claraoke:find-override overrides position)
+          and override = (claraoke:find-override overrides index)
           do (print-override override stream)
              (princ char stream))
     object))

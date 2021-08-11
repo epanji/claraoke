@@ -24,7 +24,7 @@
    #:object-must-be-integer
    ;; claraoke-text
    #:text
-   #:position
+   #:index
    #:override
    #:overrides
    #:insert-override

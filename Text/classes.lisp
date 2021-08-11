@@ -14,16 +14,16 @@
   (princ (claraoke:.text object) stream))
 
 (defclass override ()
-  ((%position
+  ((%index
     :initform 0
-    :initarg :position
-    :accessor claraoke:position)
+    :initarg :index
+    :accessor claraoke:index)
    (%text
     :initform ""
     :initarg :text
     :accessor claraoke:.text)))
 
 (defmethod print-object ((object override) stream)
-  (princ (claraoke:position object) stream)
+  (princ (claraoke:index object) stream)
   (print-override object stream))
 

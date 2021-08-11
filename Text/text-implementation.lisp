@@ -14,14 +14,14 @@
 ;;;
 ;;; Override
 ;;;
-(defmethod claraoke:override ((override-string string) (position integer))
-  (make-instance 'override :text override-string :position position ))
+(defmethod claraoke:override ((override-string string) (index integer))
+  (make-instance 'override :text override-string :index index ))
 
-(defmethod claraoke:override ((override-string string) position)
-  (claraoke:override override-string (claraoke-internal:integer-from-string position)))
+(defmethod claraoke:override ((override-string string) index)
+  (claraoke:override override-string (claraoke-internal:integer-from-string index)))
 
-(defmethod claraoke:override (override-string position)
-  (claraoke:override (write-to-string override-string) position))
+(defmethod claraoke:override (override-string index)
+  (claraoke:override (write-to-string override-string) index))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -31,8 +31,8 @@
   (check-type override1 override)
   (check-type override2 override)
   (funcall operator
-           (claraoke:position override1)
-           (claraoke:position override2)))
+           (claraoke:index override1)
+           (claraoke:index override2)))
 
 (defun same-override-p (override1 override2)
   (%compare-override override1 override2 '=))
@@ -76,16 +76,16 @@
 ;;;
 ;;; Find override
 ;;;
-(defmethod claraoke:find-override ((object list) (position integer))
-  (find position object :key 'claraoke:position))
+(defmethod claraoke:find-override ((object list) (index integer))
+  (find index object :key 'claraoke:index))
 
-(defmethod claraoke:find-override ((object text) (position integer))
-  (claraoke:find-override (claraoke:overrides object) position))
+(defmethod claraoke:find-override ((object text) (index integer))
+  (claraoke:find-override (claraoke:overrides object) index))
 
-(defmethod claraoke:find-override ((object text) position)
-  (error 'claraoke:object-must-be-integer :object position))
+(defmethod claraoke:find-override ((object text) index)
+  (error 'claraoke:object-must-be-integer :object index))
 
-(defmethod claraoke:find-override (object position)
+(defmethod claraoke:find-override (object index)
   (error 'claraoke:object-must-be-text :object object))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

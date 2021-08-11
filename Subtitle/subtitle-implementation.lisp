@@ -132,11 +132,11 @@
 ;;;
 ;;; Find event (Dialogue, Comment, etc)
 ;;;
-(defmethod claraoke:find-event ((subtitle subtitle) (position integer))
+(defmethod claraoke:find-event ((subtitle subtitle) (index integer))
   (let ((events (claraoke:events subtitle)))
-    (nth position (reverse events))))
+    (nth index (reverse events))))
 
-(defmethod claraoke:find-event (subtitle position)
+(defmethod claraoke:find-event (subtitle index)
   nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

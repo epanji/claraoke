@@ -16,13 +16,13 @@
 
 (defgeneric claraoke:delete-event (subtitle event))
 
-(defgeneric claraoke:find-event (subtitle position))
+(defgeneric claraoke:find-event (subtitle index))
 
 (defgeneric claraoke:last-event (subtitle))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Position will not be arranged manually.
+;;; Index will not be arranged manually.
 ;;; Because event depends on start duration, sort event
 ;;; will re-arranged using start duration.
 ;;;
