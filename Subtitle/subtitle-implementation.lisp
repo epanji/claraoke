@@ -55,8 +55,8 @@
 ;;; Insert style
 ;;;
 (defun same-style-p (style1 style2)
-  (check-type style1 claraoke:style)
-  (check-type style2 claraoke:style)
+  (check-type style1 style)
+  (check-type style2 style)
   (string-equal (claraoke:name style1) (claraoke:name style2)))
 
 (defmethod claraoke:insert-style ((subtitle subtitle) (style style))
