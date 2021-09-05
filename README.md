@@ -14,108 +14,50 @@ CL-USER> (ql:quickload "claraoke-user")
 CL-USER> (in-package :claraoke-user)
 #<PACKAGE "CLARAOKE-USER">
 
-CLARAOKE-USER> (color "#8A2BE2")
-&HE22B8A&
-
-CLARAOKE-USER> (rgb 60 120 240)
-&HF0783C&
-
-CLARAOKE-USER> (rgb 60 120 240 30)
-&H1EF0783C
-
-CLARAOKE-USER> (random-color)
-&HBAE105&
-
-CLARAOKE-USER> (random-color 30)
-&H1E25632B
-
-CLARAOKE-USER> (duration "10:11:12.13")
-10:11:12.13
-
-CLARAOKE-USER> (duration "12.13")
-00:00:12.13
-
-CLARAOKE-USER> (duration "1213")
-00:00:12.13
-
-CLARAOKE-USER> (duration 1213)
-00:00:12.13
-
-CLARAOKE-USER> (defparameter *mydur* (duration 0))
-*MYDUR*
-
-CLARAOKE-USER> (increase-duration *mydur* "11:12.13")
-00:11:12.13
-
-CLARAOKE-USER> (durationstring *mydur*)
-"00:11:12.13"
-
-CLARAOKE-USER> (decrease-duration *mydur* 1213)
-00:11:00.00
-
-CLARAOKE-USER> (durationinteger *mydur*)
-66000
-
-CLARAOKE-USER> (defparameter *mydia* (dialogue "This text written without overrides" :start "5.25" :duration 12000))
-*MYDIA*
-
-CLARAOKE-USER> (print-script *mydia*)
-Dialogue: 0,00:00:05.25,00:02:05.25,Default,,0,0,0,,This text written without overrides
-#<00:00:05.25 --> 00:02:05.25 "This text written without overrides" (0)>
-
-CLARAOKE-USER> (insert-override *mydia* (override "k500" 0))
-#<00:00:05.25 --> 00:02:05.25 "This text written without overrides" (1)>
-
-CLARAOKE-USER> (insert-override *mydia* (override "k35;b1" 5))
-#<00:00:05.25 --> 00:02:05.25 "This text written without overrides" (2)>
-
-CLARAOKE-USER> (print-script *mydia*)
-Dialogue: 0,00:00:05.25,00:02:05.25,Default,,0,0,0,,{\k500}This {\k35\b1}text written without overrides
-#<00:00:05.25 --> 00:02:05.25 "This text written without overrides" (2)>
-
-CLARAOKE-USER> (defparameter *mysub* (subtitle "Demo"))
+CLARAOKE-USER> (defparameter *mysub* (subtitle "mysub"))
 *MYSUB*
 
-CLARAOKE-USER> (find-style *mysub* "Default")
-#<STYLE "Default" {1003322393}>
+CLARAOKE-USER> (defparameter *mydia* (last-event *mysub*))
+*MYDIA*
 
-CLARAOKE-USER> (print-script *)
-Style: Default,Arial,48,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,0,8,25,25,25,1
-#<STYLE "Default" {1003322393}>
+CLARAOKE-USER> (setf (text *mydia*) (text "berjalan di hutan cemara" :generate-overrides-p t)
+                     (start *mydia*) "5.00"
+                     (duration-length *mydia*) "2.00")
+#<#<00:00:05.00> --> #<00:00:07.00> "berjalan di hutan cemara" (9)>
 
-CLARAOKE-USER> (setf (fontsize *) 30)
-30
+CLARAOKE-USER> (insert-event *mysub* (dialogue "langkahku terasa kecil dan lelah"
+                                               :start "8.00" :duration "5.00"
+                                               :generate-overrides-p t))
+(#<#<00:00:08.00> --> #<00:00:13.00> "langkahku terasa kecil dan lelah" (10)>
+ #<#<00:00:05.00> --> #<00:00:07.00> "berjalan di hutan cemara" (9)>)
 
-CLARAOKE-USER> (print-script **)
-Style: Default,Arial,30,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,0,8,25,25,25,1
-#<STYLE "Default" {1003322393}>
+CLARAOKE-USER> (insert-event *mysub* (dialogue "makin dalam lagi"
+                                               :start "14.00"
+                                               :end "16.00"
+                                               :generate-overrides-p t))
+(#<#<00:00:14.00> --> #<00:00:16.00> "makin dalam lagi" (6)>
+ #<#<00:00:08.00> --> #<00:00:13.00> "langkahku terasa kecil dan lelah" (10)>
+ #<#<00:00:05.00> --> #<00:00:07.00> "berjalan di hutan cemara" (9)>)
 
-CLARAOKE-USER> (style "Second" :fontsize 50)
-#<STYLE "Second" {1003D04573}>
+CLARAOKE-USER> (insert-event *mysub* (dialogue "ku ditelan fatamorgana"
+                                               :start "17.00"
+                                               :end "23.00"
+                                               :generate-overrides-p t))
+(#<#<00:00:17.00> --> #<00:00:23.00> "ku ditelan fatamorgana" (9)>
+ #<#<00:00:14.00> --> #<00:00:16.00> "makin dalam lagi" (6)>
+ #<#<00:00:08.00> --> #<00:00:13.00> "langkahku terasa kecil dan lelah" (10)>
+ #<#<00:00:05.00> --> #<00:00:07.00> "berjalan di hutan cemara" (9)>)
 
-CLARAOKE-USER> (insert-style *mysub* *)
-(#<STYLE "Second" {1003D04573}> #<STYLE "Default" {1003322393}>)
+CLARAOKE-USER> (claraoke-subtitle-to-file *mysub* #p"/tmp/mysub.ass" :if-exists :supersede)
+#<SUBTITLE "mysub" {100B734BF3}>
 
-CLARAOKE-USER> (last-event *mysub*)
-#<00:00:00.00 --> 00:00:03.00 "Text Here" (0)>
-
-CLARAOKE-USER> (setf (end *) "5.00")
-00:00:05.00
-
-CLARAOKE-USER> (insert-event *mysub* *mydia*)
-(#<00:00:05.25 --> 00:02:05.25 "This text written without overrides" (2)>
- #<00:00:00.00 --> 00:00:05.00 "Text Here" (0)>)
-
-CLARAOKE-USER> (setf (text *mydia*) "This text changed, but same overrides")
-"This text changed, but same overrides"
-
-CLARAOKE-USER> (sort-events *mysub*)
-#<SUBTITLE "Demo" {100331BB63}>
+CLARAOKE-USER> (claraoke-subtitle-dummy-video *mysub* #p"/tmp/mysub.mp4")
+#P"/tmp/mysub.mp4"
 
 CLARAOKE-USER> (print-script *mysub*)
 [Script Info]
-; Script generated by CLARAOKE v0.0.1
-Title: Demo
+; Script generated by CLARAOKE v0.0.2 ( https://github.com/epanji/claraoke )
+Title: mysub
 ScriptType: v4.00+
 Collisions: Normal
 PlayResX: 1366
@@ -129,16 +71,45 @@ Video Position: 0
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Second,Arial,50,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,0,8,25,25,25,1
-Style: Default,Arial,30,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,0,8,25,25,25,1
+Style: Default,Arial,48,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,0,2,25,25,25,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,00:00:00.00,00:00:05.00,Default,,0,0,0,,Text Here
-Dialogue: 0,00:00:05.25,00:02:05.25,Default,,0,0,0,,{\k500}This {\k35\b1}text changed, but same overrides
+Dialogue: 0,00:00:05.00,00:00:07.00,Default,,0,0,0,,{\k15}ber{\k15}ja{\k15}lan {\k15}di {\k15}hu{\k15}tan {\k15}ce{\k15}ma{\k15}ra
+Dialogue: 0,00:00:08.00,00:00:13.00,Default,,0,0,0,,{\k30}langkah{\k15}ku {\k15}te{\k15}ra{\k15}sa {\k15}ke{\k15}cil {\k15}dan {\k15}le{\k15}lah
+Dialogue: 0,00:00:14.00,00:00:16.00,Default,,0,0,0,,{\k15}ma{\k15}kin {\k15}da{\k15}lam {\k15}la{\k15}gi
+Dialogue: 0,00:00:17.00,00:00:23.00,Default,,0,0,0,,{\k15}ku {\k15}di{\k15}te{\k15}lan {\k15}fa{\k15}ta{\k15}mo{\k15}rga{\k15}na
 
-#<SUBTITLE "Demo" {100331BB63}>
+#<SUBTITLE "mysub" {100B734BF3}>
 
-CLARAOKE-USER> (claraoke-subtitle-to-file *mysub* #p"/tmp/mysub.ass")
-#<SUBTITLE "Demo" {100331BB63}>
+CLARAOKE-USER> (defparameter *mysub2* (parse-script #p"/tmp/mysub.ass"))
+*MYSUB2*
+
+CLARAOKE-USER> (print-script *mysub2*)
+[Script Info]
+; Script generated by CLARAOKE v0.0.2 ( https://github.com/epanji/claraoke )
+Title: mysub
+ScriptType: v4.00+
+Collisions: Normal
+PlayResX: 1366
+PlayResY: 768
+PlayDepth: 0
+Timer: 100,0000
+WrapStyle: 0
+Video Aspect Ratio: 0
+Video Zoom: 0
+Video Position: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Arial,48,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,0,2,25,25,25,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,00:00:05.00,00:00:07.00,Default,,0,0,0,,{\k15}ber{\k15}ja{\k15}lan {\k15}di {\k15}hu{\k15}tan {\k15}ce{\k15}ma{\k15}ra
+Dialogue: 0,00:00:08.00,00:00:13.00,Default,,0,0,0,,{\k30}langkah{\k15}ku {\k15}te{\k15}ra{\k15}sa {\k15}ke{\k15}cil {\k15}dan {\k15}le{\k15}lah
+Dialogue: 0,00:00:14.00,00:00:16.00,Default,,0,0,0,,{\k15}ma{\k15}kin {\k15}da{\k15}lam {\k15}la{\k15}gi
+Dialogue: 0,00:00:17.00,00:00:23.00,Default,,0,0,0,,{\k15}ku {\k15}di{\k15}te{\k15}lan {\k15}fa{\k15}ta{\k15}mo{\k15}rga{\k15}na
+
+#<SUBTITLE "mysub" {1001CB7003}>
 ```
