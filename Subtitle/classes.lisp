@@ -124,7 +124,7 @@
     :initarg :shadow
     :accessor claraoke:.shadow)
    (%alignment
-    :initform 8
+    :initform 2
     :initarg :alignment
     :accessor claraoke:alignment)
    (%margin-l
