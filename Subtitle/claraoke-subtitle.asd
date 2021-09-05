@@ -9,9 +9,12 @@
   :components
   ((:file "packages")
    (:file "classes")
-   (:file "base-implementation")
+   (:file "initializations")
+   (:file "script-implementation")
+   (:file "printer-implementation")
    (:file "text-implementation")
    (:file "color-implementation")
    (:file "duration-implementation")
-   (:file "subtitle-implementation")))
+   (:file "subtitle-implementation")
+   (:file "parser-implementation")))
 

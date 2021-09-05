@@ -3,11 +3,10 @@
 (defpackage #:claraoke-color
   (:use #:common-lisp)
   (:export
-   #:color
-   #:html-color
-   #:html-color-p
    #:ass-color
    #:ass-color-p
+   #:color
    #:dec-from-hexstring
-   #|...|#))
+   #:html-color
+   #:html-color-p))
 

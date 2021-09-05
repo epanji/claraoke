@@ -5,7 +5,10 @@
 ;;; Text
 ;;;
 (defmethod claraoke:text ((object string) &rest initargs)
-  (apply 'make-instance 'text :allow-other-keys t :text object initargs))
+  (apply 'make-instance 'text :allow-other-keys t :original-text object initargs))
+
+;; (defmethod claraoke:text ((object text) &rest key)
+;;   object)
 
 (claraoke-internal:mimic-accessor claraoke:text (claraoke:.text object)
   (error 'claraoke:failed-to-create-text :object object))
@@ -77,7 +80,7 @@
 ;;; Find override
 ;;;
 (defmethod claraoke:find-override ((object list) (index integer))
-  (find index object :key 'claraoke:index))
+  (find index object :from-end t :key 'claraoke:index))
 
 (defmethod claraoke:find-override ((object text) (index integer))
   (claraoke:find-override (claraoke:overrides object) index))

@@ -4,9 +4,9 @@
   :depends-on ("claraoke-base")
   :serial t
   :components
-  ((:file "packages")
+  ((:file "package")
    (:file "classes")
-   (:file "base-implementation")
+   (:file "text-parser")
    (:file "text-implementation")
-   #| ... |#))
+   (:file "printer-implementation")))
 

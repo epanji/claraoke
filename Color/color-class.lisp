@@ -17,7 +17,4 @@
     :initform nil
     :initarg :alpha
     :accessor claraoke:alpha)))
-
-(defmethod print-object ((object color) stream)
-  (princ (claraoke:colorstring object) stream))
 

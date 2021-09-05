@@ -1,7 +1,11 @@
 (cl:in-package #:claraoke-text)
 
 (defclass text ()
-  ((%text
+  ((%original-text
+    :initform nil
+    :initarg :original-text
+    :accessor claraoke:original-text)
+   (%text
     :initform ""
     :initarg :text
     :accessor claraoke:.text)
@@ -9,9 +13,6 @@
     :initform '()
     :initarg :overrides
     :accessor claraoke:overrides)))
-
-(defmethod print-object ((object text) stream)
-  (princ (claraoke:.text object) stream))
 
 (defclass override ()
   ((%index
@@ -22,8 +23,4 @@
     :initform ""
     :initarg :text
     :accessor claraoke:.text)))
-
-(defmethod print-object ((object override) stream)
-  (princ (claraoke:index object) stream)
-  (print-override object stream))
 

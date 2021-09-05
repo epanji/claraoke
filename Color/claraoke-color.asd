@@ -4,8 +4,8 @@
   :depends-on ("claraoke-base")
   :serial t
   :components
-  ((:file "packages")
-   (:file "classes")
+  ((:file "package")
+   (:file "color-class")
    (:file "color-implementation")
-   #| ... |#))
+   (:file "printer-implementation")))
 

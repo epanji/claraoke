@@ -5,12 +5,14 @@
   :serial t
   :components
   ((:file "packages")
+   (:file "script-protocol")
+   (:file "printer-protocol")
+   (:file "parser-protocol")
    (:file "text-protocol")
    (:file "color-protocol")
    (:file "duration-protocol")
    (:file "subtitle-protocol")
    (:file "conditions")
-   (:file "base-protocol")
-   (:file "base-implementation")
+   (:file "utilities")
    #| ... |#))
 

@@ -2,14 +2,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Accessors
+;;; Text
 ;;;
-(defmethod claraoke:overrides ((object dialogue))
-  (claraoke:overrides (claraoke:.text object)))
-
-(defmethod (setf claraoke:overrides) (new-value (object dialogue))
-  (setf (claraoke:overrides (claraoke:.text object)) new-value))
-
 (defmethod (setf claraoke:.text) :around (new-value (object dialogue))
   (flet ((textp (thing) (typep thing 'claraoke-text:text)))
     (let ((text (claraoke:.text object)))
@@ -23,12 +17,26 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; After initialization
+;;; Overrides
 ;;;
-(defmethod initialize-instance :after ((instance dialogue) &key)
+(defmethod claraoke:overrides ((object dialogue))
+  (claraoke:overrides (claraoke:.text object)))
+
+(defmethod (setf claraoke:overrides) (new-value (object dialogue))
+  (setf (claraoke:overrides (claraoke:.text object)) new-value))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Dialogue
+;;;
+(defmethod claraoke:dialogue ((object claraoke-text:text) &rest initargs)
+  (apply 'make-instance 'dialogue :allow-other-keys t :text object initargs))
+
+(defmethod initialize-instance :after ((instance dialogue) &key generate-overrides-p)
   (let ((value (claraoke:.text instance)))
     (when (stringp value)
-      (setf (claraoke:.text instance) (claraoke:text value)))))
+      (setf (claraoke:.text instance)
+            (claraoke:text value :generate-overrides-p generate-overrides-p)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;

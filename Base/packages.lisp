@@ -3,145 +3,185 @@
 (defpackage #:claraoke
   (:use)
   (:export
-   ;; claraoke-base
-   #:print-script
-   #:null-object-warning
-   #:style-not-found
-   #:failed-to-create-text
-   #:failed-to-create-color
-   #:failed-to-create-duration
-   #:failed-to-create-subtitle
-   #:failed-to-create-script-info
-   #:failed-to-create-style
-   #:failed-to-create-integer
-   #:object-must-be-text
-   #:object-must-be-color
-   #:object-must-be-duration
-   #:object-must-be-subtitle
-   #:object-must-be-style
-   #:object-must-be-event
-   #:object-must-be-override
-   #:object-must-be-integer
-   ;; claraoke-text
-   #:text
-   #:index
-   #:override
-   #:overrides
-   #:insert-override
-   #:delete-override
-   #:find-override
-   #:sort-overrides
-   ;; claraoke-color
+   #:.script-info
+   #:.shadow
+   #:.style
+   #:.text
+   #:alignment
+   #:alpha
+   #:angle
+   #:back-colour
+   #:blue
+   #:bold
+   #:border-style
+   #:centiseconds
+   #:collisions
    #:color
    #:colorstring
-   #:random-color
-   #:rgb
-   #:red
-   #:green
-   #:blue
-   #:alpha
-   ;; claraoke-duration
-   #:hours
-   #:minutes
-   #:seconds
-   #:centiseconds
+   #:command
+   #:comment
+   #:decrease-duration
+   #:delete-event
+   #:delete-font
+   #:delete-graphic
+   #:delete-info
+   #:delete-line
+   #:delete-note
+   #:delete-override
+   #:delete-style
+   #:descriptor
+   #:dialogue
    #:duration
+   #:duration-difference
+   #:duration-greaterp
+   #:duration-length
+   #:duration-lessp
+   #:durationinteger
+   #:durationintegerp
    #:durationp
    #:durationstring
    #:durationstringp
-   #:durationinteger
-   #:durationintegerp
-   #:sync-duration
-   #:increase-duration
-   #:decrease-duration
-   #:duration-lessp
-   #:duration-greaterp
-   #:duration-difference
-   ;; claraoke-subtitle
-   #:subtitle
-   #:script-info
-   #:.script-info
-   #:script-type
-   #:styles
+   #:effect
+   #:encoding
+   #:end
+   #:event
    #:events
-   #:dialogue
-   #:comment
-   #:picture
-   #:sound
-   #:movie
-   #:command
-   #:style
-   #:insert-style
-   #:delete-style
-   #:find-style
-   #:insert-event
-   #:delete-event
+   #:failed-to-create-color
+   #:failed-to-create-duration
+   #:failed-to-create-events
+   #:failed-to-create-fonts
+   #:failed-to-create-graphics
+   #:failed-to-create-info
+   #:failed-to-create-integer
+   #:failed-to-create-note
+   #:failed-to-create-script-info
+   #:failed-to-create-style
+   #:failed-to-create-styles
+   #:failed-to-create-subtitle
+   #:failed-to-create-text
    #:find-event
+   #:find-font
+   #:find-graphic
+   #:find-info
+   #:find-line
+   #:find-note
+   #:find-override
+   #:find-style
+   #:font
+   #:fontname
+   #:fonts
+   #:fontsize
+   #:graphic
+   #:graphics
+   #:green
+   #:header
+   #:hours
+   #:ignore-note
+   #:increase-duration
+   #:index
+   #:info
+   #:insert-event
+   #:insert-font
+   #:insert-graphic
+   #:insert-info
+   #:insert-line
+   #:insert-note
+   #:insert-override
+   #:insert-style
+   #:italic
    #:last-event
-   #:sort-events
+   #:last-line
+   #:last-style-storage
+   #:layer
+   #:line
+   #:lines
+   #:margin-l
+   #:margin-r
+   #:margin-v
+   #:minutes
+   #:movie
    #:name
-   #:title
-   #:original-script
-   #:original-translation
+   #:note
+   #:null-object-warning
+   #:object-must-be-color
+   #:object-must-be-duration
+   #:object-must-be-event
+   #:object-must-be-events
+   #:object-must-be-info
+   #:object-must-be-integer
+   #:object-must-be-line
+   #:object-must-be-note
+   #:object-must-be-override
+   #:object-must-be-script
+   #:object-must-be-script-info
+   #:object-must-be-style
+   #:object-must-be-styles
+   #:object-must-be-subtitle
+   #:object-must-be-text
    #:original-editing
+   #:original-script
+   #:original-text
    #:original-timing
-   #:sync-point
-   #:scrypt-update-by
-   #:update-details
-   #:script-type
-   #:collisions
+   #:original-translation
+   #:outline
+   #:outline-colour
+   #:override
+   #:overrides
+   #:parse-script
+   #:picture
+   #:play-depth
    #:play-res-x
    #:play-res-y
-   #:play-depth
-   #:timer
-   #:wrap-style
-   #:scaled-border-and-shadow
-   #:last-style-storage
-   #:video-aspect-ratio
-   #:video-zoom
-   #:video-position
-   #:fontname
-   #:fontsize
    #:primary-colour
-   #:secondary-colour
-   #:outline-colour
-   #:back-colour
-   #:bold
-   #:italic
-   #:underline
-   #:strike-out
+   #:print-script
+   #:random-color
+   #:red
+   #:rgb
    #:scale-x
    #:scale-y
+   #:scaled-border-and-shadow
+   #:script
+   #:script-info
+   #:script-type
+   #:scrypt-update-by
+   #:secondary-colour
+   #:seconds
+   #:section-line
+   #:separator
+   #:sort-events
+   #:sort-overrides
+   #:sound
    #:spacing
-   #:angle
-   #:border-style
-   #:outline
-   #:.shadow
-   #:alignment
-   #:margin-l
-   #:margin-r
-   #:margin-v
-   #:encoding
-   #:layer
    #:start
-   #:end
-   #:.style
-   #:margin-l
-   #:margin-r
-   #:margin-v
-   #:effect
-   #:.text
-   #:duration-length
-   #| ... |#))
+   #:strike-out
+   #:style
+   #:styles
+   #:subtitle
+   #:sync-duration
+   #:sync-point
+   #:table-line
+   #:text
+   #:timer
+   #:title
+   #:underline
+   #:update-details
+   #:value
+   #:value-mixin
+   #:video-aspect-ratio
+   #:video-position
+   #:video-zoom
+   #:wrap-style))
 
 (defpackage #:claraoke-internal
   (:use #:common-lisp)
   (:export
-   #:version
-   #:mimic-accessor
+   #:deletef
    #:integer-from-string
+   #:mimic-accessor
+   #:nreversef
    #:output-stream-from-designator
-   #| ... |#))
+   #:script-note
+   #:version))
 
 (defpackage #:claraoke-base
   (:use #:common-lisp))

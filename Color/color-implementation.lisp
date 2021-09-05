@@ -66,9 +66,6 @@
 (defmethod claraoke:color ((object color))
   object)
 
-;; (defmethod claraoke:color ((object null))
-;;   (warn 'claraoke:null-object-warning))
-
 (defmethod claraoke:color (color)
   (error 'claraoke:failed-to-create-color :object color))
 
@@ -84,9 +81,6 @@
     (if (null alpha)
         (format nil "&H~2,'0X~2,'0X~2,'0X&" blue green red)
         (format nil "&H~2,'0X~2,'0X~2,'0X~2,'0X" alpha blue green red))))
-
-;; (defmethod claraoke:colorstring ((object null))
-;;   (warn 'claraoke:null-object-warning))
 
 (defmethod claraoke:colorstring (color)
   (error 'claraoke:object-must-be-color :object color))

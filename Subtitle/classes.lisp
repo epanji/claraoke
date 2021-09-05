@@ -2,164 +2,54 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Subtitle
+;;; Line
 ;;;
-(defclass subtitle ()
-  ((%script-info
-    :initform nil
-    :initarg :script-info
-    :accessor claraoke:.script-info)
-   (%styles
-    :initform '()
-    :initarg :styles
-    :accessor claraoke:styles)
-   (%events
-    :initform '()
-    :initarg :events
-    :accessor claraoke:events)))
+(defclass note (claraoke:line)
+  ()
+  (:default-initargs
+   :descriptor "This is a comment."))
 
-(defmethod initialize-instance :after ((instance subtitle) &rest initargs)
-  (let ((args (append initargs (list :allow-other-keys t))))
-    ;; Use more specific keys
-    (remf args :name)
-    (remf args :margin-l)
-    (remf args :margin-r)
-    (remf args :margin-v)
-    ;; Apply modified args
-    (setf (claraoke:.script-info instance)
-          (apply 'make-instance 'script-info args))
-    (setf (claraoke:styles instance)
-          (list (apply 'make-instance 'style args)))
-    (setf (claraoke:events instance)
-          (list (apply 'make-instance 'dialogue args)))))
+(defclass info (claraoke:line claraoke:value-mixin)
+  ())
 
-(defmethod print-object ((object subtitle) stream)
-  (print-unreadable-object (object stream :type nil :identity t)
-    (princ "SUBTITLE" stream)
-    (princ #\Space stream)
-    (prin1 (claraoke:title object) stream)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Subtitle have 5 ordered sections
+;;;
+;;; 1. Script info
+;;; 2. V4+ Styles
+;;; 3. Events
+;;; 4. Fonts
+;;; 5. Graphics
+;;;
+(defclass subtitle (claraoke:script)
+  ()
+  (:default-initargs
+   :lines (make-array 5 :initial-element nil))
+  (:documentation "#(script-info styles events fonts graphics)"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Sections
+;;;
+(defclass section (claraoke:section-line)
+  ())
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Script info
 ;;;
-(defclass script-info ()
-  ((%title
-    :initform "ASS file"
-    :initarg :title
-    :accessor claraoke:title)
-   (%original-script
-    :initform nil
-    :initarg :original-script
-    :accessor claraoke:original-script)
-   (%original-translation
-    :initform nil ; Optional
-    :initarg :original-translation
-    :accessor claraoke:original-translation)
-   (%original-editing
-    :initform nil ; Optional
-    :initarg :original-editing
-    :accessor claraoke:original-editing)
-   (%original-timing
-    :initform nil ; Optional
-    :initarg :original-timing
-    :accessor claraoke:original-timing)
-   (%sync-point
-    :initform nil ; Optional
-    :initarg :sync-point
-    :accessor claraoke:sync-point)
-   (%scrypt-update-by
-    :initform nil ; Optional
-    :initarg :scrypt-update-by
-    :accessor claraoke:scrypt-update-by)
-   (%update-details
-    :initform nil
-    :initarg :update-details
-    :accessor claraoke:update-details)
-   (%script-type
-    :initform "v4.00+"
-    :initarg :script-type
-    :accessor claraoke:script-type)
-   (%collisions
-    :initform "Normal"
-    :initarg :collisions
-    :accessor claraoke:collisions)
-   (%play-res-x
-    :initform 1366
-    :initarg :play-res-x
-    :accessor claraoke:play-res-x)
-   (%play-res-y
-    :initform 768
-    :initarg :play-res-y
-    :accessor claraoke:play-res-y)
-   (%play-depth
-    :initform 0
-    :initarg :play-depth
-    :accessor claraoke:play-depth)
-   (%timer
-    :initform "100,0000"
-    :initarg :timer
-    :accessor claraoke:timer)
-   (%wrap-style
-    :initform 0
-    :initarg :wrap-style
-    :accessor claraoke:wrap-style)
-   ;;;;;;;;;;;;;;;;;;;;;;;;;
-   ;;
-   ;; Others
-   ;;
-   (%scaled-border-and-shadow
-    :initform nil
-    :initarg :scaled-border-and-shadow
-    :accessor claraoke:scaled-border-and-shadow)
-   (%last-style-storage
-    :initform nil
-    :initarg :last-style-storage
-    :accessor claraoke:last-style-storage)
-   (%video-aspect-ratio
-    :initform 0
-    :initarg :video-aspect-ratio
-    :accessor claraoke:video-aspect-ratio)
-   (%video-zoom
-    :initform 0
-    :initarg :video-zoom
-    :accessor claraoke:video-zoom)
-   (%video-position
-    :initform 0
-    :initarg :video-position
-    :accessor claraoke:video-position)))
-
-(macrolet ((subtitle-specializer (name)
-             `(progn (defmethod ,name ((object subtitle))
-                       (,name (claraoke:.script-info object)))
-                     (defmethod (setf ,name) (new-value (object subtitle))
-                       (setf (,name (claraoke:.script-info object)) new-value)))))
-  (subtitle-specializer claraoke:title)
-  (subtitle-specializer claraoke:original-script)
-  (subtitle-specializer claraoke:original-translation)
-  (subtitle-specializer claraoke:original-editing)
-  (subtitle-specializer claraoke:original-timing)
-  (subtitle-specializer claraoke:sync-point)
-  (subtitle-specializer claraoke:scrypt-update-by)
-  (subtitle-specializer claraoke:update-details)
-  (subtitle-specializer claraoke:script-type)
-  (subtitle-specializer claraoke:collisions)
-  (subtitle-specializer claraoke:play-res-x)
-  (subtitle-specializer claraoke:play-res-y)
-  (subtitle-specializer claraoke:play-depth)
-  (subtitle-specializer claraoke:timer)
-  (subtitle-specializer claraoke:wrap-style)
-  (subtitle-specializer claraoke:scaled-border-and-shadow)
-  (subtitle-specializer claraoke:last-style-storage)
-  (subtitle-specializer claraoke:video-aspect-ratio)
-  (subtitle-specializer claraoke:video-zoom)
-  (subtitle-specializer claraoke:video-position))
+(defclass script-info (section)
+  ()
+  (:default-initargs
+   :descriptor "Script Info"
+   :lines ()))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Style
+;;; Styles
 ;;;
-(defclass style ()
+(defclass style (claraoke:table-line)
   ((%name
     :initform "Default"
     :initarg :name
@@ -255,19 +145,32 @@
    (%encoding
     :initform 1
     :initarg :encoding
-    :accessor claraoke:encoding)))
+    :accessor claraoke:encoding))
+  (:default-initargs
+   :separator #\,
+   :descriptor "Style"))
 
-(defmethod print-object ((object style) stream)
-  (print-unreadable-object (object stream :type nil :identity t)
-    (princ "STYLE" stream)
-    (princ #\Space stream)
-    (prin1 (claraoke:name object) stream)))
+(defclass styles (section)
+  ()
+  (:default-initargs
+   :descriptor "V4+ Styles"
+   :header (format nil "~
+    Format: Name, Fontname, Fontsize, ~
+    PrimaryColour, SecondaryColour, OutlineColour, BackColour, ~
+    Bold, Italic, Underline, StrikeOut, ~
+    ScaleX, ScaleY, Spacing, Angle, ~
+    BorderStyle, Outline, Shadow, Alignment, ~
+    MarginL, MarginR, MarginV, Encoding")
+   :lines ()))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Event
+;;; Events
 ;;;
-(defclass event ()
+;;; Dialogue, Comment, Picture, Sound, Movie and
+;;; Command
+;;;
+(defclass event (claraoke:table-line)
   ((%layer
     :initarg :layer
     :accessor claraoke:layer
@@ -312,49 +215,72 @@
    (%text
     :initarg :text
     :accessor claraoke:.text
-    :initform "")))
+    :initform ""))
+  (:default-initargs
+   :separator #\,))
 
-(defmethod print-object ((event event) stream)
-  (let ((start (claraoke:start event))
-        (end (claraoke:end event))
-        (text (claraoke:.text event)))
-    (format stream "#<~A --> ~A ~S ~@[(~D)>~]" start end
-            (if (stringp text) text (claraoke:.text text))
-            (unless (stringp text)
-              (length (claraoke:overrides text))))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; Dialogue, comment, picture, sound, movie and
-;;; command class with default initargs.
-;;;
 (defclass dialogue (event)
   ()
   (:default-initargs
+   :descriptor "Dialogue"
    :text "Text Here"))
 
 (defclass comment (event)
   ()
   (:default-initargs
+   :descriptor "Comment"
    :text "This is comment"))
 
 (defclass picture (event)
   ()
   (:default-initargs
+   :descriptor "Picture"
    :text "/path/to/the/file.jpg"))
 
 (defclass sound (event)
   ()
   (:default-initargs
+   :descriptor "Sound"
    :text "/path/to/the/file.wav"))
 
 (defclass movie (event)
   ()
   (:default-initargs
+   :descriptor "Movie"
    :text "/path/to/the/file.avi"))
 
 (defclass command (event)
   ()
   (:default-initargs
+   :descriptor "Command"
    :text "SSA:pause"))
+
+(defclass events (section)
+  ()
+  (:default-initargs
+   :descriptor "Events"
+   :header (format nil "~
+    Format: Layer, Start, End, Style, Name, ~
+    MarginL, MarginR, MarginV, Effect, Text")
+   :lines ()))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Fonts
+;;;
+(defclass fonts (section)
+  ()
+  (:default-initargs
+   :descriptor "Fonts"
+   :lines ()))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Graphics
+;;;
+(defclass graphics (section)
+  ()
+  (:default-initargs
+   :descriptor "Graphics"
+   :lines ()))
 

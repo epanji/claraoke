@@ -3,10 +3,8 @@
 (defpackage #:claraoke-duration
   (:use #:common-lisp)
   (:intern
-   #:+duration-characters+
-   #| ... |#)
+   #:+duration-characters+)
   (:export
    #:duration
-   #:duration-character-p
-   #| ... |#))
+   #:duration-character-p))
 

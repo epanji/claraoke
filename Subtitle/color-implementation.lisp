@@ -9,12 +9,8 @@
         (secondary (claraoke:secondary-colour instance))
         (outline (claraoke:outline-colour instance))
         (back (claraoke:back-colour instance)))
-    (setf (claraoke:primary-colour instance)
-          (claraoke:color primary))
-    (setf (claraoke:secondary-colour instance)
-          (claraoke:color secondary))
-    (setf (claraoke:outline-colour instance)
-          (claraoke:color outline))
-    (setf (claraoke:back-colour instance)
-          (claraoke:color back))))
+    (setf (claraoke:primary-colour instance) (claraoke:color primary)
+          (claraoke:secondary-colour instance) (claraoke:color secondary)
+          (claraoke:outline-colour instance) (claraoke:color outline)
+          (claraoke:back-colour instance) (claraoke:color back))))
 

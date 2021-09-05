@@ -24,10 +24,13 @@
 ;;;
 (defgeneric print-override (object &optional stream)
   (:method ((object override) &optional stream)
-    (let ((stream (claraoke-internal:output-stream-from-designator stream)))
-      (princ #\{ stream)
-      (print-override (claraoke:.text object) stream)
-      (princ #\} stream)
+    (let ((stream (claraoke-internal:output-stream-from-designator stream))
+          (string (claraoke:.text object)))
+      (unless (= 1 (length string))
+        (princ #\{ stream))
+      (print-override string stream)
+      (unless (= 1 (length string))
+        (princ #\} stream))
       object))
   (:method ((object list) &optional stream)
     ;; LISTP for CONS and NULL is T
@@ -41,4 +44,17 @@
     (let ((strings (split-sequence:split-sequence #\; object :remove-empty-subseqs t)))
       (print-override strings stream)
       object)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Print Object
+;;;
+(defmethod print-object ((object text) stream)
+  (princ "#<" stream)
+  (princ (claraoke:.text object) stream)
+  (princ ">" stream))
+
+(defmethod print-object ((object override) stream)
+  (princ (claraoke:index object) stream)
+  (print-override object stream))
 
