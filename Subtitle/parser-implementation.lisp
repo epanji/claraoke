@@ -282,9 +282,10 @@
 
 (defmethod claraoke:parse-script ((object cons))
   (let ((*subtitle* (claraoke:subtitle nil))
-        (*active-section* nil))
+        (*active-section* nil)
+        (char-bag (list #\Newline #\Return #\Page #\Linefeed)))
     (loop for line in object
-          do (create-object-from-string line)
+          do (create-object-from-string (string-trim char-bag line))
           finally
              ;; (claraoke-internal:nreversef (claraoke:lines (claraoke:script-info *subtitle*)))
              ;; (claraoke-internal:nreversef (claraoke:lines (claraoke:styles *subtitle*)))
