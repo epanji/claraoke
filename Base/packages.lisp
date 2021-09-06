@@ -178,7 +178,6 @@
    #:deletef
    #:integer-from-string
    #:mimic-accessor
-   #:nreversef
    #:output-stream-from-designator
    #:script-note
    #:version))

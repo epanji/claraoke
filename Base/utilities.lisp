@@ -21,9 +21,6 @@ Write BODY if necessary for returning specializer on T otherwise it will returni
                 (,accessor ,object)
                 (progn ,@body)))))
 
-;; (define-modify-macro claraoke-internal:nreversef () nreverse
-;;   "Modify a location holding sequence with same elements in reverse order.")
-
 (defmacro claraoke-internal:deletef (item sequence &rest keyword-arguments)
   "Delete item destructively from location holding sequence."
   `(setf ,sequence (delete ,item ,sequence ,@keyword-arguments)))

@@ -73,17 +73,17 @@
 
 (defgeneric claraoke:find-event (object index))
 
-;; (defgeneric claraoke:insert-font (object font))
+(defgeneric claraoke:insert-font (object font))
 
-;; (defgeneric claraoke:delete-font (object font))
+(defgeneric claraoke:delete-font (object font))
 
-;; (defgeneric claraoke:find-font (object font))
+(defgeneric claraoke:find-font (object font))
 
-;; (defgeneric claraoke:insert-graphic (object graphic))
+(defgeneric claraoke:insert-graphic (object graphic))
 
-;; (defgeneric claraoke:delete-graphic (object graphic))
+(defgeneric claraoke:delete-graphic (object graphic))
 
-;; (defgeneric claraoke:find-graphic (object graphic))
+(defgeneric claraoke:find-graphic (object graphic))
 
 (defgeneric claraoke:last-event (object))
 

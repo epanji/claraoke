@@ -79,7 +79,6 @@
                   (make-instance ',class))
                 (defmethod ,name (object &key)
                   (error ',error :object object)))))
-  ;; (define-section-instance claraoke:script-info 0 script-info :title claraoke:failed-to-create-script-info)
   (define-section-instance claraoke:styles 1 styles :style-name claraoke:failed-to-create-styles)
   (define-section-instance claraoke:events 2 events :text claraoke:failed-to-create-events)
   (define-section-instance claraoke:fonts 3 fonts :fontname claraoke:failed-to-create-fonts)
@@ -228,6 +227,9 @@
 
 (defmethod claraoke:insert-info ((object script-info) info)
   (error 'claraoke:object-must-be-info :object info))
+
+(defmethod claraoke:insert-info ((object subtitle) info)
+  (claraoke:insert-info (claraoke:script-info object) info))
 
 (defmethod claraoke:insert-info (object info)
   (error 'claraoke:object-must-be-script-info :object object))

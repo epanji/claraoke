@@ -27,9 +27,6 @@
 ;;;
 ;;; Functions
 ;;;
-;;; (coerce (loop for i from 32 upto 126 collect (code-char i)) 'string)
-;;; => " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
-;;;
 (defun unreadable-char-p (char)
   (or (< (char-int char) 32)
       (> (char-int char) 126)))
@@ -286,9 +283,5 @@
         (char-bag (list #\Newline #\Return #\Page #\Linefeed)))
     (loop for line in object
           do (create-object-from-string (string-trim char-bag line))
-          finally
-             ;; (claraoke-internal:nreversef (claraoke:lines (claraoke:script-info *subtitle*)))
-             ;; (claraoke-internal:nreversef (claraoke:lines (claraoke:styles *subtitle*)))
-             ;; (claraoke-internal:nreversef (claraoke:lines (claraoke:events *subtitle*)))
-             (return *subtitle*))))
+          finally (return *subtitle*))))
 

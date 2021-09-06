@@ -13,6 +13,5 @@
    (:file "duration-protocol")
    (:file "subtitle-protocol")
    (:file "conditions")
-   (:file "utilities")
-   #| ... |#))
+   (:file "utilities")))
 
