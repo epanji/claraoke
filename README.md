@@ -14,6 +14,15 @@ CL-USER> (ql:quickload "claraoke-user")
 CL-USER> (in-package :claraoke-user)
 #<PACKAGE "CLARAOKE-USER">
 
+CLARAOKE-USER> (color "AquaMarine")
+#<&HD4FF7F&>
+
+CLARAOKE-USER> (color "aquamarine")
+#<&HD4FF7F&>
+
+CLARAOKE-USER> (color "aqua-marine")
+#<&HD4FF7F&>
+
 CLARAOKE-USER> (defparameter *mysub* (subtitle "mysub"))
 *MYSUB*
 
