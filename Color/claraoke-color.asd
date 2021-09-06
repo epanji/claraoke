@@ -7,5 +7,6 @@
   ((:file "package")
    (:file "color-class")
    (:file "color-implementation")
+   (:file "color-registration-name")
    (:file "printer-implementation")))
 

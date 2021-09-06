@@ -53,12 +53,34 @@
          (agbr (reverse (remove nil rgba))))
     (apply 'claraoke:rgb agbr)))
 
+(defvar *color-names* (make-hash-table :test 'equalp))
+
+(defun normalize-color-name (string)
+  (check-type string string)
+  (let ((not-alpha-char-p (complement (function alpha-char-p))))
+    (string-upcase (remove-if not-alpha-char-p string))))
+
+(defun keyword-from-name (string)
+  (check-type string string)
+  (intern (normalize-color-name string) :keyword))
+
+(defun register-color-name (name color)
+  (check-type name string)
+  (check-type color string)
+  (setf (gethash (keyword-from-name name) *color-names*)
+        (html-color color)))
+
+(defun color-from-name (string)
+  (check-type string string)
+  (identity (gethash (keyword-from-name string) *color-names* nil)))
+
 (defmethod claraoke:color ((object string))
   (cond ((html-color-p object)
          (html-color object))
         ((ass-color-p object)
          (ass-color object))
-        (t (claraoke:color 0))))
+        (t (or (color-from-name object)
+               (claraoke:color 0)))))
 
 (defmethod claraoke:color ((object (eql 0)))
   (claraoke:rgb 0 0 0 nil))
