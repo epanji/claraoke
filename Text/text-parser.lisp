@@ -4,10 +4,10 @@
 ;;;
 ;;; Initialization after
 ;;;
-(defmethod initialize-instance :after ((object text) &key original-text generate-overrides-p)
+(defmethod initialize-instance :after ((object text) &key original-text generate-overrides-p spell-duration)
   (unless (null original-text)
     (when generate-overrides-p
-      (setf original-text (defile-text original-text)))
+      (setf original-text (defile-text original-text spell-duration)))
     (multiple-value-bind (string overrides) (purify-text original-text)
       (setf (claraoke:text object) string)
       (setf (claraoke:overrides object) overrides))))
@@ -106,33 +106,55 @@
 ;;;
 ;;; Override Spell Builder
 ;;;
-(defvar *vowel* "AEIOUYaeiouy")
-(defvar *consonant* "BCDFGHJKLMNPQRSTVWXZbcdfghjklmnpqrstvwxz")
-(defvar *strong-consonant* "BCDFJKMNPQSTVWXZbcdfjkmnpqstvwxz")
-(defvar *weak-consonant* "GHLRghlr")
-(defvar *estimate-karaoke-duration* 15)
+(defvar *vowels* "AEIOUYaeiouy")
+
+(defvar *consonants* "BCDFGHJKLMNPQRSTVWXZbcdfghjklmnpqrstvwxz")
+
+(defvar *weak-consonants* "GHLRghlr"
+  "Every consonant characters which have vowels behaviour such as:
+G in RANGE, H in THE, L in FLOW and R in WRITE.")
+
+(defvar *strong-consonants* "BCDFJKMNPQSTVWXZbcdfjkmnpqstvwxz"
+  "Every consonant characters without weak consonants.")
+
+(defvar *spell-duration-in-centiseconds* 15
+  "Estimate karaoke duration in centiseconds.")
+
+(declaim (string *vowel* *consonants* *weak-consonant* *strong-consonants*)
+         (unsigned-byte *spell-duration-in-centiseconds*))
 
 (defun end-spelling-matcher ()
   (let ((char0 (peek 0))
         (char1 (peek 1))
         (char2 (peek 2))
         (char3 (peek 3))
-        (char-1 (peek -1)))
-    (and (not (null char0))
-         (or (char= #\Space char0)
-             ;; Check vowel
-             (and (find char0 *vowel*)
-                  (find char1 *consonant*)
-                  (or (find char2 *vowel*)
-                      (and (find char2 *weak-consonant*)
-                           (find char3 *vowel*))))
-             ;; Check consonant
-             (and (find char0 *consonant*)
-                  (find char1 *strong-consonant*)
-                  (or (find char2 *vowel*)
-                      (find char2 *weak-consonant*))
-                  (or (find char-1 *vowel*)
-                      (find char-1 *weak-consonant*)))))))
+        (char-1 (peek -1))
+        (separators (list #\Space #\-)))
+    (and (characterp char0)
+         (or (member char0 separators)
+             ;; Check vowels
+             (and (find char0 *vowels*)
+                  (find char-1 *consonants*)
+                  (or (and (find char1 *weak-consonants*)
+                           (find char2 *vowels*))
+                      (and (find char1 *strong-consonants*)
+                           (or (find char2 *vowels*)
+                               (and (find char2 *weak-consonants*)
+                                    (find char3 *vowels*))))))
+             ;; Check consonants
+             (and (not (member char-1 separators))
+                  (or (and (equal char0 char1)
+                           (find char2 *vowels*))
+                      (and (find char0 *strong-consonants*)
+                           (find char1 *strong-consonants*)
+                           (find char2 *vowels*))
+                      (and (find char0 *strong-consonants*)
+                           (find char1 *weak-consonants*)
+                           (find char2 *vowels*)
+                           (find char-1 *consonants*))
+                      (and (find char0 *weak-consonants*)
+                           (find char1 *consonants*)
+                           (find char2 *vowels*))))))))
 
 (defun consume-spelling ()
   (loop with start = *index*
@@ -144,17 +166,20 @@
 (defun compute-override ()
   (let ((text (consume-spelling)))
     (format nil "{\\k~D}~A"
-            (max *estimate-karaoke-duration*
-                 (* (loop for c across *vowel*
+            (max *spell-duration-in-centiseconds*
+                 (* (loop for c across *vowels*
                           sum (count c text))
-                    *estimate-karaoke-duration*))
+                    *spell-duration-in-centiseconds*))
             text)))
 
-(defun defile-text (string)
+(defun defile-text (string &optional spell-duration)
+  (when (null spell-duration)
+    (setf spell-duration *spell-duration-in-centiseconds*))
   (let ((*string* string)
         (*length* (length string))
         (*index* 0)
-        (*text-index* 0))
+        (*text-index* 0)
+        (*spell-duration-in-centiseconds* spell-duration))
     (if (zerop (count #\\ string))
         (loop while (peek)
               collect (compute-override) into list-strings

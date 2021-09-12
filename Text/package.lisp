@@ -4,15 +4,15 @@
   (:use #:common-lisp)
   (:intern
    #:%compare-override
-   #:*consonant*
-   #:*estimate-karaoke-duration*
+   #:*consonants*
    #:*index*
    #:*length*
+   #:*spell-duration-in-centiseconds*
    #:*string*
-   #:*strong-consonant*
+   #:*strong-consonants*
    #:*text-index*
-   #:*vowel*
-   #:*weak-consonant*
+   #:*vowels*
+   #:*weak-consonants*
    #:advance
    #:build-string-or-override
    #:compute-override
