@@ -33,7 +33,7 @@
           finally (terpri stream)))
   object)
 
-(defmethod claraoke:print-script ((object simple-vector) &optional stream)
+(defmethod claraoke:print-script ((object vector) &optional stream)
   (let ((stream (claraoke-internal:output-stream-from-designator stream)))
     (loop for line across object
           do (claraoke:print-script line stream)))
