@@ -120,7 +120,7 @@
     :initarg :outline
     :accessor claraoke:outline)
    (%shadow
-    :initform 0
+    :initform 1
     :initarg :shadow
     :accessor claraoke:.shadow)
    (%alignment
