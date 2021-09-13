@@ -64,11 +64,11 @@
     :initarg :fontsize
     :accessor claraoke:fontsize)
    (%primary-colour
-    :initform "&H00FFFFFF"
+    :initform "&H0000A5FF"
     :initarg :primary-colour
     :accessor claraoke:primary-colour)
    (%secondary-colour
-    :initform "&H000000FF"
+    :initform "&H00FFFFFF"
     :initarg :secondary-colour
     :accessor claraoke:secondary-colour)
    (%outline-colour
