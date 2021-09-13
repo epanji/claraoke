@@ -80,7 +80,7 @@
     :initarg :back-colour
     :accessor claraoke:back-colour)
    (%bold
-    :initform 0
+    :initform -1
     :initarg :bold
     :accessor claraoke:bold)
    (%italic
