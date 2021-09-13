@@ -59,7 +59,7 @@
 ;;; Duration string
 ;;;
 (defmethod claraoke:durationstring ((object duration))
-  (format nil "~2,'0D:~2,'0D:~2,'0D.~2,'0D"
+  (format nil "~D:~2,'0D:~2,'0D.~2,'0D"
           (claraoke:hours object)
           (claraoke:minutes object)
           (claraoke:seconds object)
