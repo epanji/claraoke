@@ -116,7 +116,7 @@
     :initarg :border-style
     :accessor claraoke:border-style)
    (%outline
-    :initform 2
+    :initform 1
     :initarg :outline
     :accessor claraoke:outline)
    (%shadow
