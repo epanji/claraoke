@@ -4,8 +4,10 @@
   (:use #:common-lisp)
   (:export
    #:*active-section*
+   #:*generate-overrides-predicate*
    #:*ignore-note-predicate*
    #:*section-index*
+   #:*spell-duration*
    #:*subtitle*
    #:command
    #:command-line-p

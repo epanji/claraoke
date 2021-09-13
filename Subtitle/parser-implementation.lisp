@@ -17,11 +17,16 @@
     ("[Fonts]" 3)
     ("[Graphics]" 4)))
 
-(defparameter *ignore-note-predicate* t)
+(defvar *ignore-note-predicate* t)
+
+(defvar *generate-overrides-predicate* nil)
+
+(defvar *spell-duration* nil)
 
 (declaim (type (or null subtitle) *subtitle*)
          (type (or null script-info styles events fonts graphics) *active-section*)
-         (boolean *ignore-note-predicate*))
+         (boolean *ignore-note-predicate* *generate-overrides-predicate*)
+         (type (or null unsigned-byte) *spell-duration*))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -48,12 +53,6 @@
                             (setf pos1 (1+ pos2))
                             (decf max)))
             (subseq string 0 (max (1- pos) 0)))))
-
-(defun claraoke:ignore-note (&optional (arg :peek))
-  (ecase arg
-    ((or nil t) (setf *ignore-note-predicate* arg))
-    (:toggle (setf *ignore-note-predicate* (not *ignore-note-predicate*)))
-    (:peek *ignore-note-predicate*)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -176,7 +175,9 @@
              (split-line-values line 10)
            (claraoke:insert-event
             *active-section*
-            (claraoke:dialogue text :layer layer
+            (claraoke:dialogue text :generate-overrides-p *generate-overrides-predicate*
+                                    :spell-duration *spell-duration*
+                                    :layer layer
                                     :start start
                                     :end end
                                     :style style
@@ -265,21 +266,25 @@
 ;;;
 ;;; Parse Script
 ;;;
-(defmethod claraoke:parse-script ((object pathname))
+(defmethod claraoke:parse-script ((object pathname) &rest initargs)
   (with-open-file (stream object :direction :input)
-    (claraoke:parse-script stream)))
+    (apply 'claraoke:parse-script stream initargs)))
 
-(defmethod claraoke:parse-script ((object string))
-  (claraoke:parse-script (make-string-input-stream object)))
+(defmethod claraoke:parse-script ((object string) &rest initargs)
+  (apply 'claraoke:parse-script (make-string-input-stream object) initargs))
 
-(defmethod claraoke:parse-script ((object stream))
-  (claraoke:parse-script (loop for line = (read-line object nil)
-                               until (null line)
-                               collect line)))
+(defmethod claraoke:parse-script ((object stream) &rest initargs)
+  (apply 'claraoke:parse-script (loop for line = (read-line object nil)
+                                      until (null line)
+                                      collect line)
+         initargs))
 
-(defmethod claraoke:parse-script ((object cons))
+(defmethod claraoke:parse-script ((object cons) &key (ignore-note-p t) generate-overrides-p spell-duration)
   (let ((*subtitle* (claraoke:subtitle nil))
         (*active-section* nil)
+        (*ignore-note-predicate* ignore-note-p)
+        (*generate-overrides-predicate* generate-overrides-p)
+        (*spell-duration* spell-duration)
         (char-bag (list #\Newline #\Return #\Page #\Linefeed)))
     (loop for line in object
           do (create-object-from-string (string-trim char-bag line))

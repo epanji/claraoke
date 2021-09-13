@@ -76,7 +76,6 @@
    #:green
    #:header
    #:hours
-   #:ignore-note
    #:increase-duration
    #:index
    #:info
