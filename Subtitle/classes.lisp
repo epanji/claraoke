@@ -60,7 +60,7 @@
     :initarg :fontname
     :accessor claraoke:fontname)
    (%fontsize
-    :initform 48
+    :initform 32
     :initarg :fontsize
     :accessor claraoke:fontsize)
    (%primary-colour
