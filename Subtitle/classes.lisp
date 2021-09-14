@@ -138,7 +138,7 @@
     :initarg :style-margin-r
     :accessor claraoke:margin-r)
    (%margin-v
-    :initform 25
+    :initform 72
     :initarg :margin-v
     :initarg :style-margin-v
     :accessor claraoke:margin-v)
