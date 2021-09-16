@@ -12,6 +12,7 @@
    (:file "color-protocol")
    (:file "duration-protocol")
    (:file "subtitle-protocol")
+   (:file "counter-protocol")
    (:file "conditions")
    (:file "utilities")))
 

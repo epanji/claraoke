@@ -368,16 +368,24 @@
 ;;;
 ;;; Insert event (Dialogue, Comment, etc)
 ;;;
-(defmethod claraoke:insert-event ((object events) (event event))
+(defmethod claraoke:insert-event ((object events) (event event) &key interval-delay interval-event)
+  (when (integerp (claraoke:interval-counter object))
+    (check-type interval-delay (or null integer))
+    (check-type interval-event (or null integer))
+    (let* ((interval (claraoke:interval object))
+           (delta-delay (* interval (or interval-delay 1)))
+           (delta-event (* interval (or interval-event (claraoke:interval-frequency object)))))
+      (setf (claraoke:start event) (incf (claraoke:interval-counter object) delta-delay))
+      (setf (claraoke:end event) (incf (claraoke:interval-counter object) delta-event))))
   (pushnew event (claraoke:lines object)))
 
-(defmethod claraoke:insert-event ((object events) event)
+(defmethod claraoke:insert-event ((object events) event &key)
   (error 'claraoke:object-must-be-event :object event))
 
-(defmethod claraoke:insert-event ((object subtitle) event)
-  (claraoke:insert-event (claraoke:events object) event))
+(defmethod claraoke:insert-event ((object subtitle) event &key interval-delay interval-event)
+  (claraoke:insert-event (claraoke:events object) event :interval-delay interval-delay :interval-event interval-event))
 
-(defmethod claraoke:insert-event (object event)
+(defmethod claraoke:insert-event (object event &key)
   (error 'claraoke:object-must-be-events :object object))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -16,5 +16,6 @@
    (:file "color-implementation")
    (:file "duration-implementation")
    (:file "subtitle-implementation")
-   (:file "parser-implementation")))
+   (:file "parser-implementation")
+   (:file "counter-implementation")))
 

@@ -87,6 +87,9 @@
    #:insert-note
    #:insert-override
    #:insert-style
+   #:interval
+   #:interval-counter
+   #:interval-frequency
    #:italic
    #:last-event
    #:last-line

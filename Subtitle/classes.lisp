@@ -255,7 +255,7 @@
    :descriptor "Command"
    :text "SSA:pause"))
 
-(defclass events (section)
+(defclass events (section claraoke:interval-counter)
   ()
   (:default-initargs
    :descriptor "Events"

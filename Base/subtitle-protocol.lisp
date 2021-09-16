@@ -67,7 +67,7 @@
 
 (defgeneric claraoke:find-style (object style))
 
-(defgeneric claraoke:insert-event (object event))
+(defgeneric claraoke:insert-event (object event &rest initargs &key &allow-other-keys))
 
 (defgeneric claraoke:delete-event (object event))
 
