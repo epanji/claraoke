@@ -164,12 +164,13 @@ G in RANGE, H in THE, L in FLOW and R in WRITE.")
                 (return (subseq *string* start *index*))))
 
 (defun compute-override ()
-  (let ((text (consume-spelling)))
+  (let* ((text (consume-spelling))
+         (len (length (remove-if (complement (function alpha-char-p)) text)))
+         (sum (loop for char across *vowels*
+                    sum (count char text))))
     (format nil "{\\k~D}~A"
             (max *spell-duration-in-centiseconds*
-                 (* (loop for c across *vowels*
-                          sum (count c text))
-                    *spell-duration-in-centiseconds*))
+                 (* (min (- len sum) sum) *spell-duration-in-centiseconds*))
             text)))
 
 (defun defile-text (string &optional spell-duration)
