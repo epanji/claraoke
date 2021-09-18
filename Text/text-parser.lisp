@@ -5,12 +5,13 @@
 ;;; Initialization after
 ;;;
 (defmethod initialize-instance :after ((object text) &key original-text generate-overrides-p spell-duration)
-  (unless (null original-text)
-    (when generate-overrides-p
-      (setf original-text (defile-text original-text spell-duration)))
-    (multiple-value-bind (string overrides) (purify-text original-text)
-      (setf (claraoke:text object) string)
-      (setf (claraoke:overrides object) overrides))))
+  (let ((original-text (or original-text (claraoke:original-text object))))
+    (unless (null original-text)
+      (when generate-overrides-p
+        (setf original-text (defile-text original-text spell-duration)))
+      (multiple-value-bind (string overrides) (purify-text original-text)
+        (setf (claraoke:text object) string)
+        (setf (claraoke:overrides object) overrides)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
