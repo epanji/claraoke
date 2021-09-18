@@ -66,6 +66,9 @@
         (remove override (claraoke:overrides object)))
   object)
 
+(defmethod claraoke:delete-override ((object text) (override null))
+  (warn 'claraoke:null-object-warning))
+
 (defmethod claraoke:delete-override ((object text) override)
   (error 'claraoke:object-must-be-override :object override))
 
