@@ -42,7 +42,7 @@
 (defparameter *line25* (dialogue "So let me come to you" :generate-overrides-p t :spell-duration 30))
 (defparameter *line26* (dialogue "Close as I wanna be" :generate-overrides-p t :spell-duration 30))
 (defparameter *line27* (dialogue "Close enough for me" :generate-overrides-p t :spell-duration 30))
-(defparameter *line28* (dialogue "To feel your heart beating fast" :generate-overrides-p t :spell-duration 30))
+(defparameter *line28* (dialogue "To feel the heart beating fast" :generate-overrides-p t :spell-duration 30))
 (defparameter *line29* (dialogue "And stay there as I whisper" :generate-overrides-p t :spell-duration 30))
 (defparameter *line30* (dialogue "How I loved your peaceful eyes on me" :generate-overrides-p t :spell-duration 30))
 (defparameter *line31* (dialogue "Did you ever know" :generate-overrides-p t :spell-duration 30))
@@ -69,7 +69,141 @@
 (defparameter *line48* (dialogue "I will know that you are no dreamer" :generate-overrides-p t :spell-duration 30))
 
 ;; Overrides
-;; TODO
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 01. "Whenever sang my songs"
+(update-karaoke (find-override *line01* "ne") 90)
+(update-karaoke (find-override *line01* "sang") 90)
+;; 02. "On the stage, on my own"
+(update-karaoke (find-override *line02* "ge,") 150)
+(update-karaoke (find-override *line02* "my") 90)
+;; 03. "Whenever said my words"
+(update-karaoke (find-override *line03* "ver") 90)
+(update-karaoke (find-override *line03* "said") 60)
+;; 04. "Wishing they would be heard"
+(update-karaoke (find-override *line04* "they") 90)
+;; 05. "I saw you smiling at me"
+(update-karaoke (find-override *line05* "saw") 60)
+(update-karaoke (find-override *line05* "ling") 90)
+(update-karaoke (find-override *line05* "at") 60)
+;; 06. "Was it real or just my fantasy"
+(update-karaoke (find-override *line06* "real") 60)
+(update-karaoke (find-override *line06* "just") 60)
+(update-karaoke (find-override *line06* "my") 90)
+;; 07. "You'd always be there in the corner"
+(update-karaoke (find-override *line07* "ways") 90)
+;; 08. "Of this tiny little bar"
+(update-karaoke (find-override *line08* "this") 90)
+(update-karaoke (find-override *line08* "ti") 180)
+(increase-override (find-override *line08* "ny"))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 09. "my last night here for you"
+(update-karaoke (find-override *line09* "night") 90)
+;; 10. "same old songs,s just once more"
+(update-karaoke (find-override *line10* "songs,") 150)
+;; 11. "my last night here with you?"
+(update-karaoke (find-override *line11* "last") 60)
+(update-karaoke (find-override *line11* "night") 90)
+(update-karaoke (find-override *line11* "re") 30)
+;; 12. "maybe yes, maybe no"
+(update-karaoke (find-override *line12* "yes,") 90)
+;; 13. "i kind of liked it your way"
+(update-karaoke (find-override *line13* "kind") 90)
+;; 14. "how you shyly placed your eyes on me"
+(delete-override *line14* "ced")
+(update-karaoke (find-override *line14* "shy") 120)
+(update-karaoke (find-override *line14* "on") 60)
+;; 15. "oh, did you ever know?"
+(update-karaoke (find-override *line15* "did") 90)
+(update-karaoke (find-override *line15* "you") 90)
+;; 16. "that i had mine on you"
+(update-karaoke (find-override *line16* "ne") 210)
+(update-karaoke (find-override *line16* "on") 60)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 17. "Darling, so there you are"
+(update-karaoke (find-override *line17* "re") 120)
+;; 18. "With that look on your face"
+;; 19. "As if you're never hurt"
+(update-karaoke (find-override *line19* "ne") 90)
+;; 20. "As if you're never down"
+(update-karaoke (find-override *line20* "ne") 90)
+;; 21. "Shall I be the one for you"
+(update-karaoke (find-override *line21* "I") 60)
+(update-karaoke (find-override *line21* "one") 120)
+;; 22. "Who pinches you softly but sure"
+(update-karaoke (find-override *line22* "you") 60)
+(update-karaoke (find-override *line22* "ly") 150)
+(update-karaoke (find-override *line22* "but") 90)
+;; 23. "If frown is shown then"
+(update-karaoke (find-override *line23* "shown") 60)
+;; 24. "I will know that you are no dreamer"
+(delete-override *line24* "will")
+(update-karaoke (find-override *line24* "know") 90)
+(update-karaoke (find-override *line24* "that") 60)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 25. "So let me come to you"
+(delete-override *line25* "me to")
+(update-karaoke (find-override *line25* "let") 90)
+(update-karaoke (find-override *line25* "me") 90)
+;; 26. "Close as I wanna be"
+(delete-override *line26* "se")
+(update-karaoke (find-override *line26* "I") 150)
+;; 27. "Close enough for me"
+(delete-override *line27* "se")
+(update-karaoke (find-override *line27* "Close") 150)
+(update-karaoke (find-override *line27* "enough") 90)
+;; 28. "To feel the heart beating fast"
+(update-karaoke (find-override *line28* "heart") 120)
+(update-karaoke (find-override *line28* "beating") 30)
+;; 29. "And stay there as I whisper"
+(update-karaoke (find-override *line29* "I") 90)
+;; 30. "How I loved your peaceful eyes on me"
+(delete-override *line30* "ved")
+(delete-override *line30* "ful")
+(update-karaoke (find-override *line30* "loved") 90)
+(update-karaoke (find-override *line30* "on") 90)
+;; 31. "Did you ever know"
+(update-karaoke (find-override *line31* "you") 120)
+;; 32. "That I had mine on you"
+(update-karaoke (find-override *line32* "ne") 210)
+(update-karaoke (find-override *line32* "on") 60)
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 33. "Darling, so share with me"
+(update-karaoke (find-override *line33* "re") 120)
+;; 34. "Your love if you have enough"
+(delete-override *line34* "ve i")
+;; 35. "Your tears if you're holding back"
+(update-karaoke (find-override *line35* "re") 90)
+;; 36. "Or pain if that's what it is"
+;; 37. "How can I let you know"
+(update-karaoke (find-override *line37* "let") 90)
+;; 38. "I'm more than the dress and the voice"
+(update-karaoke (find-override *line38* "dress") 90)
+(update-karaoke (find-override *line38* "and") 90)
+(update-karaoke (find-override *line38* "the") 90)
+;; 39. "Just reach me out then"
+;; 40. "You will know that you're not dreaming"
+(update-karaoke (find-override *line40* "know") 90)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 41. "Darling, so there you are"
+(update-karaoke (find-override *line41* "re") 120)
+;; 42. "With that look on your face"
+;; 43. "As if you're never hurt"
+(update-karaoke (find-override *line43* "ne") 90)
+;; 44. "As if you're never down"
+(update-karaoke (find-override *line44* "ne") 90)
+;; 45. "Shall I be the one for you"
+(update-karaoke (find-override *line45* "I") 60)
+(update-karaoke (find-override *line45* "one") 120)
+;; 46. "Who pinches you softly but sure"
+(update-karaoke (find-override *line46* "you") 60)
+(update-karaoke (find-override *line46* "ly") 150)
+(update-karaoke (find-override *line46* "but") 90)
+;; 47. "If frown is shown then"
+(update-karaoke (find-override *line47* "shown") 60)
+;; 48. "I will know that you are no dreamer"
+(delete-override *line48* "will")
+(update-karaoke (find-override *line48* "know") 90)
+(update-karaoke (find-override *line48* "that") 60)
 
 ;; Add lines with counter ( Autoincrement )
 (setf (interval-counter *mysub*) (durationinteger "27.60"))
