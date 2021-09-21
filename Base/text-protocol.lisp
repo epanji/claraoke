@@ -2,7 +2,7 @@
 
 (defgeneric claraoke:text (object &rest initargs &key &allow-other-keys))
 
-(defgeneric claraoke:override (override-string index))
+(defgeneric claraoke:override (object index &rest initargs &key &allow-other-keys))
 
 (defgeneric claraoke:insert-override (object override))
 

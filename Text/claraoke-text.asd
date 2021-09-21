@@ -7,6 +7,7 @@
   ((:file "package")
    (:file "classes")
    (:file "text-parser")
+   (:file "text-modifier")
    (:file "text-implementation")
    (:file "printer-implementation")))
 

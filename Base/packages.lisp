@@ -178,6 +178,7 @@
   (:use #:common-lisp)
   (:export
    #:deletef
+   #:distinct-number-and-string
    #:integer-from-string
    #:mimic-accessor
    #:output-stream-from-designator

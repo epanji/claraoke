@@ -4,6 +4,7 @@
   (:use #:common-lisp)
   (:intern
    #:%compare-override
+   #:*char-inside-parenthesis-p*
    #:*consonants*
    #:*index*
    #:*length*
@@ -13,22 +14,103 @@
    #:*text-index*
    #:*vowels*
    #:*weak-consonants*
+   #:.shadow
    #:advance
+   #:alignment
+   #:alignment-modifier-p
+   #:alignment-numpad
+   #:alignment-numpad-modifier-p
+   #:batch
+   #:blur-edges
+   #:blur-edges-modifier-p
+   #:bold
+   #:bold-modifier-p
+   #:border
+   #:border-modifier-p
    #:build-string-or-override
+   #:clip-drawing
+   #:clip-drawing-modifier-p
+   #:clip-rectangle
+   #:clip-rectangle-modifier-p
+   #:color
+   #:color-modifier-p
+   #:color1
+   #:color1-modifier-p
+   #:color2
+   #:color2-modifier-p
+   #:color3
+   #:color3-modifier-p
+   #:color4
+   #:color4-modifier-p
    #:compute-override
    #:consume
+   #:consume-modifier
    #:consume-override
    #:consume-spelling
    #:consume-text
+   #:drawing-baseline-offset
+   #:drawing-baseline-offset-modifier-p
+   #:drawing-mode
+   #:drawing-mode-modifier-p
+   #:end-modifier-matcher
    #:end-override-matcher
    #:end-spelling-matcher
-   #:normalize-override-text
+   #:fad
+   #:fad-modifier-p
+   #:fade
+   #:fade-modifier-p
+   #:fontencoding
+   #:fontencoding-modifier-p
+   #:fontname
+   #:fontname-modifier-p
+   #:fontrotate
+   #:fontrotate-modifier-p
+   #:fontscale
+   #:fontscale-modifier-p
+   #:fontsize
+   #:fontsize-modifier-p
+   #:fontspace
+   #:fontspace-modifier-p
+   #:format-control
+   #:italic
+   #:italic-modifier-p
+   #:karaoke
+   #:karaoke-capital-modifier-p
+   #:karaoke-fill
+   #:karaoke-fill-modifier-p
+   #:karaoke-modifier-p
+   #:karaoke-outline
+   #:karaoke-outline-modifier-p
+   #:modifier
+   #:modifier-from-string
+   #:move
+   #:move-modifier-p
+   #:newline
+   #:newline-modifier-p
+   #:origin
+   #:origin-modifier-p
    #:peek
+   #:pos
+   #:pos-modifier-p
+   #:reset
+   #:reset-modifier-p
+   #:shadow-modifier-p
+   #:split-modifier
    #:start-override-matcher
-   #:valid-index-p)
+   #:strikeout
+   #:strikeout-modifier-p
+   #:transformation
+   #:transformation-modifier-p
+   #:underline
+   #:underscore-modifier-p
+   #:unknown
+   #:valid-index-p
+   #:wrapping-style
+   #:wrapping-style-modifier-p)
   (:export
    #:defile-text
    #:override
+   #:override-from-string
    #:override-greaterp
    #:override-lessp
    #:print-override

@@ -14,14 +14,24 @@
 ;;;
 ;;; Override
 ;;;
-(defmethod claraoke:override ((override-string string) (index integer))
-  (make-instance 'override :text override-string :index index ))
+(defmethod claraoke:override ((override symbol) (index integer) &rest initargs)
+  (let ((osymbol (find-symbol (symbol-name override) :claraoke-text)))
+    (if (typep (make-instance osymbol) 'override)
+        (apply 'make-instance osymbol :index index initargs)
+        (apply 'make-instance 'batch
+               :allow-other-keys t
+               :index index
+               :overrides (list (apply 'make-instance osymbol
+                                       :allow-other-keys t initargs))
+               initargs))))
 
-(defmethod claraoke:override ((override-string string) index)
-  (claraoke:override override-string (claraoke-internal:integer-from-string index)))
+(defmethod claraoke:override ((override symbol) (index null) &rest initargs)
+  (let ((osymbol (find-symbol (symbol-name override) :claraoke-text)))
+    (apply 'make-instance osymbol :allow-other-keys t initargs)))
 
-(defmethod claraoke:override (override-string index)
-  (claraoke:override (write-to-string override-string) index))
+(defmethod claraoke:override ((override symbol) index &rest initargs)
+  (let ((index (claraoke-internal:integer-from-string index)))
+    (apply 'claraoke:override override :allow-other-keys t index initargs)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -54,6 +64,10 @@
 (defmethod claraoke:insert-override ((object text) override)
   (error 'claraoke:object-must-be-override :object override))
 
+(defmethod claraoke:insert-override ((object batch) (override modifier))
+  (pushnew override (claraoke:overrides object) :key 'type-of)
+  object)
+
 (defmethod claraoke:insert-override (object override)
   (error 'claraoke:object-must-be-text :object object))
 
@@ -62,8 +76,11 @@
 ;;; Delete override
 ;;;
 (defmethod claraoke:delete-override ((object text) (override override))
-  (setf (claraoke:overrides object)
-        (remove override (claraoke:overrides object)))
+  (claraoke-internal:deletef override (claraoke:overrides object))
+  object)
+
+(defmethod claraoke:delete-override ((object batch) (override modifier))
+  (claraoke-internal:deletef override (claraoke:overrides object))
   object)
 
 (defmethod claraoke:delete-override ((object text) (override null))
@@ -85,8 +102,18 @@
 (defmethod claraoke:find-override ((object text) (index integer))
   (claraoke:find-override (claraoke:overrides object) index))
 
+(defmethod claraoke:find-override ((object text) (index string))
+  (let ((index (search index (claraoke:.text object))))
+    (or (claraoke:find-override object index)
+        (claraoke:find-override object (1- index))
+        (claraoke:find-override object (1+ index)))))
+
 (defmethod claraoke:find-override ((object text) index)
   (error 'claraoke:object-must-be-integer :object index))
+
+(defmethod claraoke:find-override ((object batch) (name symbol))
+  (let ((osymbol (find-symbol (symbol-name name) :claraoke-text)))
+    (find osymbol (claraoke:overrides object) :key 'type-of)))
 
 (defmethod claraoke:find-override (object index)
   (error 'claraoke:object-must-be-text :object object))
@@ -96,10 +123,7 @@
 ;;; Sort override
 ;;;
 (defmethod claraoke:sort-overrides ((object text))
-  (let ((overrides (claraoke:overrides object)))
-    (setf (claraoke:overrides object)
-          (sort overrides 'override-lessp))
-    object))
+  (sort (claraoke:overrides object) 'override-lessp))
 
 (defmethod claraoke:sort-overrides ((object null))
   (warn 'claraoke:null-object-warning))

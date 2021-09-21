@@ -23,27 +23,35 @@
 ;;; Print override (Internal)
 ;;;
 (defgeneric print-override (object &optional stream)
-  (:method ((object override) &optional stream)
+  (:method ((object null) &optional stream)
+    (declare (ignore stream))
+    object)
+  (:method ((object cons) &optional stream)
+    (loop for override in object
+          do (print-override override stream))
+    object)
+  (:method ((object modifier) &optional stream)
     (let ((stream (claraoke-internal:output-stream-from-designator stream))
-          (string (claraoke:.text object)))
-      (unless (= 1 (length string))
+          (control (format-control object))
+          (arg1 (slot-value object 'arg1))
+          (arg2 (slot-value object 'arg2))
+          (arg3 (slot-value object 'arg3))
+          (arg4 (slot-value object 'arg4))
+          (arg5 (slot-value object 'arg5))
+          (arg6 (slot-value object 'arg6)))
+      (format stream control arg1 arg2 arg3 arg4 arg5 arg6))
+    object)
+  (:method ((object override) &optional stream)
+    (call-next-method object stream))
+  (:method ((object batch) &optional stream)
+    (let ((stream (claraoke-internal:output-stream-from-designator stream))
+          (overrides (claraoke:overrides object)))
+      (unless (null overrides)
         (princ #\{ stream))
-      (print-override string stream)
-      (unless (= 1 (length string))
-        (princ #\} stream))
-      object))
-  (:method ((object list) &optional stream)
-    ;; LISTP for CONS and NULL is T
-    (let ((stream (claraoke-internal:output-stream-from-designator stream)))
-      (loop for string in object
-            do (princ #\\ stream)
-               (princ string stream))
-      object))
-  (:method ((object string) &optional stream)
-    ;; Function split-sequence always return CONS or NULL
-    (let ((strings (split-sequence:split-sequence #\; object :remove-empty-subseqs t)))
-      (print-override strings stream)
-      object)))
+      (print-override (reverse overrides) stream)
+      (unless (null overrides)
+        (princ #\} stream)))
+    object))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -56,5 +64,9 @@
 
 (defmethod print-object ((object override) stream)
   (princ (claraoke:index object) stream)
+  (print-override object stream))
+
+(defmethod print-object ((object unknown) stream)
+  (princ #\? stream)
   (print-override object stream))
 

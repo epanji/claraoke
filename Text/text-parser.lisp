@@ -73,21 +73,13 @@
         while (consume)
         finally (return (subseq *string* start *index*))))
 
-(defun normalize-override-text (string)
-  (with-output-to-string (out)
-    (loop for c across (string-trim "{\\}" string)
-          do (if (char= #\\ c)
-                 (princ #\; out)
-                 (princ c out)))))
-
 (defun build-string-or-override ()
   (if (start-override-matcher)
-      (let* ((text1 (consume-override))
-             (text2 (normalize-override-text text1)))
-        (make-instance 'override :index *text-index* :text text2))
-      (let ((text1 (consume-text)))
-        (incf *text-index* (length text1))
-        (normalize-override-text text1))))
+      (let ((text (consume-override)))
+        (override-from-string text *text-index*))
+      (let ((text (consume-text)))
+        (incf *text-index* (length text))
+        text)))
 
 (defun purify-text (string)
   (let ((*string* string)
@@ -187,4 +179,36 @@ G in RANGE, H in THE, L in FLOW and R in WRITE.")
               collect (compute-override) into list-strings
               finally (return (apply 'concatenate 'string list-strings)))
         string)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Override Modifiers Splitter
+;;;
+(defvar *char-inside-parenthesis-p* nil)
+
+(defun end-modifier-matcher ()
+  (let ((char1 (peek)))
+    (when (equal #\( char1) (setf *char-inside-parenthesis-p* t))
+    (when (equal #\) char1) (setf *char-inside-parenthesis-p* nil))
+    (unless *char-inside-parenthesis-p* (equal #\\ char1))))
+
+(defun consume-modifier ()
+  (loop with start = *index*
+        until (end-modifier-matcher)
+        while (consume)
+        finally (return
+                  (prog1 (subseq *string* start *index*)
+                    (consume)))))
+
+(defun split-modifier (string)
+  (setf string (string-trim "{\\}" string))
+  (let ((*string* string)
+        (*length* (length string))
+        (*index* 0)
+        (*char-inside-parenthesis-p* nil))
+    (if (plusp (count #\\ string))
+        (loop while (peek)
+              for modifier = (consume-modifier)
+              when (plusp (length modifier))
+                collect modifier)
+        (list string))))
 
