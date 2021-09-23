@@ -69,3 +69,4 @@
 (defmethod claraoke:sort-overrides ((object dialogue))
   (claraoke:sort-overrides (claraoke:.text object))
   object)
+
