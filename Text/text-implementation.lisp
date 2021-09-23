@@ -68,6 +68,10 @@
   (pushnew override (claraoke:overrides object) :key 'type-of)
   object)
 
+(defmethod claraoke:insert-override ((object batch) (override unknown))
+  (push override (claraoke:overrides object))
+  object)
+
 (defmethod claraoke:insert-override (object override)
   (error 'claraoke:object-must-be-text :object object))
 
