@@ -186,6 +186,7 @@
    #:distinct-number-and-string
    #:integer-from-string
    #:mimic-accessor
+   #:number-or-string
    #:output-stream-from-designator
    #:script-note
    #:version))

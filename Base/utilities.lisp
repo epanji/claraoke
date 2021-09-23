@@ -43,13 +43,15 @@ Write BODY if necessary for returning specializer on T otherwise it will returni
   (check-type default integer)
   (or (parse-integer (string string) :junk-allowed t) default))
 
-(defun claraoke-internal:distinct-number-and-string (list-strings)
+(defun claraoke-internal:number-or-string (string)
+  (check-type string string)
   (flet ((digit-dot-char-p (char) (or (digit-char-p char) (char= #\. char))))
-    (mapcar (lambda (string)
-              (if (every #'digit-dot-char-p string)
-                  (read-from-string string)
-                  string))
-            list-strings)))
+    (if (every #'digit-dot-char-p string)
+        (read-from-string string)
+        string)))
+
+(defun claraoke-internal:distinct-number-and-string (strings)
+  (mapcar 'claraoke-internal:number-or-string strings))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;

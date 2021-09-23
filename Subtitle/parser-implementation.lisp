@@ -149,27 +149,27 @@
            (claraoke:insert-style
             *active-section*
             (claraoke:style name :fontname fontname
-                                 :fontsize fontsize
+                                 :fontsize (claraoke-internal:integer-from-string fontsize)
                                  :primary-colour primary-colour
                                  :secondary-colour secondary-colour
                                  :outline-colour outline-colour
                                  :back-colour back-colour
-                                 :bold bold
-                                 :italic italic
-                                 :underline underline
-                                 :strike-out strike-out
-                                 :scale-x scale-x
-                                 :scale-y scale-y
-                                 :spacing spacing
-                                 :angle angle
-                                 :border-style border-style
-                                 :outline outline
-                                 :shadow shadow
-                                 :alignment alignment
-                                 :margin-l margin-l
-                                 :margin-r margin-r
-                                 :margin-v margin-v
-                                 :encoding encoding))))
+                                 :bold (claraoke-internal:integer-from-string bold)
+                                 :italic (claraoke-internal:integer-from-string italic)
+                                 :underline (claraoke-internal:integer-from-string underline)
+                                 :strike-out (claraoke-internal:integer-from-string strike-out)
+                                 :scale-x (claraoke-internal:integer-from-string scale-x)
+                                 :scale-y (claraoke-internal:integer-from-string scale-y)
+                                 :spacing (claraoke-internal:number-or-string spacing)
+                                 :angle (claraoke-internal:number-or-string angle)
+                                 :border-style (claraoke-internal:integer-from-string border-style)
+                                 :outline (claraoke-internal:number-or-string outline)
+                                 :shadow (claraoke-internal:number-or-string shadow)
+                                 :alignment (claraoke-internal:integer-from-string alignment)
+                                 :margin-l (claraoke-internal:integer-from-string margin-l)
+                                 :margin-r (claraoke-internal:integer-from-string margin-r)
+                                 :margin-v (claraoke-internal:integer-from-string margin-v)
+                                 :encoding (claraoke-internal:integer-from-string encoding)))))
         ((dialogue-line-p line)
          (destructuring-bind (layer start end style name margin-l margin-r margin-v effect text)
              (split-line-values line 10)
@@ -177,90 +177,90 @@
             *active-section*
             (claraoke:dialogue text :generate-overrides-p *generate-overrides-predicate*
                                     :spell-duration *spell-duration*
-                                    :layer layer
+                                    :layer (claraoke-internal:integer-from-string layer)
                                     :start start
                                     :end end
                                     :style style
                                     :name name
-                                    :margin-l margin-l
-                                    :margin-r margin-r
-                                    :margin-v margin-v
+                                    :margin-l (claraoke-internal:integer-from-string margin-l)
+                                    :margin-r (claraoke-internal:integer-from-string margin-r)
+                                    :margin-v (claraoke-internal:integer-from-string margin-v)
                                     :effect effect))))
         ((comment-line-p line)
          (destructuring-bind (layer start end style name margin-l margin-r margin-v effect text)
              (split-line-values line 10)
            (claraoke:insert-event
             *active-section*
-            (claraoke:comment text :layer layer
+            (claraoke:comment text :layer (claraoke-internal:integer-from-string layer)
                                    :start start
                                    :end end
                                    :style style
                                    :name name
-                                   :margin-l margin-l
-                                   :margin-r margin-r
-                                   :margin-v margin-v
+                                   :margin-l (claraoke-internal:integer-from-string margin-l)
+                                   :margin-r (claraoke-internal:integer-from-string margin-r)
+                                   :margin-v (claraoke-internal:integer-from-string margin-v)
                                    :effect effect))))
         ((picture-line-p line)
          (destructuring-bind (layer start end style name margin-l margin-r margin-v effect text)
              (split-line-values line 10)
            (claraoke:insert-event
             *active-section*
-            (claraoke:picture text :layer layer
+            (claraoke:picture text :layer (claraoke-internal:integer-from-string layer)
                                    :start start
                                    :end end
                                    :style style
                                    :name name
-                                   :margin-l margin-l
-                                   :margin-r margin-r
-                                   :margin-v margin-v
+                                   :margin-l (claraoke-internal:integer-from-string margin-l)
+                                   :margin-r (claraoke-internal:integer-from-string margin-r)
+                                   :margin-v (claraoke-internal:integer-from-string margin-v)
                                    :effect effect))))
         ((sound-line-p line)
          (destructuring-bind (layer start end style name margin-l margin-r margin-v effect text)
              (split-line-values line 10)
            (claraoke:insert-event
             *active-section*
-            (claraoke:sound text :layer layer
+            (claraoke:sound text :layer (claraoke-internal:integer-from-string layer)
                                  :start start
                                  :end end
                                  :style style
                                  :name name
-                                 :margin-l margin-l
-                                 :margin-r margin-r
-                                 :margin-v margin-v
+                                 :margin-l (claraoke-internal:integer-from-string margin-l)
+                                 :margin-r (claraoke-internal:integer-from-string margin-r)
+                                 :margin-v (claraoke-internal:integer-from-string margin-v)
                                  :effect effect))))
         ((movie-line-p line)
          (destructuring-bind (layer start end style name margin-l margin-r margin-v effect text)
              (split-line-values line 10)
            (claraoke:insert-event
             *active-section*
-            (claraoke:movie text :layer layer
+            (claraoke:movie text :layer (claraoke-internal:integer-from-string layer)
                                  :start start
                                  :end end
                                  :style style
                                  :name name
-                                 :margin-l margin-l
-                                 :margin-r margin-r
-                                 :margin-v margin-v
+                                 :margin-l (claraoke-internal:integer-from-string margin-l)
+                                 :margin-r (claraoke-internal:integer-from-string margin-r)
+                                 :margin-v (claraoke-internal:integer-from-string margin-v)
                                  :effect effect))))
         ((command-line-p line)
          (destructuring-bind (layer start end style name margin-l margin-r margin-v effect text)
              (split-line-values line 10)
            (claraoke:insert-event
             *active-section*
-            (claraoke:command text :layer layer
+            (claraoke:command text :layer (claraoke-internal:integer-from-string layer)
                                    :start start
                                    :end end
                                    :style style
                                    :name name
-                                   :margin-l margin-l
-                                   :margin-r margin-r
-                                   :margin-v margin-v
+                                   :margin-l (claraoke-internal:integer-from-string margin-l)
+                                   :margin-r (claraoke-internal:integer-from-string margin-r)
+                                   :margin-v (claraoke-internal:integer-from-string margin-v)
                                    :effect effect))))
         ((info-line-p line)
          (multiple-value-bind (line-values descriptor) (split-line-values line)
            (claraoke:insert-info
             *active-section*
-            (claraoke:info descriptor :value (first line-values)))))))
+            (claraoke:info descriptor :value (claraoke-internal:number-or-string (first line-values))))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
