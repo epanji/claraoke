@@ -15,4 +15,8 @@
 (defgeneric claraoke:decrease-override (object &optional delta))
 
 (defgeneric claraoke:sort-overrides (text))
+
+(defgeneric claraoke:increase-karaoke (object &optional delta))
+
+(defgeneric claraoke:decrease-karaoke (object &optional delta))
 

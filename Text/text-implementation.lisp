@@ -164,4 +164,48 @@
 
 (defmethod claraoke:sort-overrides (text)
   (error 'claraoke:object-must-be-text :object text))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Increase karaoke
+;;;
+(defmethod claraoke:increase-karaoke ((object karaoke) &optional (delta 15))
+  (incf (slot-value object 'arg1) delta)
+  object)
+
+(defmethod claraoke:increase-karaoke ((object karaoke-fill) &optional (delta 15))
+  (incf (slot-value object 'arg1) delta)
+  object)
+
+(defmethod claraoke:increase-karaoke ((object karaoke-outline) &optional (delta 15))
+  (incf (slot-value object 'arg1) delta)
+  object)
+
+(defmethod claraoke:increase-karaoke ((object override) &optional (delta 15))
+  (claraoke:increase-karaoke (or (claraoke:find-override object :karaoke)
+                                 (claraoke:find-override object :karaoke-fill)
+                                 (claraoke:find-override object :karaoke-outline))
+                             delta))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Decrease karaoke
+;;;
+(defmethod claraoke:decrease-karaoke ((object karaoke) &optional (delta 15))
+  (decf (slot-value object 'arg1) delta)
+  object)
+
+(defmethod claraoke:decrease-karaoke ((object karaoke-fill) &optional (delta 15))
+  (decf (slot-value object 'arg1) delta)
+  object)
+
+(defmethod claraoke:decrease-karaoke ((object karaoke-outline) &optional (delta 15))
+  (decf (slot-value object 'arg1) delta)
+  object)
+
+(defmethod claraoke:decrease-karaoke ((object override) &optional (delta 15))
+  (claraoke:decrease-karaoke (or (claraoke:find-override object :karaoke)
+                                 (claraoke:find-override object :karaoke-fill)
+                                 (claraoke:find-override object :karaoke-outline))
+                             delta))
 

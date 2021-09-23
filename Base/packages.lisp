@@ -21,6 +21,7 @@
    #:command
    #:comment
    #:decrease-duration
+   #:decrease-karaoke
    #:decrease-override
    #:delete-event
    #:delete-font
@@ -78,6 +79,7 @@
    #:header
    #:hours
    #:increase-duration
+   #:increase-karaoke
    #:increase-override
    #:index
    #:info
