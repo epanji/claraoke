@@ -83,8 +83,8 @@
   (claraoke-internal:deletef override (claraoke:overrides object))
   object)
 
-(defmethod claraoke:delete-override ((object batch) (override modifier))
-  (claraoke-internal:deletef override (claraoke:overrides object))
+(defmethod claraoke:delete-override ((object text) (override string))
+  (claraoke:delete-override object (claraoke:find-override object override))
   object)
 
 (defmethod claraoke:delete-override ((object text) (override null))
@@ -92,6 +92,10 @@
 
 (defmethod claraoke:delete-override ((object text) override)
   (error 'claraoke:object-must-be-override :object override))
+
+(defmethod claraoke:delete-override ((object batch) (override modifier))
+  (claraoke-internal:deletef override (claraoke:overrides object))
+  object)
 
 (defmethod claraoke:delete-override (object override)
   (error 'claraoke:object-must-be-text :object object))
