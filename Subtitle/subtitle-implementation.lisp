@@ -20,7 +20,7 @@
        (play-res-x 1280)
        (play-res-y 720)
        (play-depth 0)
-       (timer "100,0000")
+       (timer "100.0000")
        (wrap-style 0)
        (scaled-border-and-shadow nil)
        (last-style-storage nil)
