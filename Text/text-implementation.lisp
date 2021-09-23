@@ -187,6 +187,10 @@
                                  (claraoke:find-override object :karaoke-outline))
                              delta))
 
+(defmethod claraoke:increase-karaoke ((object null) &optional delta)
+  (declare (ignore delta))
+  object)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Decrease karaoke
@@ -208,4 +212,33 @@
                                  (claraoke:find-override object :karaoke-fill)
                                  (claraoke:find-override object :karaoke-outline))
                              delta))
+
+(defmethod claraoke:decrease-karaoke ((object null) &optional delta)
+  (declare (ignore delta))
+  object)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Update karaoke
+;;;
+(defmethod claraoke:update-karaoke ((object karaoke) (value integer))
+  (setf (slot-value object 'arg1) value)
+  object)
+
+(defmethod claraoke:update-karaoke ((object karaoke-fill) (value integer))
+  (setf (slot-value object 'arg1) value)
+  object)
+
+(defmethod claraoke:update-karaoke ((object karaoke-outline) (value integer))
+  (setf (slot-value object 'arg1) value)
+  object)
+
+(defmethod claraoke:update-karaoke ((object override) (value integer))
+  (claraoke:update-karaoke (or (claraoke:find-override object :karaoke)
+                               (claraoke:find-override object :karaoke-fill)
+                               (claraoke:find-override object :karaoke-outline))
+                           value))
+
+(defmethod claraoke:update-karaoke ((object null) value)
+  object)
 

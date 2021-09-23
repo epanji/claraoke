@@ -19,4 +19,6 @@
 (defgeneric claraoke:increase-karaoke (object &optional delta))
 
 (defgeneric claraoke:decrease-karaoke (object &optional delta))
+
+(defgeneric claraoke:update-karaoke (object value))
 

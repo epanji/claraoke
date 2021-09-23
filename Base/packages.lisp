@@ -171,6 +171,7 @@
    #:title
    #:underline
    #:update-details
+   #:update-karaoke
    #:value
    #:value-mixin
    #:video-aspect-ratio
