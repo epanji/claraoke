@@ -21,6 +21,7 @@
    #:command
    #:comment
    #:decrease-duration
+   #:decrease-override
    #:delete-event
    #:delete-font
    #:delete-graphic
@@ -77,6 +78,7 @@
    #:header
    #:hours
    #:increase-duration
+   #:increase-override
    #:index
    #:info
    #:insert-event

@@ -124,6 +124,36 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
+;;; Increase override
+;;;
+(defmethod claraoke:increase-override ((object override) &optional (delta 1))
+  (incf (claraoke:index object) delta))
+
+(defmethod claraoke:increase-override ((object null) &optional delta)
+  (declare (ignore delta))
+  object)
+
+(defmethod claraoke:increase-override (object &optional delta)
+  (declare (ignore delta))
+  (error 'claraoke:object-must-be-override :object object))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Decrease override
+;;;
+(defmethod claraoke:decrease-override ((object override) &optional (delta 1))
+  (decf (claraoke:index object) delta))
+
+(defmethod claraoke:decrease-override ((object null) &optional delta)
+  (declare (ignore delta))
+  object)
+
+(defmethod claraoke:decrease-override (object &optional delta)
+  (declare (ignore delta))
+  (error 'claraoke:object-must-be-override :object object))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
 ;;; Sort override
 ;;;
 (defmethod claraoke:sort-overrides ((object text))

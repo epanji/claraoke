@@ -10,5 +10,9 @@
 
 (defgeneric claraoke:find-override (object override))
 
+(defgeneric claraoke:increase-override (object &optional delta))
+
+(defgeneric claraoke:decrease-override (object &optional delta))
+
 (defgeneric claraoke:sort-overrides (text))
 
