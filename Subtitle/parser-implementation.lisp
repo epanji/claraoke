@@ -260,7 +260,7 @@
          (multiple-value-bind (line-values descriptor) (split-line-values line)
            (claraoke:insert-info
             *active-section*
-            (claraoke:info descriptor :value (claraoke-internal:number-or-string (first line-values))))))))
+            (claraoke:info descriptor :value (first line-values)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
