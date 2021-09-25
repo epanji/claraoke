@@ -2,7 +2,7 @@
 
 (in-package :claraoke-user)
 
-(defparameter *mysub* (subtitle "Eyes on Me" :text nil :fontsize 72 :alignment 5 :italic -1))
+(defparameter *mysub* (subtitle "Eyes on Me" :text nil :fontsize 54 :alignment 5 :italic -1 :fontname "DejaVu Serif"))
 
 (setf (interval *mysub*) 60)
 (setf (interval-frequency *mysub*) 8)
@@ -263,6 +263,12 @@
 
 ;; Disable counter
 (setf (interval-counter *mysub*) nil)
+
+(insert-style *mysub* (style "Title" :alignment 8 :shadow 2 :outline 0 :back-colour "&HA0D4FF7F" :primary-colour "&H30FFFFFF" :fontname "DejaVu San"))
+(insert-style *mysub* (style "Notes" :alignment 8 :shadow 2 :outline 0 :back-colour "&HA0D4FF7F" :primary-colour "&H30C36888" :fontname "DejaVu San"))
+
+(insert-event *mysub* (dialogue "Eyes on Me - Faye Wong" :style "Title":end "00:05:38"))
+(insert-event *mysub* (dialogue (claraoke-internal:version) :style "Notes" :end "00:05:38"))
 
 ;; Write to file
 (claraoke-subtitle-to-file *mysub* #p"/tmp/mysub.ass")
