@@ -239,6 +239,7 @@
 ;;; Modifier from string
 ;;;
 (defun modifier-from-string (input)
+  (setf input (string-trim "\\" input))
   (flet ((subseqi (in s &optional e (d 0))
            (claraoke-internal:integer-from-string (subseq in s e) d))
          (keyargs (in &rest keywords)
