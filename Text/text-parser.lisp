@@ -44,21 +44,21 @@
 ;;;
 (defun start-override-matcher ()
   (when (valid-index-p)
-    (let ((char1 (peek))
-          (char2 (peek 1)))
-      (case char1
+    (let ((char0 (peek 0))
+          (char1 (peek 1)))
+      (case char0
         ((or nil #\{) t)
-        (#\\ (or (char= #\n char2)
-                 (char= #\N char2)))))))
+        (#\\ (or (char= #\n char1)
+                 (char= #\N char1)))))))
 
 (defun end-override-matcher ()
   (when (valid-index-p)
-    (let ((char1 (peek))
-          (char2 (peek -1)))
-      (case char1
+    (let ((char0 (peek 0))
+          (char-1 (peek -1)))
+      (case char0
         (#\} t)
-        ((or #\n #\N) (char= #\\ char2))
-        (t (null char1))))))
+        ((or #\n #\N) (char= #\\ char-1))
+        (t (null char0))))))
 
 (defun consume-override ()
   (loop with start = *index*
@@ -196,10 +196,10 @@ G in RANGE, H in THE, L in FLOW and R in WRITE.")
 (defvar *char-inside-parenthesis-p* nil)
 
 (defun end-modifier-matcher ()
-  (let ((char1 (peek)))
-    (when (equal #\( char1) (setf *char-inside-parenthesis-p* t))
-    (when (equal #\) char1) (setf *char-inside-parenthesis-p* nil))
-    (unless *char-inside-parenthesis-p* (equal #\\ char1))))
+  (let ((char0 (peek 0)))
+    (when (equal #\( char0) (setf *char-inside-parenthesis-p* t))
+    (when (equal #\) char0) (setf *char-inside-parenthesis-p* nil))
+    (unless *char-inside-parenthesis-p* (equal #\\ char0))))
 
 (defun consume-modifier ()
   (loop with start = *index*
