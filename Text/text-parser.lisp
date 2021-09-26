@@ -4,11 +4,11 @@
 ;;;
 ;;; Initialization after
 ;;;
-(defmethod initialize-instance :after ((object text) &key original-text generate-overrides-p spell-duration)
+(defmethod initialize-instance :after ((object text) &key original-text generate-overrides-p spell-duration change-karaoke-type)
   (let ((original-text (or original-text (claraoke:original-text object))))
     (unless (null original-text)
       (when generate-overrides-p
-        (setf original-text (defile-text original-text spell-duration)))
+        (setf original-text (defile-text original-text spell-duration change-karaoke-type)))
       (multiple-value-bind (string overrides) (purify-text original-text)
         (setf (claraoke:text object) string)
         (setf (claraoke:overrides object) overrides)))))
@@ -113,8 +113,12 @@ G in RANGE, H in THE, L in FLOW and R in WRITE.")
 (defvar *spell-duration-in-centiseconds* 15
   "Estimate karaoke duration in centiseconds.")
 
+(defparameter *change-karaoke-type* nil
+  "Change karaoke type to either :FILL or :OUTLINE, otherwise it will use default type.")
+
 (declaim (string *vowel* *consonants* *weak-consonant* *strong-consonants*)
-         (unsigned-byte *spell-duration-in-centiseconds*))
+         (unsigned-byte *spell-duration-in-centiseconds*)
+         (type (member nil :fill :outline) *change-karaoke-type*))
 
 (defun end-spelling-matcher ()
   (let ((char0 (peek 0))
@@ -161,24 +165,30 @@ G in RANGE, H in THE, L in FLOW and R in WRITE.")
          (len (length (remove-if (complement (function alpha-char-p)) text)))
          (sum (loop for char across *vowels*
                     sum (count char text))))
-    (format nil "{\\k~D}~A"
+    (format nil "{\\~A~D}~A"
+            (case *change-karaoke-type*
+              (:fill "kf")
+              (:outline "ko")
+              (otherwise "k"))
             (max *spell-duration-in-centiseconds*
                  (* (min (- len sum) sum) *spell-duration-in-centiseconds*))
             text)))
 
-(defun defile-text (string &optional spell-duration)
+(defun defile-text (string &optional spell-duration change-karaoke-type)
   (when (null spell-duration)
     (setf spell-duration *spell-duration-in-centiseconds*))
   (let ((*string* string)
         (*length* (length string))
         (*index* 0)
         (*text-index* 0)
-        (*spell-duration-in-centiseconds* spell-duration))
+        (*spell-duration-in-centiseconds* spell-duration)
+        (*change-karaoke-type* change-karaoke-type))
     (if (zerop (count #\\ string))
         (loop while (peek)
               collect (compute-override) into list-strings
               finally (return (apply 'concatenate 'string list-strings)))
         string)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Override Modifiers Splitter
