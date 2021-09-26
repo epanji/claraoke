@@ -125,4 +125,12 @@
 (defmethod claraoke:random-color (&optional alpha)
   (check-type alpha (or null (integer 0 255)))
   (claraoke:rgb (random 255) (random 255) (random 255) alpha))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Alpha
+;;;
+(defmethod claraoke:alpha ((object integer))
+  (check-type object (integer 0 255))
+  (format nil "&H~2,'0X&" object))
 

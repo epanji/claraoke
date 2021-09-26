@@ -7,4 +7,6 @@
 (defgeneric claraoke:rgb (red green blue &optional alpha))
 
 (defgeneric claraoke:random-color (&optional alpha))
+
+(defgeneric claraoke:alpha (object))
 
