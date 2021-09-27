@@ -258,7 +258,8 @@
                                    :effect effect))))
         ((info-line-p line)
          (multiple-value-bind (line-values descriptor) (split-line-values line)
-           (claraoke:insert-info
+           ;; Info line could be script info, font and graphic
+           (claraoke:insert-line
             *active-section*
             (claraoke:info descriptor :value (first line-values)))))))
 
