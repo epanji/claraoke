@@ -99,17 +99,17 @@
 ;;;
 ;;; Fonts
 ;;;
-(defmethod initialize-instance :after ((object fonts) &key fontname &allow-other-keys)
-  (unless (null fontname)
-    (pushnew (claraoke:info "fontname" :value fontname)
+(defmethod initialize-instance :after ((object fonts) &key font-filename &allow-other-keys)
+  (unless (null font-filename)
+    (pushnew (claraoke:info "fontname" :value font-filename)
              (claraoke:lines object))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Graphics
 ;;;
-(defmethod initialize-instance :after ((object graphics) &key filename &allow-other-keys)
-  (unless (null filename)
-    (pushnew (claraoke:info "filename" :value filename)
+(defmethod initialize-instance :after ((object graphics) &key graphic-filename &allow-other-keys)
+  (unless (null graphic-filename)
+    (pushnew (claraoke:info "filename" :value graphic-filename)
              (claraoke:lines object))))
 
