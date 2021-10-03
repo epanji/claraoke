@@ -7,7 +7,7 @@
                "claraoke-duration")
   :serial t
   :components
-  ((:file "packages")
+  ((:file "package")
    (:file "classes")
    (:file "initializations")
    (:file "script-implementation")
