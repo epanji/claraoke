@@ -178,12 +178,12 @@
    (%start
     :initarg :start
     :accessor claraoke:start
-    :initform "00:00:00.00")
+    :initform "0:00:00.00")
    (%end
     :initarg :end
     :initarg :duration
     :accessor claraoke:end
-    :initform "00:00:03.00")
+    :initform "0:00:03.00")
    (%style
     :initarg :style
     :accessor claraoke:.style
