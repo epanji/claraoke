@@ -78,7 +78,7 @@
   (when (find char +duration-characters+) t))
 
 (defmethod claraoke:durationstringp ((object string))
-  (and (every 'duration-character-p (string-trim '(#\space #\tab) object))
+  (and (every 'duration-character-p (string-trim '(#\Space #\Tab) object))
        (when (ignore-errors (claraoke:duration object))
          t)))
 
