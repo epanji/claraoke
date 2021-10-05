@@ -1,3 +1,7 @@
+<p align="center">
+    <img src="claraoke.png" alt="LOGO" width="260px" height="130px">
+</p>
+
 # CLARAOKE (WIP)
 
 CLARAOKE is a system for writing karaoke typesetting according to ASS format. (Advanced Substation Alpha)
