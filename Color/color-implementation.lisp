@@ -132,5 +132,10 @@
 ;;;
 (defmethod claraoke:alpha ((object integer))
   (check-type object (integer 0 255))
-  (format nil "&H~2,'0X&" object))
+  (values (format nil "&H~2,'0X&" object) object))
+
+(defmethod claraoke:alpha ((object string))
+  (let* ((c (min 2 (length object)))
+         (i (dec-from-hexstring object 0 :char c :skip 0)))
+    (claraoke:alpha i)))
 
