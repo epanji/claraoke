@@ -27,7 +27,7 @@
                                    collect (durationinteger (end event)))))
             (width (value (find-info (script-info object) "PlayResX")))
             (height (value (find-info (script-info object) "PlayResY"))))
-        (uiop:run-program (format nil "ffmpeg -lavfi color=c=~A:s=~Dx~D -t ~D ~A"
+        (uiop:run-program (format nil "ffmpeg -lavfi color=c=~A:s=~Dx~D -t ~D ~S"
                                   color
                                   width
                                   height
