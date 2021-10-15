@@ -45,6 +45,7 @@ Write BODY if necessary for returning specializer on T otherwise it will returni
 
 (defun claraoke-internal:number-or-string (string)
   (check-type string string)
+  (setf string (string-trim '(#\Tab #\Space) string))
   (flet ((digit-dot-char-p (char) (or (digit-char-p char) (char= #\. char))))
     (if (every #'digit-dot-char-p string)
         (read-from-string string)
