@@ -260,7 +260,7 @@
           ((border-modifier-p input)
            (make-instance 'border :arg1 (subseqi input 4 nil 1)))
           ((shadow-modifier-p input)
-           (make-instance 'shadow :arg1 (subseqi input 4 nil 1)))
+           (make-instance '.shadow :arg1 (subseqi input 4 nil 1)))
           ((blur-edges-modifier-p input)
            (make-instance 'blur-edges :arg1 (subseqi input 2 nil 1)))
           ((fontname-modifier-p input)
