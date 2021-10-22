@@ -118,12 +118,17 @@
    :format-control "~@[\\fs~D~]"
    :arg1 36))
 
-(defclass fontscale (modifier)
+(defclass fontscale-x (modifier)
   ()
   (:default-initargs
-   :format-control "~@[\\fsc~A~]~@[~D~]"
-   :arg1 #\x ; or y
-   :arg2 100))
+   :format-control "~@[\\fscx~D~]"
+   :arg1 100.1))
+
+(defclass fontscale-y (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\fscy~D~]"
+   :arg1 100.1))
 
 (defclass fontspace (modifier)
   ()
@@ -134,9 +139,26 @@
 (defclass fontrotate (modifier)
   ()
   (:default-initargs
-   :format-control "~@[\\fr~A~]~@[~D~]"
-   :arg1 #\x ; or y or z
-   :arg2 30))
+   :format-control "~@[\\fr~D~]"
+   :arg1 30))
+
+(defclass fontrotate-x (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\frx~D~]"
+   :arg1 30))
+
+(defclass fontrotate-y (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\fry~D~]"
+   :arg1 30))
+
+(defclass fontrotate-z (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\frz~D~]"
+   :arg1 30))
 
 (defclass fontencoding (modifier)
   ()
@@ -174,6 +196,36 @@
    :format-control "~@[\\4c~A~]"
    :arg1 "&HFF0011&"))
 
+(defclass alpha (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\alpha~A~]"
+   :arg1 "&H00&"))
+
+(defclass alpha1 (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\1a~A~]"
+   :arg1 "&H00&"))
+
+(defclass alpha2 (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\2a~A~]"
+   :arg1 "&H00&"))
+
+(defclass alpha3 (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\3a~A~]"
+   :arg1 "&H00&"))
+
+(defclass alpha4 (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\4a~A~]"
+   :arg1 "&H00&"))
+
 (defclass alignment (modifier)
   ()
   (:default-initargs
@@ -190,6 +242,12 @@
   ()
   (:default-initargs
    :format-control "~@[\\k~D~]"
+   :arg1 15))
+
+(defclass karaoke-capital (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\K~D~]"
    :arg1 15))
 
 (defclass karaoke-fill (modifier)
@@ -213,8 +271,8 @@
 (defclass reset (modifier)
   ()
   (:default-initargs
-   :format-control "~@[\\r~A~]"
-   :arg1 "Default"))
+   :format-control "\\r~@[~A~]"
+   :arg1 nil))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
