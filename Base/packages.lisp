@@ -183,6 +183,7 @@
   (:use #:common-lisp)
   (:export
    #:deletef
+   #:digit-char-or-dot-p
    #:distinct-number-and-string
    #:integer-from-string
    #:mimic-accessor
