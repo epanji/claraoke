@@ -4,12 +4,15 @@
 ;;;
 ;;; Initialization after
 ;;;
-(defmethod initialize-instance :after ((object text) &key original-text generate-overrides-p spell-duration change-karaoke-type)
+(defmethod initialize-instance :after
+    ((object text) &key original-text generate-overrides-p spell-duration change-karaoke-type
+                     keep-original-modifier-p remove-unknown-modifier-p)
   (let ((original-text (or original-text (claraoke:original-text object))))
     (unless (null original-text)
       (when generate-overrides-p
         (setf original-text (defile-text original-text spell-duration change-karaoke-type)))
-      (multiple-value-bind (string overrides) (purify-text original-text)
+      (multiple-value-bind (string overrides)
+          (purify-text original-text keep-original-modifier-p remove-unknown-modifier-p)
         (setf (claraoke:text object) string)
         (setf (claraoke:overrides object) overrides)))))
 
@@ -42,6 +45,13 @@
 ;;;
 ;;; Override Text Builder
 ;;;
+(defvar *keep-original-modifier-predicate* nil
+  "Keep default modifier instead changing to most specific modifier.
+For example, modifier \\alpha&H00& will not be changed to \\1a&H00&.")
+
+(defvar *remove-unknown-modifier-predicate* nil
+  "Remove unknown modifier from override.")
+
 (defun start-override-matcher ()
   (when (valid-index-p)
     (let ((char0 (peek 0))
@@ -81,11 +91,13 @@
         (incf *text-index* (length text))
         text)))
 
-(defun purify-text (string)
+(defun purify-text (string &optional keep-original-modifier-p remove-unknown-modifier-p)
   (let ((*string* string)
         (*length* (length string))
         (*index* 0)
-        (*text-index* 0))
+        (*text-index* 0)
+        (*keep-original-modifier-predicate* keep-original-modifier-p)
+        (*remove-unknown-modifier-predicate* remove-unknown-modifier-p))
     (loop while (peek)
           for object = (build-string-or-override)
           if (stringp object)
