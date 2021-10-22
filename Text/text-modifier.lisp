@@ -65,7 +65,8 @@
        (string= "fsc" (subseq input 0 3))
        (or (char= #\x (elt input 3))
            (char= #\y (elt input 3)))
-       (every 'digit-char-p (subseq input 4))))
+       (every 'claraoke-internal:digit-char-or-dot-p
+              (subseq input 4))))
 
 (defun fontspace-modifier-p (input)
   (and (stringp input)
