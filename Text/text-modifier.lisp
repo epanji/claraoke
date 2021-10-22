@@ -324,17 +324,21 @@
           ((fontspace-modifier-p input)
            (make-instance 'fontspace :arg1 (subseqi input 3)))
           ((fontrotate-modifier-p input)
-           (make-instance 'fontrotate-z :arg1 (subseqi input 4)))
+           (if *keep-original-modifier-predicate*
+               (make-instance 'fontrotate :arg1 (subseqi input 2))
+               (make-instance 'fontrotate-z :arg1 (subseqi input 2))))
           ((fontrotate-x-modifier-p input)
-           (make-instance 'fontrotate-x :arg1 (subseqi input 4)))
+           (make-instance 'fontrotate-x :arg1 (subseqi input 3)))
           ((fontrotate-y-modifier-p input)
-           (make-instance 'fontrotate-y :arg1 (subseqi input 4)))
+           (make-instance 'fontrotate-y :arg1 (subseqi input 3)))
           ((fontrotate-z-modifier-p input)
-           (make-instance 'fontrotate-z :arg1 (subseqi input 4)))
+           (make-instance 'fontrotate-z :arg1 (subseqi input 3)))
           ((fontencoding-modifier-p input)
            (make-instance 'fontencoding :arg1 (subseqi input 2)))
           ((color-modifier-p input)
-           (make-instance 'color1 :arg1 (subseqi input 1)))
+           (if *keep-original-modifier-predicate*
+               (make-instance 'color :arg1 (subseqi input 1))
+               (make-instance 'color1 :arg1 (subseqi input 1))))
           ((color1-modifier-p input)
            (make-instance 'color1 :arg1 (subseqi input 2)))
           ((color2-modifier-p input)
@@ -344,7 +348,9 @@
           ((color4-modifier-p input)
            (make-instance 'color4 :arg1 (subseqi input 2)))
           ((alpha-modifier-p input)
-           (make-instance 'alpha1 :arg1 (subseqi input 5)))
+           (if *keep-original-modifier-predicate*
+               (make-instance 'alpha :arg1 (subseqi input 5))
+               (make-instance 'alpha1 :arg1 (subseqi input 5))))
           ((alpha1-modifier-p input)
            (make-instance 'alpha1 :arg1 (subseqi input 2)))
           ((alpha2-modifier-p input)
@@ -360,7 +366,9 @@
           ((karaoke-modifier-p input)
            (make-instance 'karaoke :arg1 (subseqi input 1)))
           ((karaoke-capital-modifier-p input)
-           (make-instance 'karaoke-fill :arg1 (subseqi input 1)))
+           (if *keep-original-modifier-predicate*
+               (make-instance 'karaoke-capital :arg1 (subseqi input 1))
+               (make-instance 'karaoke-fill :arg1 (subseqi input 1))))
           ((karaoke-fill-modifier-p input)
            (make-instance 'karaoke-fill :arg1 (subseqi input 2)))
           ((karaoke-outline-modifier-p input)
@@ -392,7 +400,8 @@
           ((drawing-baseline-offset-modifier-p input)
            (make-instance 'drawing-baseline-offset :arg1 (subseqi input 3)))
           ;; Default
-          (t (make-instance 'unknown :arg1 input)))))
+          (t (unless *remove-unknown-modifier-predicate*
+               (make-instance 'unknown :arg1 input))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -404,7 +413,9 @@
              (override (make-instance 'batch :index index)))
         (setf (claraoke:overrides override)
               (loop for input in (reverse inputs)
-                    collect (modifier-from-string input)))
+                    for modifier = (modifier-from-string input)
+                    unless (null modifier)
+                      collect modifier))
         override)
       (let ((override (modifier-from-string override-text)))
         (setf (claraoke:index override) index)
