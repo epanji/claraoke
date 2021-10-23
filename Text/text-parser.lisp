@@ -52,12 +52,15 @@ For example, modifier \\alpha&H00& will not be changed to \\1a&H00&.")
 (defvar *remove-unknown-modifier-predicate* nil
   "Remove unknown modifier from override.")
 
+(defvar *batchp* nil
+  "Prevent modifiers in batch being parsed as newline.")
+
 (defun start-override-matcher ()
   (when (valid-index-p)
     (let ((char0 (peek 0))
           (char1 (peek 1)))
       (case char0
-        ((or nil #\{) t)
+        ((or nil #\{) (setf *batchp* t) t)
         (#\\ (or (char= #\n char1)
                  (char= #\N char1)))))))
 
@@ -66,8 +69,9 @@ For example, modifier \\alpha&H00& will not be changed to \\1a&H00&.")
     (let ((char0 (peek 0))
           (char-1 (peek -1)))
       (case char0
-        (#\} t)
-        ((or #\n #\N) (char= #\\ char-1))
+        (#\} (setf *batchp* nil) t)
+        ((or #\n #\N) (and (char= #\\ char-1)
+                           (not *batchp*)))
         (t (null char0))))))
 
 (defun consume-override ()
@@ -84,12 +88,13 @@ For example, modifier \\alpha&H00& will not be changed to \\1a&H00&.")
         finally (return (subseq *string* start *index*))))
 
 (defun build-string-or-override ()
-  (if (start-override-matcher)
-      (let ((text (consume-override)))
-        (override-from-string text *text-index*))
-      (let ((text (consume-text)))
-        (incf *text-index* (length text))
-        text)))
+  (let ((*batchp* nil))
+    (if (start-override-matcher)
+        (let ((text (consume-override)))
+          (override-from-string text *text-index*))
+        (let ((text (consume-text)))
+          (incf *text-index* (length text))
+          text))))
 
 (defun purify-text (string &optional keep-original-modifier-p remove-unknown-modifier-p)
   (let ((*string* string)
