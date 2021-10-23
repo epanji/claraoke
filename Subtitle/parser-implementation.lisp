@@ -21,11 +21,16 @@
 
 (defvar *generate-overrides-predicate* nil)
 
+(defvar *keep-original-modifier-predicate* nil)
+
+(defvar *remove-unknown-modifier-predicate* nil)
+
 (defvar *spell-duration* nil)
 
 (declaim (type (or null subtitle) *subtitle*)
          (type (or null script-info styles events fonts graphics) *active-section*)
          (boolean *ignore-note-predicate* *generate-overrides-predicate*)
+         (boolean *keep-original-modifier-predicate* *remove-unknown-modifier-predicate*)
          (type (or null unsigned-byte) *spell-duration*))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -177,6 +182,8 @@
             *active-section*
             (claraoke:dialogue text :generate-overrides-p *generate-overrides-predicate*
                                     :spell-duration *spell-duration*
+                                    :keep-original-modifier-p *keep-original-modifier-predicate*
+                                    :remove-unknown-modifier-p *remove-unknown-modifier-predicate*
                                     :layer (claraoke-internal:integer-from-string layer)
                                     :start start
                                     :end end
@@ -280,11 +287,15 @@
                                       collect line)
          initargs))
 
-(defmethod claraoke:parse-script ((object cons) &key (ignore-note-p t) generate-overrides-p spell-duration)
+(defmethod claraoke:parse-script
+    ((object cons) &key (ignore-note-p t) generate-overrides-p spell-duration
+                     keep-original-modifier-p remove-unknown-modifier-p)
   (let ((*subtitle* (claraoke:subtitle nil))
         (*active-section* nil)
         (*ignore-note-predicate* ignore-note-p)
         (*generate-overrides-predicate* generate-overrides-p)
+        (*keep-original-modifier-predicate* keep-original-modifier-p)
+        (*remove-unknown-modifier-predicate* remove-unknown-modifier-p)
         (*spell-duration* spell-duration)
         (char-bag (list #\Newline #\Return #\Page #\Linefeed)))
     (loop for line in object
