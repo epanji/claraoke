@@ -32,11 +32,15 @@
 (defmethod claraoke:dialogue ((object claraoke-text:text) &rest initargs)
   (apply 'make-instance 'dialogue :allow-other-keys t :text object initargs))
 
-(defmethod initialize-instance :after ((instance dialogue) &key generate-overrides-p spell-duration change-karaoke-type)
+(defmethod initialize-instance :after
+    ((instance dialogue) &key generate-overrides-p spell-duration change-karaoke-type
+                           keep-original-modifier-p remove-unknown-modifier-p)
   (let ((value (claraoke:.text instance)))
     (when (stringp value)
       (setf (claraoke:.text instance)
             (claraoke:text value :generate-overrides-p generate-overrides-p
+                                 :keep-original-modifier-p keep-original-modifier-p
+                                 :remove-unknown-modifier-p remove-unknown-modifier-p
                                  :spell-duration spell-duration
                                  :change-karaoke-type change-karaoke-type)))))
 
