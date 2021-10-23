@@ -123,8 +123,11 @@
 ;;; Random color
 ;;;
 (defmethod claraoke:random-color (&optional alpha)
-  (check-type alpha (or null (integer 0 255)))
-  (claraoke:rgb (random 255) (random 255) (random 255) alpha))
+  (check-type alpha (or null string ratio (integer 0 255)))
+  (claraoke:rgb (random 255) (random 255) (random 255)
+                (typecase alpha
+                  ((or null integer) alpha)
+                  (otherwise (nth-value 1 (claraoke:alpha alpha))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -137,5 +140,9 @@
 (defmethod claraoke:alpha ((object string))
   (let* ((c (min 2 (length object)))
          (i (dec-from-hexstring object 0 :char c :skip 0)))
+    (claraoke:alpha i)))
+
+(defmethod claraoke:alpha ((object ratio))
+  (let ((i (ceiling (* 255 object))))
     (claraoke:alpha i)))
 
