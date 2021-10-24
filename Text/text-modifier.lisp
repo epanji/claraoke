@@ -20,7 +20,7 @@
        (char= #\i (elt input 0))
        (every 'digit-char-p (subseq input 1))))
 
-(defun underscore-modifier-p (input)
+(defun underline-modifier-p (input)
   (and (stringp input)
        (char= #\u (elt input 0))
        (every 'digit-char-p (subseq input 1))))
@@ -303,7 +303,7 @@
            (make-instance 'bold :arg1 (subseqi input 1)))
           ((italic-modifier-p input)
            (make-instance 'italic :arg1 (subseqi input 1)))
-          ((underscore-modifier-p input)
+          ((underline-modifier-p input)
            (make-instance 'underline :arg1 (subseqi input 1)))
           ((strikeout-modifier-p input)
            (make-instance 'strikeout :arg1 (subseqi input 1)))
