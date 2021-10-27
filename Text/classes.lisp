@@ -276,6 +276,52 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
+;;; Style modifiers extended
+;;;
+(defclass blur (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\blur~D~]"
+   :arg1 1))
+
+(defclass fontshear-x (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\fax~D~]"
+   :arg1 1))
+
+(defclass fontshear-y (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\fay~D~]"
+   :arg1 1))
+
+(defclass border-x (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\xbord~D~]"
+   :arg1 1))
+
+(defclass border-y (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\ybord~D~]"
+   :arg1 1))
+
+(defclass shadow-x (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\xshad~D~]"
+   :arg1 1))
+
+(defclass shadow-y (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\yshad~D~]"
+   :arg1 1))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
 ;;; Function modifiers
 ;;;
 (defclass transformation (modifier)
@@ -343,6 +389,27 @@
   ()
   (:default-initargs
    :format-control "\\clip(~A)"
+   ;; Too complicated to split arguments due to optional position and
+   ;; lack of keywords
+   :arg1 "1,m 0 0 l 100 0 100 100 0 100"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Function modifiers extended
+;;;
+(defclass iclip-rectangle (modifier)
+  ()
+  (:default-initargs
+   :format-control "\\iclip(~A,~A,~A,~A)"
+   :arg1 1
+   :arg2 1
+   :arg3 100
+   :arg4 100))
+
+(defclass iclip-drawing (modifier)
+  ()
+  (:default-initargs
+   :format-control "\\iclip(~A)"
    ;; Too complicated to split arguments due to optional position and
    ;; lack of keywords
    :arg1 "1,m 0 0 l 100 0 100 100 0 100"))
