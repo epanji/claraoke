@@ -217,6 +217,52 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
+;;; Style modifiers extended
+;;;
+(defun blur-modifier-p (input)
+  (and (stringp input)
+       (< 4 (length input))
+       (string= "blur" (subseq input 0 4))
+       (every 'digit-char-p (subseq input 4))))
+
+(defun fontshear-x-modofier-p (input)
+  (and (stringp input)
+       (< 3 (length input))
+       (string= "fax" (subseq input 0 3))
+       (every 'claraoke-internal:digit-char-or-dot-p (subseq input 3))))
+
+(defun fontshear-y-modofier-p (input)
+  (and (stringp input)
+       (< 3 (length input))
+       (string= "fay" (subseq input 0 3))
+       (every 'claraoke-internal:digit-char-or-dot-p (subseq input 3))))
+
+(defun border-x-modifier-p (input)
+  (and (stringp input)
+       (< 5 (length input))
+       (string= "xbord" (subseq input 0 5))
+       (every 'digit-char-p (subseq input 5))))
+
+(defun border-y-modifier-p (input)
+  (and (stringp input)
+       (< 5 (length input))
+       (string= "ybord" (subseq input 0 5))
+       (every 'digit-char-p (subseq input 5))))
+
+(defun shadow-x-modifier-p (input)
+  (and (stringp input)
+       (< 5 (length input))
+       (string= "xshad" (subseq input 0 5))
+       (every 'digit-char-p (subseq input 5))))
+
+(defun shadow-y-modifier-p (input)
+  (and (stringp input)
+       (< 5 (length input))
+       (string= "yshad" (subseq input 0 5))
+       (every 'digit-char-p (subseq input 5))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
 ;;; Function modifiers
 ;;;
 (defun transformation-modifier-p (input)
@@ -268,6 +314,24 @@
        (< 4 (length input))
        (> 2 (count #\, input))
        (string= "clip" (subseq input 0 4))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Function modifiers extended
+;;;
+(defun iclip-rectangle-modifier-p (input)
+  (and (stringp input)
+       (find #\( input)
+       (< 5 (length input))
+       (= 3 (count #\, input))
+       (string= "iclip" (subseq input 0 5))))
+
+(defun iclip-drawing-modifier-p (input)
+  (and (stringp input)
+       (find #\( input)
+       (< 5 (length input))
+       (> 2 (count #\, input))
+       (string= "iclip" (subseq input 0 5))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -377,6 +441,21 @@
            (make-instance 'wrapping-style :arg1 (subseqi input 1)))
           ((reset-modifier-p input)
            (make-instance 'reset :arg1 (subseqi input 1)))
+          ;; Style extended
+          ((blur-modifier-p input)
+           (make-instance 'blur :arg1 (subseqi input 4)))
+          ((fontshear-x-modofier-p input)
+           (make-instance 'fontshear-x :arg1 (subseqi input 3)))
+          ((fontshear-y-modofier-p input)
+           (make-instance 'fontshear-y :arg1 (subseqi input 3)))
+          ((border-x-modifier-p input)
+           (make-instance 'border-x :arg1 (subseqi input 5)))
+          ((border-y-modifier-p input)
+           (make-instance 'border-y :arg1 (subseqi input 5)))
+          ((shadow-x-modifier-p input)
+           (make-instance 'shadow-x :arg1 (subseqi input 5)))
+          ((shadow-y-modifier-p input)
+           (make-instance 'shadow-y :arg1 (subseqi input 5)))
           ;; Function
           ((transformation-modifier-p input)
            (make-instance 'transformation :arg1 (subseqi input 2 (1- (length input)))))
@@ -394,6 +473,11 @@
            (apply 'make-instance 'clip-rectangle (keyargs input :arg1 :arg2 :arg3 :arg4)))
           ((clip-drawing-modifier-p input)
            (make-instance 'clip-drawing :arg1 (subseqi input 5 (1- (length input)))))
+          ;; Function extended
+          ((iclip-rectangle-modifier-p input)
+           (apply 'make-instance 'iclip-rectangle (keyargs input :arg1 :arg2 :arg3 :arg4)))
+          ((iclip-drawing-modifier-p input)
+           (make-instance 'iclip-drawing :arg1 (subseqi input 5 (1- (length input)))))
           ;; Drawing
           ((drawing-mode-modifier-p input)
            (make-instance 'drawing-mode :arg1 (subseqi input 1)))
