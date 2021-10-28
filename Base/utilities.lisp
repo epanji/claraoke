@@ -58,6 +58,18 @@ Write BODY if necessary for returning specializer on T otherwise it will returni
 (defun claraoke-internal:distinct-number-and-string (strings)
   (mapcar 'claraoke-internal:number-or-string strings))
 
+(defun claraoke-internal:print-symbols (package
+                                        &key (external t) internal inherited
+                                        &aux options result)
+  (unless (null external)  (pushnew :external options))
+  (unless (null internal)  (pushnew :internal options))
+  (unless (null inherited) (pushnew :inherited options))
+  (do-symbols (symbol package)
+    (multiple-value-bind (sym acc)
+        (find-symbol (string symbol) package)
+      (when (member acc options) (pushnew sym result))))
+  (format nil "~{~&#:~(~A~)~}" (sort result 'string-lessp)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Methods
