@@ -25,6 +25,9 @@
 (defvar *index* nil)
 (defvar *text-index* nil)
 
+(declaim (type (or null string) *string*)
+         (type (or null unsigned-byte) *length* *index* *text-index*))
+
 (defun advance (&optional (n 1))
   (incf *index* n))
 
@@ -52,15 +55,20 @@ For example, modifier \\alpha&H00& will not be changed to \\1a&H00&.")
 (defvar *remove-unknown-modifier-predicate* nil
   "Remove unknown modifier from override.")
 
-(defvar *batchp* nil
-  "Prevent modifiers in batch being parsed as newline.")
+(defvar *batch-predicate* nil
+  "Prevent modifiers in batch being parsed as newline.
+For example, unknown modifier {\\note} will not be parsed as newline.")
+
+(declaim (boolean *keep-original-modifier-predicate*
+                  *remove-unknown-modifier-predicate*
+                  *batch-predicate*))
 
 (defun start-override-matcher ()
   (when (valid-index-p)
     (let ((char0 (peek 0))
           (char1 (peek 1)))
       (case char0
-        ((or nil #\{) (setf *batchp* t) t)
+        ((or nil #\{) (setf *batch-predicate* t) t)
         (#\\ (or (char= #\n char1)
                  (char= #\N char1)))))))
 
@@ -69,9 +77,9 @@ For example, modifier \\alpha&H00& will not be changed to \\1a&H00&.")
     (let ((char0 (peek 0))
           (char-1 (peek -1)))
       (case char0
-        (#\} (setf *batchp* nil) t)
+        (#\} (setf *batch-predicate* nil) t)
         ((or #\n #\N) (and (char= #\\ char-1)
-                           (not *batchp*)))
+                           (not *batch-predicate*)))
         (t (null char0))))))
 
 (defun consume-override ()
@@ -88,7 +96,7 @@ For example, modifier \\alpha&H00& will not be changed to \\1a&H00&.")
         finally (return (subseq *string* start *index*))))
 
 (defun build-string-or-override ()
-  (let ((*batchp* nil))
+  (let ((*batch-predicate* nil))
     (if (start-override-matcher)
         (let ((text (consume-override)))
           (override-from-string text *text-index*))
@@ -133,7 +141,7 @@ G in RANGE, H in THE, L in FLOW and R in WRITE.")
 (defparameter *change-karaoke-type* nil
   "Change karaoke type to either :FILL or :OUTLINE, otherwise it will use default type.")
 
-(declaim (string *vowel* *consonants* *weak-consonant* *strong-consonants*)
+(declaim (string *vowels* *consonants* *weak-consonants* *strong-consonants*)
          (unsigned-byte *spell-duration-in-centiseconds*)
          (type (member nil :fill :outline) *change-karaoke-type*))
 
@@ -210,13 +218,15 @@ G in RANGE, H in THE, L in FLOW and R in WRITE.")
 ;;;
 ;;; Override Modifiers Splitter
 ;;;
-(defvar *char-inside-parenthesis-p* nil)
+(defvar *char-inside-parenthesis-predicate* nil)
+
+(declaim (boolean *char-inside-parenthesis-predicate*))
 
 (defun end-modifier-matcher ()
   (let ((char0 (peek 0)))
-    (when (equal #\( char0) (setf *char-inside-parenthesis-p* t))
-    (when (equal #\) char0) (setf *char-inside-parenthesis-p* nil))
-    (unless *char-inside-parenthesis-p* (equal #\\ char0))))
+    (when (equal #\( char0) (setf *char-inside-parenthesis-predicate* t))
+    (when (equal #\) char0) (setf *char-inside-parenthesis-predicate* nil))
+    (unless *char-inside-parenthesis-predicate* (equal #\\ char0))))
 
 (defun consume-modifier ()
   (loop with start = *index*
@@ -231,7 +241,7 @@ G in RANGE, H in THE, L in FLOW and R in WRITE.")
   (let ((*string* string)
         (*length* (length string))
         (*index* 0)
-        (*char-inside-parenthesis-p* nil))
+        (*char-inside-parenthesis-predicate* nil))
     (if (plusp (count #\\ string))
         (loop while (peek)
               for modifier = (consume-modifier)
