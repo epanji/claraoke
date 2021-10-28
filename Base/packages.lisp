@@ -189,6 +189,7 @@
    #:mimic-accessor
    #:number-or-string
    #:output-stream-from-designator
+   #:print-symbols
    #:script-note
    #:version))
 
