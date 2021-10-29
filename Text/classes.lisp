@@ -411,9 +411,14 @@
   ()
   (:default-initargs
    :format-control "\\clip(~A)"
-   ;; Too complicated to split arguments due to optional position and
-   ;; lack of keywords
-   :arg1 "1,m 0 0 l 100 0 100 100 0 100"))
+   :arg1 "m 0 0 l 100 0 100 100 0 100"))
+
+(defclass clip-drawing-scaled (modifier)
+  ()
+  (:default-initargs
+   :format-control "\\clip(~A,~A)"
+   :arg1 1
+   :arg2 "m 0 0 l 100 0 100 100 0 100"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -432,9 +437,14 @@
   ()
   (:default-initargs
    :format-control "\\iclip(~A)"
-   ;; Too complicated to split arguments due to optional position and
-   ;; lack of keywords
-   :arg1 "1,m 0 0 l 100 0 100 100 0 100"))
+   :arg1 "m 0 0 l 100 0 100 100 0 100"))
+
+(defclass iclip-drawing-scaled (modifier)
+  ()
+  (:default-initargs
+   :format-control "\\iclip(~A,~A)"
+   :arg1 1
+   :arg2 "m 0 0 l 100 0 100 100 0 100"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
