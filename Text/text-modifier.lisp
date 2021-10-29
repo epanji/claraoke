@@ -334,7 +334,14 @@
   (and (stringp input)
        (find #\( input)
        (< 4 (length input))
-       (> 2 (count #\, input))
+       (= 0 (count #\, input))
+       (string= "clip" (subseq input 0 4))))
+
+(defun clip-drawing-scaled-modifier-p (input)
+  (and (stringp input)
+       (find #\( input)
+       (< 4 (length input))
+       (= 1 (count #\, input))
        (string= "clip" (subseq input 0 4))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -352,7 +359,14 @@
   (and (stringp input)
        (find #\( input)
        (< 5 (length input))
-       (> 2 (count #\, input))
+       (= 0 (count #\, input))
+       (string= "iclip" (subseq input 0 5))))
+
+(defun iclip-drawing-scaled-modifier-p (input)
+  (and (stringp input)
+       (find #\( input)
+       (< 5 (length input))
+       (= 1 (count #\, input))
        (string= "iclip" (subseq input 0 5))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -500,12 +514,16 @@
           ((clip-rectangle-modifier-p input)
            (apply 'make-instance 'clip-rectangle (keyargs input :arg1 :arg2 :arg3 :arg4)))
           ((clip-drawing-modifier-p input)
-           (make-instance 'clip-drawing :arg1 (subseqi input 5 (1- (length input)))))
+           (apply 'make-instance 'clip-drawing (keyargs input :arg1)))
+          ((clip-drawing-scaled-modifier-p input)
+           (apply 'make-instance 'clip-drawing-scaled (keyargs input :arg1 :arg2)))
           ;; Function extended
           ((iclip-rectangle-modifier-p input)
            (apply 'make-instance 'iclip-rectangle (keyargs input :arg1 :arg2 :arg3 :arg4)))
           ((iclip-drawing-modifier-p input)
-           (make-instance 'iclip-drawing :arg1 (subseqi input 5 (1- (length input)))))
+           (apply 'make-instance 'iclip-drawing (keyargs input :arg1)))
+          ((iclip-drawing-scaled-modifier-p input)
+           (apply 'make-instance 'iclip-drawing-scaled (keyargs input :arg1 :arg2)))
           ;; Drawing
           ((drawing-mode-modifier-p input)
            (make-instance 'drawing-mode :arg1 (subseqi input 1)))
