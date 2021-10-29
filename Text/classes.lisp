@@ -324,13 +324,35 @@
 ;;;
 ;;; Function modifiers
 ;;;
-(defclass transformation (modifier)
+(defclass transformation1 (modifier)
   ()
   (:default-initargs
-   ;; Too complicated to split arguments due to optional position and
-   ;; lack of keywords
    :format-control "~@[\\t(~A)~]"
-   :arg1 "0,1000,1,\\fr30"))
+   :arg1 "\\frz30"))
+
+(defclass transformation2 (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\t(~A,~A)~]"
+   :arg1 0.5
+   :arg2 "\\frz30"))
+
+(defclass transformation3 (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\t(~A,~A,~A)~]"
+   :arg1 300
+   :arg2 400
+   :arg3 "\\frz30"))
+
+(defclass transformation4 (modifier)
+  ()
+  (:default-initargs
+   :format-control "~@[\\t(~A,~A,~A,~A)~]"
+   :arg1 300
+   :arg2 400
+   :arg3 0.5
+   :arg4 "\\frz30"))
 
 (defclass move (modifier)
   ()
