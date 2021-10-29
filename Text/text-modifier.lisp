@@ -265,11 +265,33 @@
 ;;;
 ;;; Function modifiers
 ;;;
-(defun transformation-modifier-p (input)
+(defun transformation1-modifier-p (input)
   (and (stringp input)
        (find #\( input)
        (char= #\t (elt input 0))
-       (char= #\( (elt input 1))))
+       (char= #\( (elt input 1))
+       (= 0 (count #\, input))))
+
+(defun transformation2-modifier-p (input)
+  (and (stringp input)
+       (find #\( input)
+       (char= #\t (elt input 0))
+       (char= #\( (elt input 1))
+       (= 1 (count #\, input))))
+
+(defun transformation3-modifier-p (input)
+  (and (stringp input)
+       (find #\( input)
+       (char= #\t (elt input 0))
+       (char= #\( (elt input 1))
+       (= 2 (count #\, input))))
+
+(defun transformation4-modifier-p (input)
+  (and (stringp input)
+       (find #\( input)
+       (char= #\t (elt input 0))
+       (char= #\( (elt input 1))
+       (= 3 (count #\, input))))
 
 (defun move-modifier-p (input)
   (and (stringp input)
@@ -457,8 +479,14 @@
           ((shadow-y-modifier-p input)
            (make-instance 'shadow-y :arg1 (subseqi input 5)))
           ;; Function
-          ((transformation-modifier-p input)
-           (make-instance 'transformation :arg1 (subseqi input 2 (1- (length input)))))
+          ((transformation1-modifier-p input)
+           (apply 'make-instance 'transformation1 (keyargs input :arg1)))
+          ((transformation2-modifier-p input)
+           (apply 'make-instance 'transformation2 (keyargs input :arg1 :arg2)))
+          ((transformation3-modifier-p input)
+           (apply 'make-instance 'transformation3 (keyargs input :arg1 :arg2 :arg3)))
+          ((transformation4-modifier-p input)
+           (apply 'make-instance 'transformation4 (keyargs input :arg1 :arg2 :arg3 :arg4)))
           ((move-modifier-p input)
            (apply 'make-instance 'move (keyargs input :arg1 :arg2 :arg3 :arg4 :arg5 :arg6)))
           ((pos-modifier-p input)
