@@ -173,19 +173,23 @@
 ;;;
 ;;; Increase karaoke
 ;;;
-(defmethod claraoke:increase-karaoke ((object karaoke) &optional (delta 15))
-  (incf (slot-value object 'arg1) delta)
+(defmethod claraoke:increase-karaoke
+    ((object karaoke) &optional (delta *spell-duration-in-centiseconds*))
+  (incf (claraoke:arg1 object) delta)
   object)
 
-(defmethod claraoke:increase-karaoke ((object karaoke-fill) &optional (delta 15))
-  (incf (slot-value object 'arg1) delta)
+(defmethod claraoke:increase-karaoke
+    ((object karaoke-fill) &optional (delta *spell-duration-in-centiseconds*))
+  (incf (claraoke:arg1 object) delta)
   object)
 
-(defmethod claraoke:increase-karaoke ((object karaoke-outline) &optional (delta 15))
-  (incf (slot-value object 'arg1) delta)
+(defmethod claraoke:increase-karaoke
+    ((object karaoke-outline) &optional (delta *spell-duration-in-centiseconds*))
+  (incf (claraoke:arg1 object) delta)
   object)
 
-(defmethod claraoke:increase-karaoke ((object override) &optional (delta 15))
+(defmethod claraoke:increase-karaoke
+    ((object override) &optional (delta *spell-duration-in-centiseconds*))
   (claraoke:increase-karaoke (or (claraoke:find-override object :karaoke)
                                  (claraoke:find-override object :karaoke-fill)
                                  (claraoke:find-override object :karaoke-outline))
@@ -199,19 +203,23 @@
 ;;;
 ;;; Decrease karaoke
 ;;;
-(defmethod claraoke:decrease-karaoke ((object karaoke) &optional (delta 15))
-  (decf (slot-value object 'arg1) delta)
+(defmethod claraoke:decrease-karaoke
+    ((object karaoke) &optional (delta *spell-duration-in-centiseconds*))
+  (decf (claraoke:arg1 object) delta)
   object)
 
-(defmethod claraoke:decrease-karaoke ((object karaoke-fill) &optional (delta 15))
-  (decf (slot-value object 'arg1) delta)
+(defmethod claraoke:decrease-karaoke
+    ((object karaoke-fill) &optional (delta *spell-duration-in-centiseconds*))
+  (decf (claraoke:arg1 object) delta)
   object)
 
-(defmethod claraoke:decrease-karaoke ((object karaoke-outline) &optional (delta 15))
-  (decf (slot-value object 'arg1) delta)
+(defmethod claraoke:decrease-karaoke
+    ((object karaoke-outline) &optional (delta *spell-duration-in-centiseconds*))
+  (decf (claraoke:arg1 object) delta)
   object)
 
-(defmethod claraoke:decrease-karaoke ((object override) &optional (delta 15))
+(defmethod claraoke:decrease-karaoke
+    ((object override) &optional (delta *spell-duration-in-centiseconds*))
   (claraoke:decrease-karaoke (or (claraoke:find-override object :karaoke)
                                  (claraoke:find-override object :karaoke-fill)
                                  (claraoke:find-override object :karaoke-outline))
@@ -226,15 +234,15 @@
 ;;; Update karaoke
 ;;;
 (defmethod claraoke:update-karaoke ((object karaoke) (value integer))
-  (setf (slot-value object 'arg1) value)
+  (setf (claraoke:arg1 object) value)
   object)
 
 (defmethod claraoke:update-karaoke ((object karaoke-fill) (value integer))
-  (setf (slot-value object 'arg1) value)
+  (setf (claraoke:arg1 object) value)
   object)
 
 (defmethod claraoke:update-karaoke ((object karaoke-outline) (value integer))
-  (setf (slot-value object 'arg1) value)
+  (setf (claraoke:arg1 object) value)
   object)
 
 (defmethod claraoke:update-karaoke ((object override) (value integer))
