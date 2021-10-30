@@ -27,13 +27,13 @@
     :initform nil
     :initarg :format-control
     :accessor format-control)
-   (arg1 :initarg :arg1 :initform nil)
-   (arg2 :initarg :arg2 :initform nil)
-   (arg3 :initarg :arg3 :initform nil)
-   (arg4 :initarg :arg4 :initform nil)
-   (arg5 :initarg :arg5 :initform nil)
-   (arg6 :initarg :arg5 :initform nil)
-   (arg7 :initarg :arg6 :initform nil))
+   (%arg1 :initarg :arg1 :initform nil :accessor claraoke:arg1)
+   (%arg2 :initarg :arg2 :initform nil :accessor claraoke:arg2)
+   (%arg3 :initarg :arg3 :initform nil :accessor claraoke:arg3)
+   (%arg4 :initarg :arg4 :initform nil :accessor claraoke:arg4)
+   (%arg5 :initarg :arg5 :initform nil :accessor claraoke:arg5)
+   (%arg6 :initarg :arg6 :initform nil :accessor claraoke:arg6)
+   (%arg7 :initarg :arg7 :initform nil :accessor claraoke:arg7))
   (:documentation "Modifier style, function, drawing"))
 
 (defclass override ()
@@ -358,10 +358,10 @@
   ()
   (:default-initargs
    :format-control "\\move(~A,~A,~A,~A~@[,~A~]~@[,~A~])"
-   :arg1 0
-   :arg2 0
-   :arg3 100
-   :arg4 100
+   :arg1 100
+   :arg2 150
+   :arg3 300
+   :arg4 350
    :arg5 nil
    :arg6 nil))
 
@@ -369,34 +369,34 @@
   ()
   (:default-initargs
    :format-control "\\pos(~A,~A)"
-   :arg1 10
-   :arg2 10))
+   :arg1 320
+   :arg2 240))
 
 (defclass origin (modifier)
   ()
   (:default-initargs
    :format-control "\\org(~A,~A)"
-   :arg1 10
-   :arg2 10))
+   :arg1 320
+   :arg2 240))
 
 (defclass fade (modifier)
   ()
   (:default-initargs
    :format-control "\\fade(~A,~A,~A,~A,~A,~A,~A)"
-   :arg1 10
-   :arg2 10
-   :arg3 10
-   :arg4 10
-   :arg5 10
-   :arg6 10
-   :arg7 10))
+   :arg1 255
+   :arg2 32
+   :arg3 224
+   :arg4 0
+   :arg5 500
+   :arg6 2000
+   :arg7 2200))
 
 (defclass fad (modifier)
   ()
   (:default-initargs
    :format-control "\\fad(~A,~A)"
-   :arg1 10
-   :arg2 10))
+   :arg1 1200
+   :arg2 250))
 
 (defclass clip-rectangle (modifier)
   ()
