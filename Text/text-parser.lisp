@@ -13,8 +13,9 @@
         (setf original-text (defile-text original-text spell-duration change-karaoke-type)))
       (multiple-value-bind (string overrides)
           (purify-text original-text keep-original-modifier-p remove-unknown-modifier-p)
-        (setf (claraoke:text object) string)
-        (setf (claraoke:overrides object) overrides)))))
+        (setf (claraoke:.text object) string)
+        (when (null (claraoke:overrides object))
+          (setf (claraoke:overrides object) overrides))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
