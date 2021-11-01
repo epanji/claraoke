@@ -59,9 +59,16 @@
 ;;; Print Object
 ;;;
 (defmethod print-object ((object text) stream)
-  (princ "#<" stream)
-  (princ (claraoke:.text object) stream)
-  (princ ">" stream))
+  (let ((overrides (claraoke:overrides object)))
+    (princ #\# stream)
+    (princ #\< stream)
+    (prin1 (claraoke:.text object) stream)
+    (unless (null overrides)
+      (princ #\Space stream)
+      (princ #\( stream)
+      (princ (length overrides) stream)
+      (princ #\) stream))
+    (princ #\> stream)))
 
 (defmethod print-object ((object override) stream)
   (princ (claraoke:index object) stream)
