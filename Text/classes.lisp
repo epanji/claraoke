@@ -43,10 +43,10 @@
     :accessor claraoke:index)))
 
 (defclass batch (override)
-  ((%overrides
-    :initform ()
-    :initarg :overrides
-    :accessor claraoke:overrides)))
+  ((%modifiers
+    :initform '()
+    :initarg :modifiers
+    :accessor claraoke:modifiers)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
