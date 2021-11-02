@@ -34,7 +34,8 @@
 
 (defmethod initialize-instance :after
     ((instance dialogue) &key generate-overrides-p spell-duration change-karaoke-type
-                           keep-original-modifier-p remove-unknown-modifier-p)
+                           keep-original-modifier-p remove-unknown-modifier-p
+                           overrides)
   (let ((value (claraoke:.text instance)))
     (when (stringp value)
       (setf (claraoke:.text instance)
@@ -42,7 +43,8 @@
                                  :keep-original-modifier-p keep-original-modifier-p
                                  :remove-unknown-modifier-p remove-unknown-modifier-p
                                  :spell-duration spell-duration
-                                 :change-karaoke-type change-karaoke-type)))))
+                                 :change-karaoke-type change-karaoke-type
+                                 :overrides overrides)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
