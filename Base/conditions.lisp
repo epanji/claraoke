@@ -41,5 +41,7 @@
   (define-object-error claraoke:object-must-be-info "INFO" "~&Object ~A is not type ~A.~%" object target)
   (define-object-error claraoke:object-must-be-note "NOTE" "~&Object ~A is not type ~A.~%" object target)
   (define-object-error claraoke:object-must-be-override "OVERRIDE" "~&Object ~A is not type ~A.~%" object target)
+  (define-object-error claraoke:object-must-be-modifier "MODIFIER" "~&Object ~A is not type ~A.~%" object target)
+  (define-object-error claraoke:object-must-be-batch "BATCH" "~&Object ~A is not type ~A.~%" object target)
   (define-object-error claraoke:object-must-be-integer "INTEGER" "~&Object ~A is not type ~A.~%" object target))
 
