@@ -29,12 +29,14 @@
    #:comment
    #:decrease-duration
    #:decrease-karaoke
+   #:decrease-modifier
    #:decrease-override
    #:delete-event
    #:delete-font
    #:delete-graphic
    #:delete-info
    #:delete-line
+   #:delete-modifier
    #:delete-note
    #:delete-override
    #:delete-style
@@ -73,6 +75,7 @@
    #:find-graphic
    #:find-info
    #:find-line
+   #:find-modifier
    #:find-note
    #:find-override
    #:find-style
@@ -87,6 +90,7 @@
    #:hours
    #:increase-duration
    #:increase-karaoke
+   #:increase-modifier
    #:increase-override
    #:index
    #:info
@@ -95,6 +99,7 @@
    #:insert-graphic
    #:insert-info
    #:insert-line
+   #:insert-modifier
    #:insert-note
    #:insert-override
    #:insert-style
@@ -112,10 +117,13 @@
    #:margin-r
    #:margin-v
    #:minutes
+   #:modifier
+   #:modifiers
    #:movie
    #:name
    #:note
    #:null-object-warning
+   #:object-must-be-batch
    #:object-must-be-color
    #:object-must-be-duration
    #:object-must-be-event
@@ -123,6 +131,7 @@
    #:object-must-be-info
    #:object-must-be-integer
    #:object-must-be-line
+   #:object-must-be-modifier
    #:object-must-be-note
    #:object-must-be-override
    #:object-must-be-script
@@ -179,6 +188,7 @@
    #:underline
    #:update-details
    #:update-karaoke
+   #:update-modifier
    #:value
    #:value-mixin
    #:video-aspect-ratio
