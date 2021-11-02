@@ -541,7 +541,7 @@
   (if (char= #\{ (elt override-text 0))
       (let* ((inputs (split-modifier override-text))
              (override (make-instance 'batch :index index)))
-        (setf (claraoke:overrides override)
+        (setf (claraoke:modifiers override)
               (loop for input in (reverse inputs)
                     for modifier = (modifier-from-string input)
                     unless (null modifier)
