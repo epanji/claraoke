@@ -186,7 +186,7 @@
 (defmethod claraoke:modifier ((object symbol) &rest initargs)
   (apply 'claraoke:modifier (symbol-name object) :allow-other-keys t initargs))
 
-(defmethod claraoke:modifier (object &key)
+(defmethod claraoke:modifier (object &rest initargs)
   (apply 'claraoke:modifier (write-to-string object) :allow-other-keys t initargs))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
