@@ -32,7 +32,7 @@
        original-translation
        original-editing
        original-timing
-       sync-point
+       synch-point
        script-updated-by
        update-details
        script-type
@@ -60,7 +60,7 @@
       (pushline "Original Translation" original-translation)
       (pushline "Original Editing" original-editing)
       (pushline "Original Timing" original-timing)
-      (pushline "Sync Point" sync-point)
+      (pushline "Synch Point" synch-point)
       (pushline "Script Updated By" script-updated-by)
       (pushline "Update Details" update-details)
       (pushline "ScriptType" script-type)

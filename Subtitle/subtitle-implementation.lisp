@@ -12,7 +12,7 @@
        (original-translation nil)
        (original-editing nil)
        (original-timing nil)
-       (sync-point nil)
+       (synch-point nil)
        (script-updated-by nil)
        (update-details nil)
        (script-type "v4.00+")
@@ -37,7 +37,7 @@
          :original-translation original-translation
          :original-editing original-editing
          :original-timing original-timing
-         :sync-point sync-point
+         :synch-point synch-point
          :script-updated-by script-updated-by
          :update-details update-details
          :script-type script-type
@@ -96,7 +96,7 @@
        (original-translation nil)
        (original-editing nil)
        (original-timing nil)
-       (sync-point nil)
+       (synch-point nil)
        (script-updated-by nil)
        (update-details nil)
        (script-type "v4.00+")
@@ -119,7 +119,7 @@
          :original-translation original-translation
          :original-editing original-editing
          :original-timing original-timing
-         :sync-point sync-point
+         :synch-point synch-point
          :script-updated-by script-updated-by
          :update-details update-details
          :script-type script-type
