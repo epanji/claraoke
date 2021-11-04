@@ -278,15 +278,15 @@
 ;;;
 ;;; Update modifier
 ;;;
-(defmethod claraoke:update-modifier ((object modifier) &optional (delta 1) (key :arg1))
+(defmethod claraoke:update-modifier ((object modifier) (value integer) &optional (key :arg1))
   (ecase key
-    (:arg1 (setf (claraoke:arg1 object) delta))
-    (:arg2 (setf (claraoke:arg2 object) delta))
-    (:arg3 (setf (claraoke:arg3 object) delta))
-    (:arg4 (setf (claraoke:arg4 object) delta))
-    (:arg5 (setf (claraoke:arg5 object) delta))
-    (:arg6 (setf (claraoke:arg6 object) delta))
-    (:arg7 (setf (claraoke:arg7 object) delta)))
+    (:arg1 (setf (claraoke:arg1 object) value))
+    (:arg2 (setf (claraoke:arg2 object) value))
+    (:arg3 (setf (claraoke:arg3 object) value))
+    (:arg4 (setf (claraoke:arg4 object) value))
+    (:arg5 (setf (claraoke:arg5 object) value))
+    (:arg6 (setf (claraoke:arg6 object) value))
+    (:arg7 (setf (claraoke:arg7 object) value)))
   object)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
