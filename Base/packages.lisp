@@ -98,6 +98,9 @@
    #:insert-font
    #:insert-graphic
    #:insert-info
+   #:insert-karaoke
+   #:insert-karaoke-fill
+   #:insert-karaoke-outline
    #:insert-line
    #:insert-modifier
    #:insert-note
