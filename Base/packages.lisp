@@ -182,7 +182,7 @@
    #:style
    #:styles
    #:subtitle
-   #:sync-duration
+   #:synch-duration
    #:synch-point
    #:table-line
    #:text

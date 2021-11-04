@@ -121,17 +121,17 @@
 ;;;
 ;;; Sync duration
 ;;;
-(defmethod claraoke:sync-duration ((object duration) (source duration))
+(defmethod claraoke:synch-duration ((object duration) (source duration))
   (setf (claraoke:hours object) (claraoke:hours source))
   (setf (claraoke:minutes object) (claraoke:minutes source))
   (setf (claraoke:seconds object) (claraoke:seconds source))
   (setf (claraoke:centiseconds object) (claraoke:centiseconds source))
   object)
 
-(defmethod claraoke:sync-duration ((object duration) source)
-  (claraoke:sync-duration object (claraoke:duration source)))
+(defmethod claraoke:synch-duration ((object duration) source)
+  (claraoke:synch-duration object (claraoke:duration source)))
 
-(defmethod claraoke:sync-duration (duration source)
+(defmethod claraoke:synch-duration (duration source)
   (error 'claraoke:object-must-be-duration :object duration))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -139,7 +139,7 @@
 ;;; Increase duration
 ;;;
 (defmethod claraoke:increase-duration ((duration duration) (addition duration))
-  (claraoke:sync-duration duration (+ (claraoke:durationinteger duration)
+  (claraoke:synch-duration duration (+ (claraoke:durationinteger duration)
                                       (claraoke:durationinteger addition))))
 
 (defmethod claraoke:increase-duration ((duration duration) addition)
@@ -153,7 +153,7 @@
 ;;; Decrease duration
 ;;;
 (defmethod claraoke:decrease-duration ((duration duration) (subtraction duration))
-  (claraoke:sync-duration duration (- (claraoke:durationinteger duration)
+  (claraoke:synch-duration duration (- (claraoke:durationinteger duration)
                                       (claraoke:durationinteger subtraction))))
 
 (defmethod claraoke:decrease-duration ((duration duration) subtraction)

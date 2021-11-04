@@ -12,7 +12,7 @@
 
 (defgeneric claraoke:durationintegerp (object))
 
-(defgeneric claraoke:sync-duration (duration source))
+(defgeneric claraoke:synch-duration (duration source))
 
 (defgeneric claraoke:increase-duration (duration addition))
 
