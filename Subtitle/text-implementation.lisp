@@ -76,4 +76,26 @@
 (defmethod claraoke:sort-overrides ((object dialogue))
   (claraoke:sort-overrides (claraoke:.text object))
   object)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Insert karaoke ( karaoke, karaoke-fill, karaoke-outline )
+;;;
+(defmethod claraoke:insert-karaoke ((object dialogue) index &optional value)
+  (if (null value)
+      (claraoke:insert-karaoke (claraoke:text object) index)
+      (claraoke:insert-karaoke (claraoke:text object) index value))
+  object)
+
+(defmethod claraoke:insert-karaoke-fill ((object dialogue) index &optional value)
+  (if (null value)
+      (claraoke:insert-karaoke-fill (claraoke:text object) index)
+      (claraoke:insert-karaoke-fill (claraoke:text object) index value))
+  object)
+
+(defmethod claraoke:insert-karaoke-outline ((object dialogue) index &optional value)
+  (if (null value)
+      (claraoke:insert-karaoke-outline (claraoke:text object) index)
+      (claraoke:insert-karaoke-outline (claraoke:text object) index value))
+  object)
 
