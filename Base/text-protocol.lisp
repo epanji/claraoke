@@ -44,7 +44,7 @@
 
 (defgeneric claraoke:decrease-modifier (object &optional delta key))
 
-(defgeneric claraoke:update-modifier (object &optional delta key))
+(defgeneric claraoke:update-modifier (object value &optional key))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
