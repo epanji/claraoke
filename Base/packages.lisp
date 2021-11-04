@@ -3,7 +3,6 @@
 (defpackage #:claraoke
   (:use)
   (:export
-   #:.script-info
    #:.shadow
    #:.style
    #:.text
@@ -22,7 +21,6 @@
    #:bold
    #:border-style
    #:centiseconds
-   #:collisions
    #:color
    #:colorstring
    #:command
@@ -55,7 +53,6 @@
    #:effect
    #:encoding
    #:end
-   #:event
    #:events
    #:failed-to-create-color
    #:failed-to-create-duration
@@ -112,7 +109,6 @@
    #:italic
    #:last-event
    #:last-line
-   #:last-style-storage
    #:layer
    #:line
    #:lines
@@ -143,20 +139,13 @@
    #:object-must-be-styles
    #:object-must-be-subtitle
    #:object-must-be-text
-   #:original-editing
-   #:original-script
    #:original-text
-   #:original-timing
-   #:original-translation
    #:outline
    #:outline-colour
    #:override
    #:overrides
    #:parse-script
    #:picture
-   #:play-depth
-   #:play-res-x
-   #:play-res-y
    #:primary-colour
    #:print-script
    #:random-color
@@ -164,11 +153,8 @@
    #:rgb
    #:scale-x
    #:scale-y
-   #:scaled-border-and-shadow
    #:script
    #:script-info
-   #:script-type
-   #:script-updated-by
    #:secondary-colour
    #:seconds
    #:section-line
@@ -183,21 +169,13 @@
    #:styles
    #:subtitle
    #:synch-duration
-   #:synch-point
    #:table-line
    #:text
-   #:timer
-   #:title
    #:underline
-   #:update-details
    #:update-karaoke
    #:update-modifier
    #:value
-   #:value-mixin
-   #:video-aspect-ratio
-   #:video-position
-   #:video-zoom
-   #:wrap-style))
+   #:value-mixin))
 
 (defpackage #:claraoke-internal
   (:use #:common-lisp)
