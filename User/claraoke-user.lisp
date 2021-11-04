@@ -31,7 +31,7 @@
                                   color
                                   width
                                   height
-                                  (+ 5 (ceiling max 100))
+                                  (ceiling max 100)
                                   (namestring filespec))
                           :force-shell t)))
   filespec)
