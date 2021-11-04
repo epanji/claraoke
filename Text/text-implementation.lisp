@@ -291,7 +291,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Insert karaoke, karaoke-fill, karaoke-outline
+;;; Insert karaoke ( karaoke, karaoke-fill, karaoke-outline )
+;;;
+;;; This insertion special for karaoke and text.
+;;; For inserting karaoke to batch override, use insert-modifier.
 ;;;
 (defun insert-karaoke (text index value karaoke)
   (check-type text text)
@@ -323,6 +326,10 @@
   (let ((index (search index (claraoke:.text object))))
     (claraoke:insert-karaoke object index value)))
 
+(defmethod claraoke:insert-karaoke (object index &optional value)
+  (declare (ignore value))
+  (error 'claraoke:object-must-be-text :object object))
+
 (defmethod claraoke:insert-karaoke-fill
     ((object text) (index integer)
      &optional (value *spell-duration-in-centiseconds*))
@@ -334,6 +341,10 @@
   (let ((index (search index (claraoke:.text object))))
     (claraoke:insert-karaoke-fill object index value)))
 
+(defmethod claraoke:insert-karaoke-fill (object index &optional value)
+  (declare (ignore value))
+  (error 'claraoke:object-must-be-text :object object))
+
 (defmethod claraoke:insert-karaoke-outline
     ((object text) (index integer)
      &optional (value *spell-duration-in-centiseconds*))
@@ -344,6 +355,10 @@
      &optional (value *spell-duration-in-centiseconds*))
   (let ((index (search index (claraoke:.text object))))
     (claraoke:insert-karaoke-outline object index value)))
+
+(defmethod claraoke:insert-karaoke-outline (object index &optional value)
+  (declare (ignore value))
+  (error 'claraoke:object-must-be-text :object object))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
