@@ -13,7 +13,7 @@
        (original-editing nil)
        (original-timing nil)
        (sync-point nil)
-       (scrypt-update-by nil)
+       (script-updated-by nil)
        (update-details nil)
        (script-type "v4.00+")
        (collisions "Normal")
@@ -38,7 +38,7 @@
          :original-editing original-editing
          :original-timing original-timing
          :sync-point sync-point
-         :scrypt-update-by scrypt-update-by
+         :script-updated-by script-updated-by
          :update-details update-details
          :script-type script-type
          :collisions collisions
@@ -97,7 +97,7 @@
        (original-editing nil)
        (original-timing nil)
        (sync-point nil)
-       (scrypt-update-by nil)
+       (script-updated-by nil)
        (update-details nil)
        (script-type "v4.00+")
        (collisions "Normal")
@@ -120,7 +120,7 @@
          :original-editing original-editing
          :original-timing original-timing
          :sync-point sync-point
-         :scrypt-update-by scrypt-update-by
+         :script-updated-by script-updated-by
          :update-details update-details
          :script-type script-type
          :collisions collisions

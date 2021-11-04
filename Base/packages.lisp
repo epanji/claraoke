@@ -168,7 +168,7 @@
    #:script
    #:script-info
    #:script-type
-   #:scrypt-update-by
+   #:script-updated-by
    #:secondary-colour
    #:seconds
    #:section-line

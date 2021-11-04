@@ -33,7 +33,7 @@
        original-editing
        original-timing
        sync-point
-       scrypt-update-by
+       script-updated-by
        update-details
        script-type
        collisions
@@ -61,7 +61,7 @@
       (pushline "Original Editing" original-editing)
       (pushline "Original Timing" original-timing)
       (pushline "Sync Point" sync-point)
-      (pushline "Scrypt Update By" scrypt-update-by)
+      (pushline "Script Updated By" script-updated-by)
       (pushline "Update Details" update-details)
       (pushline "ScriptType" script-type)
       (pushline "Collisions" collisions)
