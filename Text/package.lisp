@@ -21,49 +21,28 @@
    #:.shadow
    #:advance
    #:alignment
-   #:alignment-modifier-p
    #:alignment-numpad
-   #:alignment-numpad-modifier-p
    #:alpha
-   #:alpha-modifier-p
    #:alpha1
-   #:alpha1-modifier-p
    #:alpha2
-   #:alpha2-modifier-p
    #:alpha3
-   #:alpha3-modifier-p
    #:alpha4
-   #:alpha4-modifier-p
    #:batch
    #:blur
    #:blur-edges
-   #:blur-edges-modifier-p
-   #:blur-modifier-p
    #:bold
-   #:bold-modifier-p
    #:border
-   #:border-modifier-p
    #:border-x
-   #:border-x-modifier-p
    #:border-y
-   #:border-y-modifier-p
    #:build-string-or-override
    #:clip-drawing
-   #:clip-drawing-modifier-p
    #:clip-drawing-scaled
-   #:clip-drawing-scaled-modifier-p
    #:clip-rectangle
-   #:clip-rectangle-modifier-p
    #:color
-   #:color-modifier-p
    #:color1
-   #:color1-modifier-p
    #:color2
-   #:color2-modifier-p
    #:color3
-   #:color3-modifier-p
    #:color4
-   #:color4-modifier-p
    #:compute-override
    #:consume
    #:consume-modifier
@@ -71,99 +50,54 @@
    #:consume-spelling
    #:consume-text
    #:drawing-baseline-offset
-   #:drawing-baseline-offset-modifier-p
    #:drawing-mode
-   #:drawing-mode-modifier-p
-   #:end-modifier-matcher
-   #:end-override-matcher
-   #:end-spelling-matcher
    #:fad
-   #:fad-modifier-p
    #:fade
-   #:fade-modifier-p
    #:fontencoding
-   #:fontencoding-modifier-p
    #:fontname
-   #:fontname-modifier-p
    #:fontrotate
-   #:fontrotate-modifier-p
    #:fontrotate-x
-   #:fontrotate-x-modifier-p
    #:fontrotate-y
-   #:fontrotate-y-modifier-p
    #:fontrotate-z
-   #:fontrotate-z-modifier-p
-   #:fontscale
-   #:fontscale-modifier-p
    #:fontscale-x
-   #:fontscale-x-modifier-p
    #:fontscale-y
-   #:fontscale-y-modifier-p
    #:fontshear-x
-   #:fontshear-x-modofier-p
    #:fontshear-y
-   #:fontshear-y-modofier-p
    #:fontsize
-   #:fontsize-modifier-p
    #:fontspace
-   #:fontspace-modifier-p
    #:format-control
    #:iclip-drawing
-   #:iclip-drawing-modifier-p
    #:iclip-drawing-scaled
-   #:iclip-drawing-scaled-modifier-p
    #:iclip-rectangle
-   #:iclip-rectangle-modifier-p
+   #:insert-karaoke
    #:italic
-   #:italic-modifier-p
    #:karaoke
    #:karaoke-capital
-   #:karaoke-capital-modifier-p
    #:karaoke-fill
-   #:karaoke-fill-modifier-p
-   #:karaoke-modifier-p
    #:karaoke-outline
-   #:karaoke-outline-modifier-p
-   #:modifier
-   #:modifier-from-string
    #:move
-   #:move-modifier-p
    #:newline
-   #:newline-modifier-p
    #:origin
-   #:origin-modifier-p
    #:peek
    #:pos
-   #:pos-modifier-p
    #:reset
-   #:reset-modifier-p
-   #:shadow-modifier-p
    #:shadow-x
-   #:shadow-x-modifier-p
    #:shadow-y
-   #:shadow-y-modifier-p
    #:split-modifier
-   #:start-override-matcher
    #:strikeout
-   #:strikeout-modifier-p
-   #:transformation
-   #:transformation-modifier-p
+   #:symbol-from-string
    #:transformation1
-   #:transformation1-modifier-p
    #:transformation2
-   #:transformation2-modifier-p
    #:transformation3
-   #:transformation3-modifier-p
    #:transformation4
-   #:transformation4-modifier-p
    #:underline
-   #:underline-modifier-p
    #:unknown
    #:valid-index-p
-   #:wrapping-style
-   #:wrapping-style-modifier-p)
+   #:wrapping-style)
   (:export
    #:defile-text
+   #:modifier
+   #:modifier-from-string
    #:override
    #:override-from-string
    #:override-greaterp
