@@ -50,6 +50,12 @@
 ;;;
 ;;; Convenient
 ;;;
+(defgeneric claraoke:insert-karaoke (object index &optional value))
+
+(defgeneric claraoke:insert-karaoke-fill (object index &optional value))
+
+(defgeneric claraoke:insert-karaoke-outline (object index &optional value))
+
 (defgeneric claraoke:increase-karaoke (object &optional delta))
 
 (defgeneric claraoke:decrease-karaoke (object &optional delta))
