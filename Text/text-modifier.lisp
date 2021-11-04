@@ -225,13 +225,13 @@
        (string= "blur" (subseq input 0 4))
        (every 'digit-char-p (subseq input 4))))
 
-(defun fontshear-x-modofier-p (input)
+(defun fontshear-x-modifier-p (input)
   (and (stringp input)
        (< 3 (length input))
        (string= "fax" (subseq input 0 3))
        (every 'claraoke-internal:digit-char-or-dot-p (subseq input 3))))
 
-(defun fontshear-y-modofier-p (input)
+(defun fontshear-y-modifier-p (input)
   (and (stringp input)
        (< 3 (length input))
        (string= "fay" (subseq input 0 3))
@@ -480,9 +480,9 @@
           ;; Style extended
           ((blur-modifier-p input)
            (make-instance 'blur :arg1 (subseqi input 4)))
-          ((fontshear-x-modofier-p input)
+          ((fontshear-x-modifier-p input)
            (make-instance 'fontshear-x :arg1 (subseqi input 3)))
-          ((fontshear-y-modofier-p input)
+          ((fontshear-y-modifier-p input)
            (make-instance 'fontshear-y :arg1 (subseqi input 3)))
           ((border-x-modifier-p input)
            (make-instance 'border-x :arg1 (subseqi input 5)))
