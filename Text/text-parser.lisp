@@ -69,7 +69,7 @@ For example, unknown modifier {\\note} will not be parsed as newline.")
     (let ((char0 (peek 0))
           (char1 (peek 1)))
       (case char0
-        ((or nil #\{) (setf *batch-predicate* t) t)
+        ((nil #\{) (setf *batch-predicate* t) t)
         (#\\ (or (char= #\n char1)
                  (char= #\N char1)))))))
 
@@ -79,8 +79,8 @@ For example, unknown modifier {\\note} will not be parsed as newline.")
           (char-1 (peek -1)))
       (case char0
         (#\} (setf *batch-predicate* nil) t)
-        ((or #\n #\N) (and (char= #\\ char-1)
-                           (not *batch-predicate*)))
+        ((#\n #\N) (and (char= #\\ char-1)
+                        (not *batch-predicate*)))
         (t (null char0))))))
 
 (defun consume-override ()
