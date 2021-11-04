@@ -2,6 +2,9 @@
 
 (defpackage #:claraoke-subtitle
   (:use #:common-lisp)
+  (:intern
+   #:*keep-original-modifier-predicate*
+   #:*remove-unknown-modifier-predicate*)
   (:export
    #:*active-section*
    #:*generate-overrides-predicate*
@@ -10,33 +13,24 @@
    #:*spell-duration*
    #:*subtitle*
    #:command
-   #:command-line-p
    #:comment
-   #:comment-line-p
    #:create-object-from-string
    #:dialogue
-   #:dialogue-line-p
-   #:empty-line-p
    #:event
    #:events
    #:fonts
    #:graphics
-   #:header-line-p
-   #:info-line-p
+   #:info
    #:movie
-   #:movie-line-p
-   #:note-line-p
+   #:note
    #:picture
-   #:picture-line-p
    #:script-info
+   #:section
    #:section-index
-   #:section-line-p
    #:sort-event-predicate
    #:sound
-   #:sound-line-p
    #:split-line-values
    #:style
-   #:style-line-p
    #:styles
    #:subtitle
    #:unreadable-char-p))
