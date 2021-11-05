@@ -27,11 +27,14 @@
 
 (defvar *spell-duration* nil)
 
+(defvar *change-karaoke-type* nil)
+
 (declaim (type (or null subtitle) *subtitle*)
          (type (or null script-info styles events fonts graphics) *active-section*)
          (boolean *ignore-note-predicate* *generate-overrides-predicate*)
          (boolean *keep-original-modifier-predicate* *remove-unknown-modifier-predicate*)
-         (type (or null unsigned-byte) *spell-duration*))
+         (type (or null unsigned-byte) *spell-duration*)
+         (type (member nil :fill :outline) *change-karaoke-type*))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -182,6 +185,7 @@
             *active-section*
             (claraoke:dialogue text :generate-overrides-p *generate-overrides-predicate*
                                     :spell-duration *spell-duration*
+                                    :change-karaoke-type *change-karaoke-type*
                                     :keep-original-modifier-p *keep-original-modifier-predicate*
                                     :remove-unknown-modifier-p *remove-unknown-modifier-predicate*
                                     :layer (claraoke-internal:integer-from-string layer)
@@ -288,8 +292,9 @@
          initargs))
 
 (defmethod claraoke:parse-script
-    ((object cons) &key (ignore-note-p t) generate-overrides-p spell-duration
-                     keep-original-modifier-p remove-unknown-modifier-p)
+    ((object cons)
+     &key (ignore-note-p t) generate-overrides-p spell-duration change-karaoke-type
+       keep-original-modifier-p remove-unknown-modifier-p)
   (let ((*subtitle* (claraoke:subtitle nil))
         (*active-section* nil)
         (*ignore-note-predicate* ignore-note-p)
@@ -297,6 +302,7 @@
         (*keep-original-modifier-predicate* keep-original-modifier-p)
         (*remove-unknown-modifier-predicate* remove-unknown-modifier-p)
         (*spell-duration* spell-duration)
+        (*change-karaoke-type* change-karaoke-type)
         (char-bag (list #\Newline #\Return #\Page #\Linefeed)))
     (loop for line in object
           do (create-object-from-string (string-trim char-bag line))

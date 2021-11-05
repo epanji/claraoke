@@ -3,6 +3,7 @@
 (defpackage #:claraoke-subtitle
   (:use #:common-lisp)
   (:intern
+   #:*change-karaoke-type*
    #:*keep-original-modifier-predicate*
    #:*remove-unknown-modifier-predicate*)
   (:export
