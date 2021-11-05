@@ -5,13 +5,13 @@
   (:intern
    #:*change-karaoke-type*
    #:*keep-original-modifier-predicate*
-   #:*remove-unknown-modifier-predicate*)
+   #:*remove-unknown-modifier-predicate*
+   #:*spell-duration*)
   (:export
    #:*active-section*
    #:*generate-overrides-predicate*
    #:*ignore-note-predicate*
    #:*section-index*
-   #:*spell-duration*
    #:*subtitle*
    #:command
    #:comment
