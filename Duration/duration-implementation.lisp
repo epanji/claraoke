@@ -119,7 +119,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Sync duration
+;;; Synch duration
 ;;;
 (defmethod claraoke:synch-duration ((object duration) (source duration))
   (setf (claraoke:hours object) (claraoke:hours source))
@@ -140,7 +140,7 @@
 ;;;
 (defmethod claraoke:increase-duration ((duration duration) (addition duration))
   (claraoke:synch-duration duration (+ (claraoke:durationinteger duration)
-                                      (claraoke:durationinteger addition))))
+                                       (claraoke:durationinteger addition))))
 
 (defmethod claraoke:increase-duration ((duration duration) addition)
   (claraoke:increase-duration duration (claraoke:duration addition)))
@@ -154,7 +154,7 @@
 ;;;
 (defmethod claraoke:decrease-duration ((duration duration) (subtraction duration))
   (claraoke:synch-duration duration (- (claraoke:durationinteger duration)
-                                      (claraoke:durationinteger subtraction))))
+                                       (claraoke:durationinteger subtraction))))
 
 (defmethod claraoke:decrease-duration ((duration duration) subtraction)
   (claraoke:decrease-duration duration (claraoke:duration subtraction)))
