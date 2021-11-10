@@ -155,6 +155,8 @@ G in RANGE, H in THE, L in FLOW and R in WRITE.")
         (separators (list #\Space #\-)))
     (and (characterp char0)
          (or (member char0 separators)
+             ;; Check non-ASCII
+             (not (standard-char-p char0))
              ;; Check vowels
              (and (find char0 *vowels*)
                   (find char-1 *consonants*)
@@ -177,7 +179,8 @@ G in RANGE, H in THE, L in FLOW and R in WRITE.")
                            (find char-1 *consonants*))
                       (and (find char0 *weak-consonants*)
                            (find char1 *consonants*)
-                           (find char2 *vowels*))))))))
+                           (find char2 *vowels*)))))
+         char0)))
 
 (defun consume-spelling ()
   (loop with start = *index*
