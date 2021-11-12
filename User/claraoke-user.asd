@@ -2,5 +2,8 @@
 
 (defsystem #:claraoke-user
   :depends-on ("claraoke")
-  :components ((:file "claraoke-user")))
+  :serial t
+  :components
+  ((:file "package")
+   (:file "claraoke-user")))
 
