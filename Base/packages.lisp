@@ -181,11 +181,11 @@
   (:use #:common-lisp)
   (:export
    #:deletef
-   #:digit-char-or-dot-p
    #:distinct-number-and-string
    #:integer-from-string
    #:mimic-accessor
    #:number-or-string
+   #:number-string-p
    #:output-stream-from-designator
    #:print-symbols
    #:script-note
