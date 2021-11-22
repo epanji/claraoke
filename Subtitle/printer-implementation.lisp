@@ -119,7 +119,7 @@
 ;;;
 (defmethod print-object ((object note) stream)
   (print-unreadable-object (object stream :type nil :identity t)
-    (princ "Comment" stream)
+    (princ "NOTE" stream)
     (princ #\Space stream)
     (prin1 (claraoke:descriptor object) stream)))
 
@@ -146,11 +146,20 @@
     (prin1 (claraoke:name object) stream)))
 
 (defmethod print-object ((object event) stream)
-  (let ((start (claraoke:start object))
-        (end (claraoke:end object))
-        (text (claraoke:.text object)))
-    (format stream "#<~A --> ~A ~S ~@[(~D)>~]" start end
-            (if (stringp text) text (claraoke:.text text))
-            (unless (stringp text)
-              (length (claraoke:overrides text))))))
+  (print-unreadable-object (object stream :type nil :identity nil)
+    (let ((start (claraoke:start object))
+          (end (claraoke:end object))
+          (text (claraoke:.text object)))
+      (print-object start stream)
+      (princ " --> " stream)
+      (print-object end stream)
+      (princ #\Space stream)
+      (if (stringp text)
+          (prin1 text stream)
+          (prin1 (claraoke:.text text) stream))
+      (unless (stringp text)
+        (princ #\Space stream)
+        (princ #\( stream)
+        (princ (length (claraoke:overrides text)) stream)
+        (princ #\) stream)))))
 
