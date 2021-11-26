@@ -12,7 +12,6 @@
 ;;; Print Object
 ;;;
 (defmethod print-object ((object duration) stream)
-  (princ "#<" stream)
-  (princ (claraoke:durationstring object) stream)
-  (princ ">" stream))
+  (print-unreadable-object (object stream :type nil :identity nil)
+    (princ (claraoke:durationstring object) stream)))
 
