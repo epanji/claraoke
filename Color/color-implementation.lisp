@@ -19,16 +19,16 @@
            (= 10 (length string)))
        (string-equal "&H" (subseq string 0 2))))
 
-(defun dec-from-hexstring (string index &key (char 2) (skip 1))
+(defun dec-from-hexstring (string index &key (digit 2) (skip 1))
   (check-type string string)
   (check-type index (integer 0 3))
-  (check-type char (integer 1 2))
+  (check-type digit (integer 1 2))
   (check-type skip (integer 0 9))
-  (let ((multiplier (if (= 1 char) 17 1)))
-    (* multiplier (parse-integer string
-                                 :start (+ skip (* index char))
-                                 :end   (+ skip (* (1+ index) char))
-                                 :radix 16))))
+  (let* ((multiplier (if (= 1 digit) 17 1))
+         (target (* index digit))
+         (start (+ skip target))
+         (end (+ skip target digit)))
+    (* multiplier (parse-integer string :start start :end end :radix 16))))
 
 (defun html-color (string)
   (check-type string string)
@@ -36,12 +36,12 @@
              ((4 5) 1)
              ((7 9) 2)
              (t (return-from html-color (claraoke:rgb 255 255 255))))))
-    (claraoke:rgb (dec-from-hexstring string 0 :char c)
-                  (dec-from-hexstring string 1 :char c)
-                  (dec-from-hexstring string 2 :char c)
+    (claraoke:rgb (dec-from-hexstring string 0 :digit c)
+                  (dec-from-hexstring string 1 :digit c)
+                  (dec-from-hexstring string 2 :digit c)
                   (when (or (= 5 (length string))
                             (= 9 (length string)))
-                    (dec-from-hexstring string 3 :char c)))))
+                    (dec-from-hexstring string 3 :digit c)))))
 
 (defun ass-color (string)
   (check-type string string)
@@ -93,6 +93,16 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
+;;; Color predicate
+;;;
+(defmethod claraoke:colorp ((object color))
+  t)
+
+(defmethod claraoke:colorp (object)
+  nil)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
 ;;; Color string
 ;;;
 (defmethod claraoke:colorstring ((object color))
@@ -106,6 +116,68 @@
 
 (defmethod claraoke:colorstring (color)
   (error 'claraoke:object-must-be-color :object color))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Color string predicate
+;;;
+(defmethod claraoke:colorstringp ((object string))
+  (ass-color-p object))
+
+(defmethod claraoke:colorstringp (object)
+  nil)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Alpha
+;;;
+(defmethod claraoke:alpha ((object integer))
+  (check-type object (integer 0 255))
+  object)
+
+(defmethod claraoke:alpha ((object string))
+  (let* ((s (case (elt object 0)
+              (#\# 1)
+              (#\& (if (char-equal #\h (elt object 1)) 2 1))
+              (otherwise 0)))
+         (c (min 2 (- (length object) s)))
+         (i (dec-from-hexstring object 0 :digit c :skip s)))
+    (claraoke:alpha i)))
+
+(defmethod claraoke:alpha ((object ratio))
+  (let ((i (ceiling (* 255 object))))
+    (claraoke:alpha i)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Alpha predicate
+;;;
+(defmethod claraoke:alphap ((object integer))
+  (the (integer 0 255) object))
+
+(defmethod claraoke:alphap (object)
+  nil)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Alpha string
+;;;
+(defmethod claraoke:alphastring (object)
+  (let ((i (claraoke:alpha object)))
+    (values (format nil "&H~2,'0X&" i) i)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Alpha string predicate
+;;;
+(defmethod claraoke:alphastringp ((object string))
+  (and (stringp object)
+       (<= 4 (length object))
+       (string-equal "&H" (subseq object 0 2))
+       (parse-integer (subseq object 2 4) :radix 16)))
+
+(defmethod claraoke:alphastringp (object)
+  nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -127,22 +199,5 @@
   (claraoke:rgb (random 255) (random 255) (random 255)
                 (typecase alpha
                   ((or null integer) alpha)
-                  (otherwise (nth-value 1 (claraoke:alpha alpha))))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; Alpha
-;;;
-(defmethod claraoke:alpha ((object integer))
-  (check-type object (integer 0 255))
-  (values (format nil "&H~2,'0X&" object) object))
-
-(defmethod claraoke:alpha ((object string))
-  (let* ((c (min 2 (length object)))
-         (i (dec-from-hexstring object 0 :char c :skip 0)))
-    (claraoke:alpha i)))
-
-(defmethod claraoke:alpha ((object ratio))
-  (let ((i (ceiling (* 255 object))))
-    (claraoke:alpha i)))
+                  (otherwise (claraoke:alpha alpha)))))
 

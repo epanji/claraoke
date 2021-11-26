@@ -8,6 +8,9 @@
    #:.text
    #:alignment
    #:alpha
+   #:alphap
+   #:alphastring
+   #:alphastringp
    #:angle
    #:arg1
    #:arg2
@@ -22,7 +25,9 @@
    #:border-style
    #:centiseconds
    #:color
+   #:colorp
    #:colorstring
+   #:colorstringp
    #:command
    #:comment
    #:decrease-duration
