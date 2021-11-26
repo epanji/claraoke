@@ -7,13 +7,13 @@
 (defmethod initialize-instance :after ((instance event) &key duration &allow-other-keys)
   (let ((duration1 (claraoke:duration (claraoke:start instance)))
         (duration2 (claraoke:duration (claraoke:end instance))))
-    (setf (claraoke:start instance) duration1)
     (setf (claraoke:end instance) duration2)
     (unless (null duration)
       (claraoke:synch-duration
        duration2
        (+ (claraoke:durationinteger duration1)
-          (claraoke:durationinteger (claraoke:duration duration)))))))
+          (claraoke:durationinteger (claraoke:duration duration)))))
+    (setf (claraoke:start instance) duration1)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
