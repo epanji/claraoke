@@ -39,7 +39,7 @@
     (let ((copy-duration (claraoke:duration (claraoke:durationinteger object))))
       (claraoke:decrease-duration copy-duration start)))
   (:method ((object integer) &optional (start 0))
-    (claraoke:duration-length (claraoke:durationinteger object) start))
+    (claraoke:duration-length (claraoke:duration object) start))
   (:method ((object string) &optional (start 0))
     (claraoke:duration-length (claraoke:duration object) start))
   (:method ((object event) &optional (start 0))
