@@ -1,0 +1,53 @@
+<pre>
+
+Running test suite DURATION-SUITE
+ Running test DURATION-FROM-INTEGER .
+ Running test DURATION-FROM-STRING .......
+ Running test INTEGER-FROM-VARIOUS-DATA ...
+ Running test COMPARING-TWO-VARIOUS-DATA ..........
+ Running test MUTATING-DURATION ......
+ Running test STRING-DURATION-FROM-VARIOUS-DATA .........
+ Running test EXPECTING-DURATION-ERROR ..
+ Did 38 checks.
+    Pass: 38 (100%)
+    Skip: 0 ( 0%)
+    Fail: 0 ( 0%)
+
+Running test suite COLOR-SUITE
+ Running test COLOR-FROM-INTEGER ..
+ Running test COLOR-FROM-STRING-NAME ......
+ Running test COLOR-FROM-STRING-HTML ..
+ Running test COLOR-FROM-STRING-SPEC ..
+ Running test COLOR-FROM-RANDOM ..
+ Running test ALPHA-FROM-VARIOUS-DATA ....
+ Running test STRING-ALPHA-FROM-VARIOUS-DATA ......
+ Running test STRING-COLOR-FROM-VARIOUS-DATA ...........
+ Running test EXPECTING-COLOR-ERROR ..
+ Did 37 checks.
+    Pass: 37 (100%)
+    Skip: 0 ( 0%)
+    Fail: 0 ( 0%)
+
+Running test suite TEXT-SUITE
+ Running test CREATING-TEXT-WITH-VARIOUS-KEYARGS ........
+ Running test MUTATING-TEXT-WITH-NEW-STRING ..
+ Running test WORKING-WITH-KARAOKE ..
+ Running test WORKING-WITH-OVERRIDES-AND-MODIFIERS .................
+ Running test CHECKING-DEFAULT-MODIFIERS ............................................................
+ Did 89 checks.
+    Pass: 89 (100%)
+    Skip: 0 ( 0%)
+    Fail: 0 ( 0%)
+
+Running test suite SUBTITLE-SUITE
+ Running test WORKING-WITH-SUBTITLE ............
+ Running test WORKING-WITH-EVENTS .......
+ Running test CREATING-DIALOGUE-WITH-VARIOUS-KEYARGS ..........
+ Running test WORKING-WITH-FONTS-SECTION .
+ Running test WORKING-WITH-GRAPHICS-SECTION .
+ Did 31 checks.
+    Pass: 31 (100%)
+    Skip: 0 ( 0%)
+    Fail: 0 ( 0%)
+
+</pre>

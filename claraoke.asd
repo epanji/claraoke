@@ -5,6 +5,8 @@
   :author "Panji Kusuma <epanji@gmail.com>"
   :description "System to write KARAOKE typesetting according to ASS format. (Advanced Substation Alpha)"
   :license  ""
+  :in-order-to ((test-op (load-op "claraoke-test")))
+  :perform (test-op (o c) (symbol-call :claraoke-test :suite-tests))
   :depends-on ("claraoke-base"
                "claraoke-text"
                "claraoke-color"

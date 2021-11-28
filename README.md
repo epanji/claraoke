@@ -151,6 +151,19 @@ This is an example of ``DIALOGUE`` creation:
 
 # Tests
 
+``` common-lisp
+(with-open-file (stream #p"tests-result.txt"
+                        :direction :output
+                        :if-exists :supersede
+                        :if-does-not-exist :create)
+  (let ((*standard-output* stream))
+    (format t "<pre>~%")
+    (asdf:test-system "claraoke")
+    (format t "~2&</pre>")))
+```
+
+_Open tests result [HERE](tests-result.txt)._
+
 # License
 
 
