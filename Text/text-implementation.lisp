@@ -211,7 +211,7 @@
 ;;;
 ;;; Delete modifier
 ;;;
-(defmethod claraoke:delete-override ((object batch) (modifier modifier))
+(defmethod claraoke:delete-modifier ((object batch) (modifier modifier))
   (claraoke-internal:deletef modifier (claraoke:modifiers object))
   object)
 
