@@ -115,7 +115,7 @@
         (format nil "&H~2,'0X~2,'0X~2,'0X~2,'0X" alpha blue green red))))
 
 (defmethod claraoke:colorstring (color)
-  (error 'claraoke:object-must-be-color :object color))
+  (claraoke:colorstring (claraoke:color color)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;

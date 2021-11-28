@@ -66,7 +66,7 @@
           (claraoke:centiseconds object)))
 
 (defmethod claraoke:durationstring (object)
-  (error 'claraoke:object-must-be-duration :object object))
+  (claraoke:durationstring (claraoke:duration object)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
