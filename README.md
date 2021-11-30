@@ -166,4 +166,5 @@ _Open tests result [HERE](tests-result.txt)._
 
 # License
 
+[BSD 2-Clause License](LICENSE)
 
