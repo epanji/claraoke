@@ -3,7 +3,7 @@
 (defsystem "claraoke"
   :version (:read-file-form "version.lisp-expr")
   :author "Panji Kusuma <epanji@gmail.com>"
-  :description "Karaoke type helper on ASS format (Advanced Substation Alpha)"
+  :description "System to write KARAOKE typesetting according to ASS format. (Advanced Substation Alpha)"
   :license  ""
   :depends-on ("claraoke-base"
                "claraoke-text"
