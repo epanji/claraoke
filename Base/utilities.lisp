@@ -25,6 +25,10 @@ Write BODY if necessary for returning specializer on T otherwise it will returni
   "Delete item destructively from location holding sequence."
   `(setf ,sequence (delete ,item ,sequence ,@keyword-arguments)))
 
+(defmacro claraoke-internal:sortf (sequence predicate &rest keyword-arguments)
+  "Stable sort item destructively from location holding sequence."
+  `(setf ,sequence (stable-sort ,sequence ,predicate ,@keyword-arguments)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Functions

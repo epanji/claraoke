@@ -166,7 +166,7 @@
 ;;; Sort override
 ;;;
 (defmethod claraoke:sort-overrides ((object text))
-  (sort (claraoke:overrides object) 'override-lessp))
+  (claraoke-internal:sortf (claraoke:overrides object) 'override-lessp))
 
 (defmethod claraoke:sort-overrides ((object null))
   (warn 'claraoke:null-object-warning))

@@ -506,7 +506,7 @@
    (claraoke:start event2)))
 
 (defmethod claraoke:sort-events ((object events))
-  (sort (claraoke:lines object) 'sort-event-predicate))
+  (claraoke-internal:sortf (claraoke:lines object) 'sort-event-predicate))
 
 (defmethod claraoke:sort-events ((object subtitle))
   (claraoke:sort-events (claraoke:events object)))

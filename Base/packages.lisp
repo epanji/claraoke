@@ -194,6 +194,7 @@
    #:output-stream-from-designator
    #:print-symbols
    #:script-note
+   #:sortf
    #:version))
 
 (defpackage #:claraoke-base
