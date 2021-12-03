@@ -215,7 +215,8 @@
 (defun reset-modifier-p (input)
   (and (stringp input)
        (char= #\r (elt input 0))
-       (alpha-char-p (elt input 1))))
+       (or (= 1 (length input))
+           (alpha-char-p (elt input 1)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
