@@ -27,6 +27,10 @@
     :initform nil
     :initarg :format-control
     :accessor format-control)
+   (%unique-p
+    :initform t
+    :initarg :unique-p
+    :reader unique-p)
    (%arg1 :initarg :arg1 :initform nil :accessor claraoke:arg1)
    (%arg2 :initarg :arg2 :initform nil :accessor claraoke:arg2)
    (%arg3 :initarg :arg3 :initform nil :accessor claraoke:arg3)
@@ -61,6 +65,7 @@
 (defclass unknown (modifier)
   ()
   (:default-initargs
+   :unique-p nil
    :format-control "\\~A"
    :arg1 "Any"))
 
@@ -327,12 +332,14 @@
 (defclass transformation1 (modifier)
   ()
   (:default-initargs
+   :unique-p nil
    :format-control "~@[\\t(~A)~]"
    :arg1 "\\frz30"))
 
 (defclass transformation2 (modifier)
   ()
   (:default-initargs
+   :unique-p nil
    :format-control "~@[\\t(~A,~A)~]"
    :arg1 0.5
    :arg2 "\\frz30"))
@@ -340,6 +347,7 @@
 (defclass transformation3 (modifier)
   ()
   (:default-initargs
+   :unique-p nil
    :format-control "~@[\\t(~A,~A,~A)~]"
    :arg1 300
    :arg2 400
@@ -348,6 +356,7 @@
 (defclass transformation4 (modifier)
   ()
   (:default-initargs
+   :unique-p nil
    :format-control "~@[\\t(~A,~A,~A,~A)~]"
    :arg1 300
    :arg2 400

@@ -177,6 +177,21 @@
     (is (string= "{\\fr30}Hello {\\r\\frz-30}world!" str2))
     (is (string= "{\\fr30}Hello {\\r\\frz-30}world!" str3))))
 
+(test keep-last-duplicate-unique-modifier
+  ;; Assuming first unique modifier is a mistake from overridden text
+  (let ((str1 (ps-string (text "{\\k15}Hel{\\k15}lo {\\k15\\1c&H0000FF&}{\\k30\\1c&H00FFFF&}world!")))
+        (str2 (ps-string (text "{\\k15}Hel{\\k15}lo {\\k15\\1c&H0000FF&\\k30\\1c&H00FFFF&}world!")))
+        ;; Although it is possible to write "{\\k100\\k30}syllable" to
+        ;; delay 1 seconds before animate "syllable", it is better to
+        ;; adjust the dialogue time or separate override with
+        ;; invisible syllable character (#\INVISIBLE_SEPARATOR)
+        (str3 "{\\k15}Hel{\\k15}lo {\\k100}⁣{\\k30\\1c&H00FFFF&}world!")
+        (str4 "{\\k15}Hel{\\k15}lo {\\t(0,200,\\fry-80)\\t(200,300,\\1c&H0000FF)\\t(300,400,\\fry0\\1c&H00FFFF&)}world!"))
+    (is (string= "{\\k15}Hel{\\k15}lo {\\k30\\1c&H00FFFF&}world!" str1))
+    (is (string= str1 str2))
+    (is (string= str3 (ps-string (text str3))))
+    (is (string= str4 (ps-string (text str4))))))
+
 (test working-with-karaoke
   (let ((txt1 (text "Hello world!"))
         (txt2 (text "Hello world!" :generate-overrides-p t)))
