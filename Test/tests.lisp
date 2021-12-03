@@ -169,6 +169,14 @@
     (is (stringp (setf (text obj) "Wonderfull")))
     (is (string= "{\\k15}Won{\\k15}der{\\k15}full" (ps-string obj)))))
 
+(test merging-empty-syllable
+  (let ((str1 (ps-string (text "{\\fr30}Hello {\\r}{\\frz-30}world!")))
+        (str2 (ps-string (text "{\\fr30}Hello {\\r}{\\frz-30}world!" :keep-original-modifier-p t)))
+        (str3 (ps-string (text "{\\fr30}Hello {\\r}{\\frz-30}world!" :keep-original-modifier-p t :remove-unknown-modifier-p t))))
+    (is (string= "{\\frz30}Hello {\\r\\frz-30}world!" str1))
+    (is (string= "{\\fr30}Hello {\\r\\frz-30}world!" str2))
+    (is (string= "{\\fr30}Hello {\\r\\frz-30}world!" str3))))
+
 (test working-with-karaoke
   (let ((txt1 (text "Hello world!"))
         (txt2 (text "Hello world!" :generate-overrides-p t)))
