@@ -91,15 +91,17 @@ For example, unknown modifier {\\note} will not be parsed as newline.")
 
 (defun consume-override ()
   (loop with start = *index*
-        until (end-override-matcher)
-        while (consume)
+        for char = (consume)
+        until (or (null char)
+                  (end-override-matcher))
         finally (consume)
                 (return (subseq *string* start *index*))))
 
 (defun consume-text ()
   (loop with start = *index*
-        until (start-override-matcher)
-        while (consume)
+        for char = (consume)
+        until (or (null char)
+                  (start-override-matcher))
         finally (return (subseq *string* start *index*))))
 
 (defun build-string-or-override ()
@@ -118,13 +120,14 @@ For example, unknown modifier {\\note} will not be parsed as newline.")
         (*text-index* 0)
         (*keep-original-modifier-predicate* keep-original-modifier-p)
         (*remove-unknown-modifier-predicate* remove-unknown-modifier-p))
-    (loop while (peek)
-          for object = (build-string-or-override)
+    (loop for char = (peek)
+          and object = (build-string-or-override)
+          until (null char)
           if (stringp object)
-            collect object into list-strings
+            collect object into strings
           else
             collect object into overrides
-          finally (let ((text (apply 'concatenate 'string list-strings)))
+          finally (let ((text (apply 'concatenate 'string strings)))
                     (return (values text overrides))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -190,8 +193,9 @@ G in RANGE, H in THE, L in FLOW and R in WRITE.")
 
 (defun consume-spelling ()
   (loop with start = *index*
-        until (end-spelling-matcher)
-        while (consume)
+        for char = (consume)
+        until (or (null char)
+                  (end-spelling-matcher))
         finally (consume)
                 (return (subseq *string* start *index*))))
 
@@ -240,11 +244,13 @@ G in RANGE, H in THE, L in FLOW and R in WRITE.")
 
 (defun consume-modifier ()
   (loop with start = *index*
-        until (end-modifier-matcher)
-        while (consume)
-        finally (return
-                  (prog1 (subseq *string* start *index*)
-                    (consume)))))
+        for end = *index*
+        and char = (peek)
+        until (or (null char)
+                  (end-modifier-matcher))
+        do (consume)
+        finally (consume)
+                (return (subseq *string* start end))))
 
 (defun split-modifier (string)
   (setf string (remove-if
@@ -257,8 +263,9 @@ G in RANGE, H in THE, L in FLOW and R in WRITE.")
         (*index* 0)
         (*char-inside-parenthesis-predicate* nil))
     (if (plusp (count #\\ string))
-        (loop while (peek)
-              for modifier = (consume-modifier)
+        (loop for char = (peek)
+              and modifier = (consume-modifier)
+              until (null char)
               when (plusp (length modifier))
                 collect modifier)
         (list string))))
