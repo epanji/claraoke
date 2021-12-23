@@ -249,7 +249,12 @@
     (is (string= "{\\k12\\fs18}Hel{\\kf13\\fsp1.5}lo {\\ko15}world!" (ps-string txt1)))
     (is (zerop (index (find-override txt1 0))))
     (is (= 3 (index (find-override txt1 "lo w"))))
-    (is (= 6 (index (find-override txt1 "world"))))))
+    (is (= 6 (index (find-override txt1 "world"))))
+    (is (string= "\\t(300,400,0.5,\\fax0\\fs18)"
+                 (po-string (modifier 'transformation4
+                                      :arg4 (list (modifier 'fontshear-x :arg1 0)
+                                                  (modifier 'fontsize :arg1 18))))))
+    (is (string= "\\1c&H38220C&" (po-string (modifier 'color1 :arg1 (rgb 12 34 56)))))))
 
 (test checking-default-modifiers
   (is (string= "\\a2" (po-string (modifier 'alignment))))

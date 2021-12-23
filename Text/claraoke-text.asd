@@ -9,5 +9,6 @@
    (:file "text-parser")
    (:file "text-modifier")
    (:file "text-implementation")
-   (:file "printer-implementation")))
+   (:file "printer-implementation")
+   (:file "convenience-modifier")))
 
