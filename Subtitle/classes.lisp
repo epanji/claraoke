@@ -43,7 +43,7 @@
   ()
   (:default-initargs
    :descriptor "Script Info"
-   :lines ()))
+   :lines '()))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -161,7 +161,7 @@
     ScaleX, ScaleY, Spacing, Angle, ~
     BorderStyle, Outline, Shadow, Alignment, ~
     MarginL, MarginR, MarginV, Encoding")
-   :lines ()))
+   :lines '()))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -262,7 +262,7 @@
    :header (format nil "~
     Format: Layer, Start, End, Style, Name, ~
     MarginL, MarginR, MarginV, Effect, Text")
-   :lines ()))
+   :lines '()))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -272,7 +272,7 @@
   ()
   (:default-initargs
    :descriptor "Fonts"
-   :lines ()))
+   :lines '()))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -282,5 +282,5 @@
   ()
   (:default-initargs
    :descriptor "Graphics"
-   :lines ()))
+   :lines '()))
 

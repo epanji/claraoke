@@ -133,8 +133,7 @@
 ;;;
 (defun create-object-from-string (line)
   (when (null *subtitle*) (return-from create-object-from-string))
-  (cond ((empty-line-p line)
-         ())
+  (cond ((empty-line-p line) nil)       ; do nothing
         ((note-line-p line)
          (unless *ignore-note-predicate*
            (claraoke:insert-note *active-section* (claraoke:note (subseq line 2)))))
@@ -144,8 +143,7 @@
                (when *ignore-note-predicate*
                  (setf *active-section* (claraoke:script-info index)))
                (setf *active-section* (aref (claraoke:lines *subtitle*) index)))))
-        ((header-line-p line)
-         ())
+        ((header-line-p line) nil)      ; do nothing
         ((style-line-p line)
          (destructuring-bind (name fontname fontsize
                               primary-colour secondary-colour outline-colour back-colour

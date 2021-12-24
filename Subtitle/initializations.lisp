@@ -48,7 +48,7 @@
        video-zoom
        video-position
      &allow-other-keys)
-  (let ((lines ()))
+  (let ((lines '()))
     (flet ((pushline (pretty-name value)
              (unless (null value)
                (pushnew (make-instance 'info :descriptor pretty-name :value value) lines

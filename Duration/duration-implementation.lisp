@@ -26,7 +26,7 @@
       (duration object)))
 
 (defmethod claraoke:duration ((object integer))
-  (let ((cssmh ())
+  (let ((cssmh '())
         (hmscs (list (* 60 60 100) (* 60 100) 100 1))
         (initial-value (max 0 object)))
     (reduce (lambda (last-value divisor)
