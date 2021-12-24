@@ -1,7 +1,7 @@
 (cl:in-package #:asdf-user)
 
 (defsystem "claraoke-text"
-  :depends-on ("claraoke-base")
+  :depends-on ("claraoke-base" "claraoke-color")
   :serial t
   :components
   ((:file "package")
