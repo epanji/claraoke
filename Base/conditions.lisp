@@ -1,6 +1,4 @@
-;;;; conditions.lisp
-
-(in-package #:claraoke-base)
+(cl:in-package #:claraoke-base)
 
 (define-condition claraoke:null-object-warning (warning)
   ()
