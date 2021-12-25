@@ -100,10 +100,14 @@
   (is (colorp (color "BlueViolet"))))
 
 (test color-from-string-html
+  (is (colorp (color "#ABC")))
+  (is (colorp (color "#ABCD")))
   (is (colorp (color "#8A2BE2")))
   (is (colorp (color "#8A2BE24D"))))
 
 (test color-from-string-spec
+  (is (colorp (color "&HCBA&")))
+  (is (colorp (color "&HDCBA")))
   (is (colorp (color "&HE22B8A&")))
   (is (colorp (color "&H4DE22B8A"))))
 
@@ -139,6 +143,14 @@
     (is (stringp (colorstring "#8A2BE24D")))
     (is (stringp (colorstring "&HE22B8A&")))
     (is (stringp (colorstring "&H4DE22B8A")))))
+
+(test twin-digits-color-code
+  (is (string= (colorstring "#ABC") (colorstring "#AABBCC")))
+  (is (string= (colorstring "#ABCD") (colorstring "#AABBCCDD")))
+  (is (string= (colorstring "&HCBA&") (colorstring "&HCCBBAA&")))
+  (is (string= (colorstring "&HDCBA") (colorstring "&HDDCCBBAA")))
+  (is (string= (alphastring "&HA&") (alphastring "&HAA&")))
+  (is (string= (alphastring "&HA") (alphastring "&HAA"))))
 
 (test expecting-color-error
   (signals error (colorstring 1234567))

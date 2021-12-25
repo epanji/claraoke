@@ -12,7 +12,8 @@
 ;;; Print Object
 ;;;
 (defmethod print-object ((object color) stream)
-  (princ "#<" stream)
+  (princ #\# stream)
+  (princ #\< stream)
   (princ (claraoke:colorstring object) stream)
-  (princ ">" stream))
+  (princ #\> stream))
 

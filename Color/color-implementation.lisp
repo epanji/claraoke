@@ -6,18 +6,42 @@
 ;;;
 (defun html-color-p (string)
   (and (stringp string)
-       (or (= 4 (length string))
-           (= 5 (length string))
-           (= 7 (length string))
-           (= 9 (length string)))
-       (char-equal #\# (elt string 0))))
+       (char-equal #\# (elt string 0))
+       (case (length string)
+         ;; #000 rgb
+         (4 t)
+         ;; #0000 rgba
+         (5 t)
+         ;; #000000 rrggbb
+         (7 t)
+         ;; #00000000 rrggbbaa
+         (9 t)
+         (otherwise nil))
+       (every (lambda (c)
+                (digit-char-p c 16))
+              (subseq string 1))))
 
 (defun ass-color-p (string)
   (and (stringp string)
-       (if (= 9 (length string))
-           (char-equal #\& (elt string 8))
-           (= 10 (length string)))
-       (string-equal "&H" (subseq string 0 2))))
+       (string-equal "&H" (subseq string 0 2))
+       (case (length string)
+         ;; &H000& or &H0000
+         (6 (and (or (digit-char-p (elt string 5) 16)
+                     (char-equal #\& (elt string 5)))
+                 (every (lambda (c)
+                          (digit-char-p c 16))
+                        (subseq string 2 5))))
+         ;; &H000000&
+         (9 (and (char-equal #\& (elt string 8))
+                 (every (lambda (c)
+                          (digit-char-p c 16))
+                        (subseq string 2 8))))
+         ;; &H00000000
+         (10 (and (char-not-equal #\& (elt string 9))
+                  (every (lambda (c)
+                           (digit-char-p c 16))
+                         (subseq string 2))))
+         (otherwise nil))))
 
 (defun dec-from-hexstring (string index &key (digit 2) (skip 1))
   (check-type string string)
@@ -35,7 +59,8 @@
   (let ((c (case (length string)
              ((4 5) 1)
              ((7 9) 2)
-             (t (return-from html-color (claraoke:rgb 255 255 255))))))
+             (otherwise (return-from html-color
+                          (claraoke:rgb 255 255 255))))))
     (claraoke:rgb (dec-from-hexstring string 0 :digit c)
                   (dec-from-hexstring string 1 :digit c)
                   (dec-from-hexstring string 2 :digit c)
@@ -45,20 +70,24 @@
 
 (defun ass-color (string)
   (check-type string string)
-  (let* ((rgba (list (dec-from-hexstring string 0 :skip 2)
-                     (dec-from-hexstring string 1 :skip 2)
-                     (dec-from-hexstring string 2 :skip 2)
-                     (when (= 10 (length string))
-                       (dec-from-hexstring string 3 :skip 2))))
-         (agbr (reverse (remove nil rgba))))
-    (apply 'claraoke:rgb agbr)))
+  (let* ((ln (length string))
+         (lc (elt string (1- ln)))
+         (dg (round (- ln 2) 4))
+         (decs (list (dec-from-hexstring string 0 :skip 2 :digit dg)
+                     (dec-from-hexstring string 1 :skip 2 :digit dg)
+                     (dec-from-hexstring string 2 :skip 2 :digit dg)
+                     (when (and (or (= 6 ln) (= 10 ln))
+                                (char-not-equal #\& lc))
+                       (dec-from-hexstring string 3 :skip 2 :digit dg))))
+         (rgba (reverse (remove nil decs))))
+    (apply 'claraoke:rgb rgba)))
 
 (defvar *color-names* (make-hash-table :test 'equalp))
 
 (defun normalize-color-name (string)
   (check-type string string)
-  (let ((not-alpha-char-p (complement (function alpha-char-p))))
-    (string-upcase (remove-if not-alpha-char-p string))))
+  (let ((not-alphanumericp (complement (function alphanumericp))))
+    (string-upcase (remove-if not-alphanumericp string))))
 
 (defun keyword-from-name (string)
   (check-type string string)
@@ -140,7 +169,7 @@
               (#\# 1)
               (#\& (if (char-equal #\h (elt object 1)) 2 1))
               (otherwise 0)))
-         (c (min 2 (- (length object) s)))
+         (c (min 2 (- (length (string-right-trim "&" object)) s)))
          (i (dec-from-hexstring object 0 :digit c :skip s)))
     (claraoke:alpha i)))
 
@@ -153,7 +182,7 @@
 ;;; Alpha predicate
 ;;;
 (defmethod claraoke:alphap ((object integer))
-  (the (integer 0 255) object))
+  (typep object '(integer 0 255)))
 
 (defmethod claraoke:alphap (object)
   nil)
@@ -172,9 +201,21 @@
 ;;;
 (defmethod claraoke:alphastringp ((object string))
   (and (stringp object)
-       (<= 4 (length object))
+       (<= 3 (length object) 5)
        (string-equal "&H" (subseq object 0 2))
-       (parse-integer (subseq object 2 4) :radix 16)))
+       (case (length object)
+         ;; &H0
+         (3 (digit-char-p (elt object 2) 16))
+         ;; &H00
+         (4 (every (lambda (c)
+                     (digit-char-p c 16))
+                   (subseq object 2)))
+         ;; &H00&
+         (5 (and (char-equal #\& (elt object 4))
+                 (every (lambda (c)
+                          (digit-char-p c 16))
+                        (subseq object 2 4))))
+         (otherwise nil))))
 
 (defmethod claraoke:alphastringp (object)
   nil)
