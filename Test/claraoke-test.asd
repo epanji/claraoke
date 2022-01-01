@@ -2,5 +2,12 @@
 
 (defsystem #:claraoke-test
   :depends-on ("fiveam" "claraoke")
-  :components ((:file "tests")))
+  :serial t
+  :components
+  ((:file "package")
+   (:file "suites")
+   (:file "duration-tests")
+   (:file "color-tests")
+   (:file "text-tests")
+   (:file "subtitle-tests")))
 
