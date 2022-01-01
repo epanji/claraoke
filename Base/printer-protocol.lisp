@@ -5,5 +5,5 @@
 ;;; Print script
 ;;;
 (defgeneric claraoke:print-script (object &optional stream)
-  (:documentation "Output readable printed representation of OBJECT to the specified STREAM."))
+  (:documentation "Return OBJECT argument with output printed to STREAM argument."))
 

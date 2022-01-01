@@ -45,11 +45,15 @@
 ;;;
 ;;; Generic functions
 ;;;
-(defgeneric claraoke:insert-line (script line))
+(defgeneric claraoke:insert-line (script line)
+  (:documentation "Return LIST of lines after inserting LINE argument into SCRIPT argument."))
 
-(defgeneric claraoke:delete-line (script line))
+(defgeneric claraoke:delete-line (script line)
+  (:documentation "Return LIST of lines after deleting LINE argument from SCRIPT argument."))
 
-(defgeneric claraoke:find-line (script line))
+(defgeneric claraoke:find-line (script line)
+  (:documentation "Return LINE object from SCRIPT argument with hint from LINE argument."))
 
-(defgeneric claraoke:last-line (script))
+(defgeneric claraoke:last-line (script)
+  (:documentation "Return LINE object from last line in SCRIPT argument."))
 
