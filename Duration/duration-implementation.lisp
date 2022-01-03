@@ -72,15 +72,21 @@
 ;;;
 ;;; Duration string predicate
 ;;;
-(defvar +duration-characters+ "0123456789.:")
-
-(defun duration-character-p (char)
-  (when (find char +duration-characters+) t))
-
 (defmethod claraoke:durationstringp ((object string))
-  (and (every 'duration-character-p (string-trim '(#\Space #\Tab) object))
-       (when (ignore-errors (claraoke:duration object))
-         t)))
+  (let ((min (length object))
+        (pos nil))
+    (and (<= 10 min)
+         (setf pos (position #\: object))
+         (every 'digit-char-p (subseq object 0 pos))
+         (digit-char-p (elt object (+ pos 1)))
+         (digit-char-p (elt object (+ pos 2)))
+         (char= #\: (elt object (+ pos 3)))
+         (digit-char-p (elt object (+ pos 4)))
+         (digit-char-p (elt object (+ pos 5)))
+         (char= #\. (elt object (+ pos 6)))
+         (digit-char-p (elt object (+ pos 7)))
+         (digit-char-p (elt object (+ pos 8)))
+         (= min (+ pos 9)))))
 
 (defmethod claraoke:durationstringp (object)
   nil)

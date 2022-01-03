@@ -56,6 +56,15 @@
     (is (stringp (durationstring "1:2:3.45")))
     (is (stringp (durationstring "123456")))))
 
+(test string-duration-predicate
+  (is-true (durationstringp "0:01:02.03"))
+  (is-true (durationstringp "123:01:02.03"))
+  (is-false (durationstringp "0:01:02.123"))
+  (is-false (durationstringp "0:1:2.3"))
+  (is-false (durationstringp "123"))
+  (is-true (durationstringp (durationstring "0:1:2.3")))
+  (is-true (durationstringp (durationstring "123"))))
+
 (test expecting-duration-error
   (signals error (duration 1.2f0))
   (signals error (duration 1.2d0)))
