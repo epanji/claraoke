@@ -6,6 +6,7 @@
 ;;;
 (defun html-color-p (string)
   (and (stringp string)
+       (< 1 (length string))
        (char-equal #\# (elt string 0))
        (case (length string)
          ;; #000 rgb
@@ -23,6 +24,7 @@
 
 (defun ass-color-p (string)
   (and (stringp string)
+       (< 2 (length string))
        (string-equal "&H" (subseq string 0 2))
        (case (length string)
          ;; &H000& or &H0000
