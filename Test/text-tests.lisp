@@ -173,4 +173,21 @@
   (is (string= "\\t(300,400,0.5,\\frz30)" (po-string (modifier 'transformation4))))
   (is (string= "\\u1" (po-string (modifier 'underline))))
   (is (string= "\\q1" (po-string (modifier 'wrapping-style)))))
+
+(test checking-transformation-modifiers
+  (let ((str0 "{\\t()}Hello world!")
+        (str1 "{\\t(\\clip(573,267,573,267))}Hello world!")
+        (str2 "{\\t(3,\\clip(573,267,573,267))}Hello world!")
+        (str3 "{\\t(1000,2000,\\clip(573,267,573,267))}Hello world!")
+        (str4 "{\\t(1000,2000,3,\\clip(573,267,573,267))}Hello world!"))
+    (is (string= str0 (ps-string (text str0))))
+    (is (string= "Hello world!" (ps-string (text str0 :remove-unknown-modifier-p t))))
+    (is (string= str1 (ps-string (text str1))))
+    (is (string= str1 (ps-string (text str1 :remove-unknown-modifier-p t))))
+    (is (string= str2 (ps-string (text str2))))
+    (is (string= str2 (ps-string (text str2 :remove-unknown-modifier-p t))))
+    (is (string= str3 (ps-string (text str3))))
+    (is (string= str3 (ps-string (text str3 :remove-unknown-modifier-p t))))
+    (is (string= str4 (ps-string (text str4))))
+    (is (string= str4 (ps-string (text str4 :remove-unknown-modifier-p t))))))
 

@@ -271,33 +271,37 @@
 ;;;
 ;;; Function modifiers
 ;;;
-(defun transformation1-modifier-p (input)
+(defun transformation1-modifier-p (input &aux pos)
   (and (stringp input)
        (find #\( input)
        (char= #\t (elt input 0))
        (char= #\( (elt input 1))
-       (= 0 (count #\, input))))
+       (setf pos (position #\\ input))
+       (= 0 (count #\, (subseq input 0 pos)))))
 
-(defun transformation2-modifier-p (input)
+(defun transformation2-modifier-p (input &aux pos)
   (and (stringp input)
        (find #\( input)
        (char= #\t (elt input 0))
        (char= #\( (elt input 1))
-       (= 1 (count #\, input))))
+       (setf pos (position #\\ input))
+       (= 1 (count #\, (subseq input 0 pos)))))
 
-(defun transformation3-modifier-p (input)
+(defun transformation3-modifier-p (input &aux pos)
   (and (stringp input)
        (find #\( input)
        (char= #\t (elt input 0))
        (char= #\( (elt input 1))
-       (= 2 (count #\, input))))
+       (setf pos (position #\\ input))
+       (= 2 (count #\, (subseq input 0 pos)))))
 
-(defun transformation4-modifier-p (input)
+(defun transformation4-modifier-p (input &aux pos)
   (and (stringp input)
        (find #\( input)
        (char= #\t (elt input 0))
        (char= #\( (elt input 1))
-       (= 3 (count #\, input))))
+       (setf pos (position #\\ input))
+       (= 3 (count #\, (subseq input 0 pos)))))
 
 (defun move-modifier-p (input)
   (and (stringp input)
@@ -399,10 +403,17 @@
   (flet ((subseqi (in s &optional e)
            (claraoke-internal:number-or-string (subseq in s e)))
          (keyargs (in &rest keywords)
-           (let ((str (string-trim "()" (subseq input (position #\( in)))))
-             (mapcan 'list keywords
-                     (claraoke-internal:distinct-number-and-string
-                      (split-sequence:split-sequence #\, str :remove-empty-subseqs t))))))
+           (let ((string (subseq in (1+ (or (position #\( in) 0)) (1- (length in)))))
+             (loop with trimmed = (subseq string 0 (position #\\ string))
+                   for key in keywords
+                   for start = 0
+                     then (if (null end) nil (1+ end))
+                   for end = (position #\, trimmed)
+                     then (when (numberp start)
+                            (let ((pos (position #\, (subseq trimmed start))))
+                              (if (null pos) nil (+ start pos))))
+                   collect key
+                   collect (if (null start) nil (subseq string start end))))))
     (cond ((newline-modifier-p input)
            (make-instance 'newline :index 0 :arg1 (char= #\N (elt input 0))))
           ((bold-modifier-p input)

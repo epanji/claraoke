@@ -38,8 +38,9 @@ Running test suite TEXT-SUITE
  Running test WORKING-WITH-KARAOKE ..
  Running test WORKING-WITH-OVERRIDES-AND-MODIFIERS ...................
  Running test CHECKING-DEFAULT-MODIFIERS ............................................................
- Did 98 checks.
-    Pass: 98 (100%)
+ Running test CHECKING-TRANSFORMATION-MODIFIERS ..........
+ Did 108 checks.
+    Pass: 108 (100%)
     Skip: 0 ( 0%)
     Fail: 0 ( 0%)
 
