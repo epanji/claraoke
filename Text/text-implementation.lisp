@@ -57,7 +57,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Override comparation (Internal)
+;;; Override comparison (Internal)
 ;;;
 (defun %compare-override (override1 override2 operator)
   (check-type override1 override)
@@ -299,30 +299,30 @@
 (defun insert-karaoke (text index value karaoke)
   (check-type text text)
   (check-type index integer)
-  (check-type value integer)
+  (check-type value (or null integer))
   (check-type karaoke symbol)
   (let* ((string (claraoke:.text text))
          (index (min index (1- (length string))))
          (override (claraoke:find-override text index)))
     (if (null override)
-        (claraoke:insert-override text (claraoke:override karaoke index :arg1 value))
+        (let ((value (or value *spell-duration-in-centiseconds*)))
+          (claraoke:insert-override text (claraoke:override karaoke index :arg1 value)))
         (let ((modifier (or (claraoke:find-modifier override :karaoke)
                             (claraoke:find-modifier override :karaoke-fill)
                             (claraoke:find-modifier override :karaoke-outline))))
           (if (null modifier)
-              (claraoke:insert-modifier override (claraoke:modifier karaoke :arg1 value))
-              ;; Change karaoke type and it's value instead of error message
-              (change-class modifier karaoke :arg1 value))))
+              (let ((value (or value *spell-duration-in-centiseconds*)))
+                (claraoke:insert-modifier override (claraoke:modifier karaoke :arg1 value)))
+              (let ((control (format-control (make-instance karaoke)))
+                    (value (or value (claraoke:arg1 modifier) *spell-duration-in-centiseconds*)))
+                ;; Change karaoke type and it's value instead of error message
+                (change-class modifier karaoke :format-control control :arg1 value)))))
     text))
 
-(defmethod claraoke:insert-karaoke
-    ((object text) (index integer)
-     &optional (value *spell-duration-in-centiseconds*))
+(defmethod claraoke:insert-karaoke ((object text) (index integer) &optional value)
   (insert-karaoke object index value 'karaoke))
 
-(defmethod claraoke:insert-karaoke
-    ((object text) (index string)
-     &optional (value *spell-duration-in-centiseconds*))
+(defmethod claraoke:insert-karaoke ((object text) (index string) &optional value)
   (let ((index (search index (claraoke:.text object))))
     (claraoke:insert-karaoke object index value)))
 
@@ -330,14 +330,10 @@
   (declare (ignore value))
   (error 'claraoke:object-must-be-text :object object))
 
-(defmethod claraoke:insert-karaoke-fill
-    ((object text) (index integer)
-     &optional (value *spell-duration-in-centiseconds*))
+(defmethod claraoke:insert-karaoke-fill ((object text) (index integer) &optional value)
   (insert-karaoke object index value 'karaoke-fill))
 
-(defmethod claraoke:insert-karaoke-fill
-    ((object text) (index string)
-     &optional (value *spell-duration-in-centiseconds*))
+(defmethod claraoke:insert-karaoke-fill ((object text) (index string) &optional value)
   (let ((index (search index (claraoke:.text object))))
     (claraoke:insert-karaoke-fill object index value)))
 
@@ -345,14 +341,10 @@
   (declare (ignore value))
   (error 'claraoke:object-must-be-text :object object))
 
-(defmethod claraoke:insert-karaoke-outline
-    ((object text) (index integer)
-     &optional (value *spell-duration-in-centiseconds*))
+(defmethod claraoke:insert-karaoke-outline ((object text) (index integer) &optional value)
   (insert-karaoke object index value 'karaoke-outline))
 
-(defmethod claraoke:insert-karaoke-outline
-    ((object text) (index string)
-     &optional (value *spell-duration-in-centiseconds*))
+(defmethod claraoke:insert-karaoke-outline ((object text) (index string) &optional value)
   (let ((index (search index (claraoke:.text object))))
     (claraoke:insert-karaoke-outline object index value)))
 

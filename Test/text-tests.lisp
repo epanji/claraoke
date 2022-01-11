@@ -55,9 +55,12 @@
     ;; care about existing karaoke or override existences
     (insert-karaoke txt1 0 12)
     (insert-karaoke-fill txt1 "lo w" 13)
-    (insert-karaoke-outline txt1 "world" 14)
     (insert-karaoke-outline txt1 "world")
     (is (string= "{\\k12}Hel{\\kf13}lo {\\ko15}world!" (ps-string txt1)))
+    (insert-karaoke-outline txt1 0)     ; Changing type without changing value
+    (insert-karaoke-fill txt1 3 11)     ; Changing value with same type
+    (insert-karaoke txt1 "world" 10)    ; Changing type and value
+    (is (string= "{\\ko12}Hel{\\kf11}lo {\\k10}world!" (ps-string txt1)))
     ;; Functions update-karaoke, decrease-karaoke and increase-karaoke
     ;; only change value without changing karaoke type and restricted
     ;; by karaoke existences
