@@ -433,7 +433,7 @@
                    collect key
                    collect (if (null start) nil (subseq string start end))))))
     (cond ((newline-modifier-p input)
-           (make-instance 'newline :index 0 :arg1 (char= #\N (elt input 0))))
+           (make-instance 'newline :index nil :arg1 (char= #\N (elt input 0))))
           ((bold-modifier-p input)
            (make-instance 'bold :arg1 (subseqi input 1)))
           ((italic-modifier-p input)

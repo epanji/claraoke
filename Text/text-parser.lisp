@@ -127,8 +127,57 @@ For example, unknown modifier {\\note} will not be parsed as newline.")
             collect object into strings
           else
             collect object into overrides
-          finally (let ((text (apply 'concatenate 'string strings)))
+          finally (let ((text (apply 'concatenate 'string strings))
+                        (overrides (normalize-overrides overrides)))
                     (return (values text overrides))))))
+
+(defun normalize-overrides (overrides)
+  "Return LIST of overrides without duplication from OVERRIDES argument.
+The duplicate overrides will be merge as one override with appended modifiers."
+  (check-type overrides list)
+  (flet ((duplicate-override-p (items)
+           (loop for item in items
+                 and index = -1 then (claraoke:index item)
+                 when (= index (claraoke:index item))
+                   return t)))
+    (if (duplicate-override-p overrides)
+        (let ((groups (loop with holder = nil
+                            for (current next) on overrides
+                            for i = (claraoke:index current)
+                            and next-i = (if (null next) -1 (claraoke:index next))
+                            if (or (null next)
+                                   (not (= i next-i)))
+                              collect (prog1 (reverse (cons current holder))
+                                        (setf holder nil))
+                            else
+                              do (setf holder (cons current holder)))))
+          (mapcar (lambda (g) (apply 'merge-overrides g)) groups))
+        overrides)))
+
+(defun merge-overrides (&rest overrides)
+  "Return OVERRIDE with appended modifiers from OVERRIDES argument."
+  (when (every (lambda (in)
+                 (typep in '(or batch newline)))
+               overrides)
+    (if (= 1 (length overrides))
+        (first overrides)
+        (let ((result nil)
+              (override nil))
+          (dolist (item overrides)
+            (typecase item
+              (newline (push item result))
+              (batch (setf result (append (claraoke:modifiers item) result)
+                           override item))))
+          (if (null override)
+              (first overrides)
+              (progn (setf (claraoke:modifiers override)
+                           (remove-duplicates
+                            result
+                            :test (lambda (m1 m2)
+                                    (and (or (unique-p m1) (unique-p m2))
+                                         (string= (format-control m1) (format-control m2))))
+                            :from-end t))
+                     override))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;

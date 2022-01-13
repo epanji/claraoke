@@ -220,4 +220,28 @@
     (is (string= str0 (ps-string (text str7 :remove-unknown-modifier-p t))))
     (is (string= str8 (ps-string (text str8))))
     (is (string= str0 (ps-string (text str8 :remove-unknown-modifier-p t))))))
+
+(test checking-overrides-merging-with-newline
+  (let ((txt1 (text "{\\i1}Hello{\\i0}\\Nworld!"))
+        (txt2 (text "{\\i1}Hello\\N{\\s1}world!"))
+        (txt3 (text "{\\i1}Hello{\\i0}\\N{\\s1}world!"))
+        (txt4 (text "{\\i1}Hello\\N{\\i0}{\\s1}world!"))
+        (txt5 (text "{\\i1}Hello{\\i0}{\\s1}\\Nworld!"))
+        (txt6 (text "{\\i1}Hello{\\N\\N\\i0}\\N\\N{\\s1\\N\\N}world!"))
+        (str0 "Helloworld!")
+        (str1 "{\\i1}Hello\\N{\\i0}world!")
+        (str2 "{\\i1}Hello\\N{\\s1}world!")
+        (str3 "{\\i1}Hello\\N{\\i0\\s1}world!"))
+    ;; Newline does not reset previous overrides
+    ;; No duplication for newline without syllable
+    ;; Merge same index overrides and check modifiers duplication
+    (is (string= str0 (text txt1)))
+    (is (string= str0 (text txt2)))
+    (is (string= str0 (text txt3)))
+    (is (string= str1 (ps-string txt1)))
+    (is (string= str2 (ps-string txt2)))
+    (is (string= str3 (ps-string txt3)))
+    (is (string= str3 (ps-string txt4)))
+    (is (string= str3 (ps-string txt5)))
+    (is (string= str3 (ps-string txt6)))))
 

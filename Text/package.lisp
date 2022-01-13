@@ -96,8 +96,10 @@
    #:wrapping-style)
   (:export
    #:defile-text
+   #:merge-overrides
    #:modifier
    #:modifier-from-string
+   #:normalize-overrides
    #:override
    #:override-from-string
    #:override-greaterp
