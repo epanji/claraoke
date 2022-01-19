@@ -11,6 +11,8 @@
                   (with-output-to-string (str) (print-override arg str)))
                  ((claraoke:colorp arg)
                   (claraoke:colorstring arg))
+                 ((stringp arg)
+                  (claraoke-internal:number-or-string arg))
                  (t arg))))
     (unless (null arg1)
       (setf (claraoke:arg1 instance) (normalize arg1)))
