@@ -49,15 +49,17 @@ Write BODY if necessary for returning specializer on T otherwise it will returni
 
 (defun claraoke-internal:number-string-p (string)
   (check-type string string)
+  ;; Limiting length and ignoring errors is necessary
   (let ((limit (subseq string 0 (min 32 (length string)))))
-    (numberp (read-from-string limit))))
+    (numberp (ignore-errors (read-from-string limit)))))
 
 (defun claraoke-internal:number-or-string (string)
   (check-type string string)
   (case (length string)
     (0 nil)
+    ;; Limiting length and ignoring errors is necessary
     (t (let* ((limit (subseq string 0 (min 32 (length string))))
-              (value (read-from-string limit)))
+              (value (ignore-errors (read-from-string limit))))
          (if (numberp value) value string)))))
 
 (defun claraoke-internal:distinct-number-and-string (strings)
