@@ -195,6 +195,8 @@
    #:print-symbols
    #:script-note
    #:sortf
+   #:split-by-char
+   #:split-by-char-to-keys
    #:version))
 
 (defpackage #:claraoke-base

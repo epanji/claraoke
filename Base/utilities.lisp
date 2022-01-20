@@ -86,6 +86,37 @@ Write BODY if necessary for returning specializer on T otherwise it will returni
                        (unless (null others) rothers)))
   (format nil "~{~&#:~(~A~)~}" (sort result 'string-lessp)))
 
+(defun claraoke-internal:split-by-char (char string &optional (limit 0) (subseq-p t))
+  (check-type char character)
+  (check-type string string)
+  (check-type limit integer)
+  (let ((length (length string))
+        (result '())
+        (start 0)
+        (end 0))
+    (loop (when (or (= length end) (= (1- limit) (length result)))
+            (if subseq-p
+                (push (subseq string start) result)
+                (push (list start) result))
+            (return))
+          (when (char= char (char string end))
+            (if subseq-p
+                (push (subseq string start end) result)
+                (push (list start end) result))
+            (setf start (1+ end)))
+          (incf end))
+    (reverse result)))
+
+(defun claraoke-internal:split-by-char-to-keys (char string &rest keys)
+  (check-type char character)
+  (check-type string string)
+  (check-type keys list)
+  (let ((svalues (claraoke-internal:split-by-char char string (length keys) t)))
+    (cond ((null keys) svalues)
+          ((every 'keywordp keys)
+           (mapcan 'list keys (claraoke-internal:distinct-number-and-string svalues)))
+          (t string))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Methods

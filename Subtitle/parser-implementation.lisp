@@ -48,19 +48,14 @@
   (let ((item (remove-if 'unreadable-char-p string)))
     (second (assoc item *section-index* :test 'string-equal))))
 
-(defun split-line-values (string &optional (column 1))
-  (let ((pos (1+ (or (position #\: string) -1))))
-    (values (loop with value = (string-trim '(#\Space #\Tab) (subseq string pos))
-                  and pos1 = 0
-                  and max = (1- column)
-                  for pos2 = (if (plusp max)
-                                 (+ pos1 (or (position #\, (subseq value pos1)) 0))
-                                 (length value))
-                  until (minusp max)
-                  collect (prog1 (subseq value pos1 pos2)
-                            (setf pos1 (1+ pos2))
-                            (decf max)))
-            (subseq string 0 (max (1- pos) 0)))))
+(defun split-line-values (string &rest keys)
+  (let* ((pos (or (position #\: string) -1))
+         (trimmed (string-trim '(#\Space #\Tab) (subseq string (1+ pos))))
+         (keyargs (apply 'claraoke-internal:split-by-char-to-keys #\, trimmed keys))
+         (final-keyargs (loop for (key arg) on keyargs by (function cddr)
+                              unless (null arg)
+                                collect key and collect arg)))
+    (values final-keyargs (subseq string 0 (max pos 0)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -141,12 +136,87 @@
 ;;;
 ;;; Object from line string function
 ;;;
+(defun style-from-string (line)
+  (check-type line string)
+  (let* ((args (split-line-values line :name :fontname :fontsize :primary-colour
+                                       :secondary-colour :outline-colour :back-colour :bold
+                                       :italic :underline :strike-out :scale-x :scale-y :spacing
+                                       :angle :border-style :outline :shadow
+                                       :alignment :margin-l :margin-r :margin-v :encoding))
+         (name (getf args :name "Default")))
+    (remf args :name)
+    (apply 'claraoke:style name args)))
+
+(defun dialogue-from-string (line)
+  (check-type line string)
+  (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
+                                       :margin-r :margin-v :effect :text))
+         (text (getf args :text ""))
+         (final-args (list* :generate-overrides-p *generate-overrides-predicate*
+                            :spell-duration *spell-duration*
+                            :change-karaoke-type *change-karaoke-type*
+                            :keep-original-modifier-p *keep-original-modifier-predicate*
+                            :remove-unknown-modifier-p *remove-unknown-modifier-predicate*
+                            args)))
+    (remf final-args :text)
+    (apply 'claraoke:dialogue text final-args)))
+
+(defun comment-from-string (line)
+  (check-type line string)
+  (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
+                                       :margin-r :margin-v :effect :text))
+         (text (getf args :text "")))
+    (remf args :text)
+    (apply 'claraoke:comment text args)))
+
+(defun picture-from-string (line)
+  (check-type line string)
+  (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
+                                       :margin-r :margin-v :effect :text))
+         (text (getf args :text "")))
+    (remf args :text)
+    (apply 'claraoke:picture text args)))
+
+(defun sound-from-string (line)
+  (check-type line string)
+  (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
+                                       :margin-r :margin-v :effect :text))
+         (text (getf args :text "")))
+    (remf args :text)
+    (apply 'claraoke:sound text args)))
+
+(defun movie-from-string (line)
+  (check-type line string)
+  (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
+                                       :margin-r :margin-v :effect :text))
+         (text (getf args :text "")))
+    (remf args :text)
+    (apply 'claraoke:movie text args)))
+
+(defun command-from-string (line)
+  (check-type line string)
+  (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
+                                       :margin-r :margin-v :effect :text))
+         (text (getf args :text "")))
+    (remf args :text)
+    (apply 'claraoke:command text args)))
+
+(defun info-from-string (line)
+  (check-type line string)
+  (multiple-value-bind (args descriptor) (split-line-values line :value)
+    (apply 'claraoke:info descriptor args)))
+
+(defun note-from-string (line)
+  (check-type line string)
+  (let ((text (string-left-trim '(#\; #\! #\: #\Space #\Tab) line)))
+    (claraoke:note text)))
+
 (defun create-object-from-string (line)
   (when (null *subtitle*) (return-from create-object-from-string))
   (cond ((empty-line-p line) nil)       ; do nothing
         ((note-line-p line)
          (unless *ignore-note-predicate*
-           (claraoke:insert-note *active-section* (claraoke:note (subseq line 2)))))
+           (claraoke:insert-note *active-section* (note-from-string line))))
         ((section-line-p line)
          (let ((index (section-index line)))
            (if (null index)
@@ -155,132 +225,22 @@
                (setf *active-section* (aref (claraoke:lines *subtitle*) index)))))
         ((header-line-p line) nil)      ; do nothing
         ((style-line-p line)
-         (destructuring-bind (name fontname fontsize
-                              primary-colour secondary-colour outline-colour back-colour
-                              bold italic underline strike-out
-                              scale-x scale-y spacing angle
-                              border-style outline shadow alignment
-                              margin-l margin-r margin-v encoding)
-             (split-line-values line 23)
-           (claraoke:insert-style
-            *active-section*
-            (claraoke:style name :fontname fontname
-                                 :fontsize (claraoke-internal:integer-from-string fontsize)
-                                 :primary-colour primary-colour
-                                 :secondary-colour secondary-colour
-                                 :outline-colour outline-colour
-                                 :back-colour back-colour
-                                 :bold (claraoke-internal:integer-from-string bold)
-                                 :italic (claraoke-internal:integer-from-string italic)
-                                 :underline (claraoke-internal:integer-from-string underline)
-                                 :strike-out (claraoke-internal:integer-from-string strike-out)
-                                 :scale-x (claraoke-internal:integer-from-string scale-x)
-                                 :scale-y (claraoke-internal:integer-from-string scale-y)
-                                 :spacing (claraoke-internal:number-or-string spacing)
-                                 :angle (claraoke-internal:number-or-string angle)
-                                 :border-style (claraoke-internal:integer-from-string border-style)
-                                 :outline (claraoke-internal:number-or-string outline)
-                                 :shadow (claraoke-internal:number-or-string shadow)
-                                 :alignment (claraoke-internal:integer-from-string alignment)
-                                 :margin-l (claraoke-internal:integer-from-string margin-l)
-                                 :margin-r (claraoke-internal:integer-from-string margin-r)
-                                 :margin-v (claraoke-internal:integer-from-string margin-v)
-                                 :encoding (claraoke-internal:integer-from-string encoding)))))
+         (claraoke:insert-style *active-section* (style-from-string line)))
         ((dialogue-line-p line)
-         (destructuring-bind (layer start end style name margin-l margin-r margin-v effect text)
-             (split-line-values line 10)
-           (claraoke:insert-event
-            *active-section*
-            (claraoke:dialogue text :generate-overrides-p *generate-overrides-predicate*
-                                    :spell-duration *spell-duration*
-                                    :change-karaoke-type *change-karaoke-type*
-                                    :keep-original-modifier-p *keep-original-modifier-predicate*
-                                    :remove-unknown-modifier-p *remove-unknown-modifier-predicate*
-                                    :layer (claraoke-internal:integer-from-string layer)
-                                    :start start
-                                    :end end
-                                    :style style
-                                    :name name
-                                    :margin-l (claraoke-internal:integer-from-string margin-l)
-                                    :margin-r (claraoke-internal:integer-from-string margin-r)
-                                    :margin-v (claraoke-internal:integer-from-string margin-v)
-                                    :effect effect))))
+         (claraoke:insert-event *active-section* (dialogue-from-string line)))
         ((comment-line-p line)
-         (destructuring-bind (layer start end style name margin-l margin-r margin-v effect text)
-             (split-line-values line 10)
-           (claraoke:insert-event
-            *active-section*
-            (claraoke:comment text :layer (claraoke-internal:integer-from-string layer)
-                                   :start start
-                                   :end end
-                                   :style style
-                                   :name name
-                                   :margin-l (claraoke-internal:integer-from-string margin-l)
-                                   :margin-r (claraoke-internal:integer-from-string margin-r)
-                                   :margin-v (claraoke-internal:integer-from-string margin-v)
-                                   :effect effect))))
+         (claraoke:insert-event *active-section* (comment-from-string line)))
         ((picture-line-p line)
-         (destructuring-bind (layer start end style name margin-l margin-r margin-v effect text)
-             (split-line-values line 10)
-           (claraoke:insert-event
-            *active-section*
-            (claraoke:picture text :layer (claraoke-internal:integer-from-string layer)
-                                   :start start
-                                   :end end
-                                   :style style
-                                   :name name
-                                   :margin-l (claraoke-internal:integer-from-string margin-l)
-                                   :margin-r (claraoke-internal:integer-from-string margin-r)
-                                   :margin-v (claraoke-internal:integer-from-string margin-v)
-                                   :effect effect))))
+         (claraoke:insert-event *active-section* (picture-from-string line)))
         ((sound-line-p line)
-         (destructuring-bind (layer start end style name margin-l margin-r margin-v effect text)
-             (split-line-values line 10)
-           (claraoke:insert-event
-            *active-section*
-            (claraoke:sound text :layer (claraoke-internal:integer-from-string layer)
-                                 :start start
-                                 :end end
-                                 :style style
-                                 :name name
-                                 :margin-l (claraoke-internal:integer-from-string margin-l)
-                                 :margin-r (claraoke-internal:integer-from-string margin-r)
-                                 :margin-v (claraoke-internal:integer-from-string margin-v)
-                                 :effect effect))))
+         (claraoke:insert-event *active-section* (sound-from-string line)))
         ((movie-line-p line)
-         (destructuring-bind (layer start end style name margin-l margin-r margin-v effect text)
-             (split-line-values line 10)
-           (claraoke:insert-event
-            *active-section*
-            (claraoke:movie text :layer (claraoke-internal:integer-from-string layer)
-                                 :start start
-                                 :end end
-                                 :style style
-                                 :name name
-                                 :margin-l (claraoke-internal:integer-from-string margin-l)
-                                 :margin-r (claraoke-internal:integer-from-string margin-r)
-                                 :margin-v (claraoke-internal:integer-from-string margin-v)
-                                 :effect effect))))
+         (claraoke:insert-event *active-section* (movie-from-string line)))
         ((command-line-p line)
-         (destructuring-bind (layer start end style name margin-l margin-r margin-v effect text)
-             (split-line-values line 10)
-           (claraoke:insert-event
-            *active-section*
-            (claraoke:command text :layer (claraoke-internal:integer-from-string layer)
-                                   :start start
-                                   :end end
-                                   :style style
-                                   :name name
-                                   :margin-l (claraoke-internal:integer-from-string margin-l)
-                                   :margin-r (claraoke-internal:integer-from-string margin-r)
-                                   :margin-v (claraoke-internal:integer-from-string margin-v)
-                                   :effect effect))))
+         (claraoke:insert-event *active-section* (command-from-string line)))
         ((info-line-p line)
-         (multiple-value-bind (line-values descriptor) (split-line-values line)
-           ;; Info line could be script info, font and graphic
-           (claraoke:insert-line
-            *active-section*
-            (claraoke:info descriptor :value (first line-values)))))))
+         ;; Info line could be script info, font and graphic
+         (claraoke:insert-line *active-section* (info-from-string line)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;

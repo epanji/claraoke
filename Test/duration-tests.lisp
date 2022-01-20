@@ -65,6 +65,12 @@
   (is-true (durationstringp (durationstring "0:1:2.3")))
   (is-true (durationstringp (durationstring "123"))))
 
+(test lazy-typing-duration-data
+  (is (= 1 (durationinteger "1")))         ; One Centiseconds
+  (is (= 100 (durationinteger "1.")))      ; One Seconds
+  (is (= 6000 (durationinteger "1:")))     ; One Minutes
+  (is (= 360000 (durationinteger "1::")))) ; One Hours
+
 (test expecting-duration-error
   (signals error (duration 1.2f0))
   (signals error (duration 1.2d0)))
