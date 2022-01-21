@@ -431,7 +431,8 @@
                             (let ((pos (position #\, (subseq trimmed start))))
                               (if (null pos) nil (+ start pos))))
                    collect key
-                   collect (if (null start) nil (subseq string start end))))))
+                   collect (if (null start) nil (claraoke-internal:number-or-string
+                                                 (subseq string start end)))))))
     (cond ((newline-modifier-p input)
            (make-instance 'newline :index nil :arg1 (char= #\N (elt input 0))))
           ((bold-modifier-p input)
