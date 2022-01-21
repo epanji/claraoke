@@ -1,6 +1,6 @@
 (cl:in-package #:asdf-user)
 
-(defsystem #:claraoke-test
+(defsystem "claraoke-test"
   :depends-on ("fiveam" "claraoke")
   :serial t
   :components

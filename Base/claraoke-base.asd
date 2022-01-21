@@ -1,6 +1,6 @@
 (cl:in-package #:asdf-user)
 
-(defsystem #:claraoke-base
+(defsystem "claraoke-base"
   :depends-on ("split-sequence")
   :serial t
   :components
