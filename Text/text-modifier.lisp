@@ -584,9 +584,7 @@
         (setf (claraoke:modifiers override)
               (remove-duplicates
                modifiers
-               :test (lambda (m1 m2)
-                       (and (or (unique-p m1) (unique-p m2))
-                            (string= (format-control m1) (format-control m2))))
+               :test 'duplicate-modifier-p
                :from-end t))
         override)
       (let ((override (modifier-from-string override-text)))

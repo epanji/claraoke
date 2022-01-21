@@ -96,6 +96,7 @@
    #:wrapping-style)
   (:export
    #:defile-text
+   #:duplicate-modifier-p
    #:merge-overrides
    #:modifier
    #:modifier-from-string

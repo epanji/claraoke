@@ -154,6 +154,13 @@ The duplicate overrides will be merge as one override with appended modifiers."
           (mapcar (lambda (g) (apply 'merge-overrides g)) groups))
         overrides)))
 
+(defun duplicate-modifier-p (m1 m2)
+  "Return BOOLEAN by comparing M1 argument with M2 argument for duplication."
+  (and (typep m1 'modifier)
+       (typep m2 'modifier)
+       (or (unique-p m1) (unique-p m2))
+       (string= (format-control m1) (format-control m2))))
+
 (defun merge-overrides (&rest overrides)
   "Return OVERRIDE with appended modifiers from OVERRIDES argument."
   (when (every (lambda (in)
@@ -173,9 +180,7 @@ The duplicate overrides will be merge as one override with appended modifiers."
               (progn (setf (claraoke:modifiers override)
                            (remove-duplicates
                             result
-                            :test (lambda (m1 m2)
-                                    (and (or (unique-p m1) (unique-p m2))
-                                         (string= (format-control m1) (format-control m2))))
+                            :test 'duplicate-modifier-p
                             :from-end t))
                      override))))))
 
