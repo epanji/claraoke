@@ -203,8 +203,11 @@
 
 (defun info-from-string (line)
   (check-type line string)
-  (multiple-value-bind (args descriptor) (split-line-values line :value)
-    (apply 'claraoke:info descriptor args)))
+  (let* ((pos (or (position #\: line) -1))
+         (descriptor (subseq line 0 (max pos 0)))
+         (value (string-trim '(#\Space #\Tab) (subseq line (1+ pos)))))
+    ;; Do not distinguish value between number and string
+    (claraoke:info descriptor :value value)))
 
 (defun note-from-string (line)
   (check-type line string)

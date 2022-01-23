@@ -27,6 +27,7 @@ Dialogue: 0,0:00:00.00,0:00:03.00,Default,,0,0,0,,This is first dialogue~2%"
   (let ((sub (subtitle "Test"))
         (stream (make-string-output-stream)))
     (is (string-equal *subtitle-string* (ps-string sub)))
+    (is (string-equal *subtitle-string* (ps-string (parse-script *subtitle-string*))))
     (is (eql 'claraoke-subtitle:subtitle (type-of sub)))
     (is (eql 'claraoke-subtitle:subtitle (type-of (print-script sub stream))))
     (is (eql 'claraoke-subtitle:subtitle (type-of (parse-script *subtitle-string*)))))
