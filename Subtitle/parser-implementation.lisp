@@ -151,7 +151,7 @@
   (check-type line string)
   (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
                                        :margin-r :margin-v :effect :text))
-         (text (getf args :text ""))
+         (text (princ-to-string (getf args :text "")))
          (final-args (list* :generate-overrides-p *generate-overrides-predicate*
                             :spell-duration *spell-duration*
                             :change-karaoke-type *change-karaoke-type*
@@ -165,7 +165,7 @@
   (check-type line string)
   (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
                                        :margin-r :margin-v :effect :text))
-         (text (getf args :text "")))
+         (text (princ-to-string (getf args :text ""))))
     (remf args :text)
     (apply 'claraoke:comment text args)))
 
@@ -173,7 +173,7 @@
   (check-type line string)
   (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
                                        :margin-r :margin-v :effect :text))
-         (text (getf args :text "")))
+         (text (princ-to-string (getf args :text ""))))
     (remf args :text)
     (apply 'claraoke:picture text args)))
 
@@ -181,7 +181,7 @@
   (check-type line string)
   (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
                                        :margin-r :margin-v :effect :text))
-         (text (getf args :text "")))
+         (text (princ-to-string (getf args :text ""))))
     (remf args :text)
     (apply 'claraoke:sound text args)))
 
@@ -189,7 +189,7 @@
   (check-type line string)
   (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
                                        :margin-r :margin-v :effect :text))
-         (text (getf args :text "")))
+         (text (princ-to-string (getf args :text ""))))
     (remf args :text)
     (apply 'claraoke:movie text args)))
 
@@ -197,7 +197,7 @@
   (check-type line string)
   (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
                                        :margin-r :margin-v :effect :text))
-         (text (getf args :text "")))
+         (text (princ-to-string (getf args :text ""))))
     (remf args :text)
     (apply 'claraoke:command text args)))
 
