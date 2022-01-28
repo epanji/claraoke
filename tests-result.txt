@@ -56,8 +56,9 @@ Running test suite SUBTITLE-SUITE
  Running test CREATING-DIALOGUE-WITH-VARIOUS-KEYARGS ..........
  Running test WORKING-WITH-FONTS-SECTION .
  Running test WORKING-WITH-GRAPHICS-SECTION .
- Did 42 checks.
-    Pass: 42 (100%)
+ Running test CHECKING-NUMBER-STRING-PREDICATE ..............
+ Did 56 checks.
+    Pass: 56 (100%)
     Skip: 0 ( 0%)
     Fail: 0 ( 0%)
 

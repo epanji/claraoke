@@ -121,4 +121,22 @@ Dialogue: 0,0:00:00.00,0:00:03.00,Default,,0,0,0,,This is first dialogue~2%"
 (test working-with-graphics-section
   (let ((sub (subtitle "Graphics" :graphic-filename "mypic.jpg")))
     (is (string= (format nil "[Graphics]~%filename: mypic.jpg~2%") (ps-string (graphics sub))))))
+
+(test checking-number-string-predicate
+  ;; Number
+  (is-true (claraoke-internal:number-string-p "1"))
+  (is-true (claraoke-internal:number-string-p "1.0f0"))
+  (is-true (claraoke-internal:number-string-p "1.0d0"))
+  (is-true (claraoke-internal:number-string-p "1.0e2"))
+  (is-true (claraoke-internal:number-string-p "1.0e-2"))
+  (is-true (claraoke-internal:number-string-p "1/2"))
+  (is-true (claraoke-internal:number-string-p " 12 "))
+  (is-true (claraoke-internal:number-string-p "  12  "))
+  (is-true (claraoke-internal:number-string-p "#c(1 2)"))
+  ;; String
+  (is-false (claraoke-internal:number-string-p "1 2"))
+  (is-false (claraoke-internal:number-string-p "1;2"))
+  (is-false (claraoke-internal:number-string-p "1'2"))
+  (is-false (claraoke-internal:number-string-p "1,2"))
+  (is-false (claraoke-internal:number-string-p " 1 2 ")))
 
