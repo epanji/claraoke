@@ -151,7 +151,7 @@
   (check-type line string)
   (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
                                        :margin-r :margin-v :effect :text))
-         (text (princ-to-string (getf args :text "")))
+         (text (getf args :text ""))
          (final-args (list* :generate-overrides-p *generate-overrides-predicate*
                             :spell-duration *spell-duration*
                             :change-karaoke-type *change-karaoke-type*
@@ -159,46 +159,52 @@
                             :remove-unknown-modifier-p *remove-unknown-modifier-predicate*
                             args)))
     (remf final-args :text)
+    (unless (stringp text) (setf text (princ-to-string text)))
     (apply 'claraoke:dialogue text final-args)))
 
 (defun comment-from-string (line)
   (check-type line string)
   (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
                                        :margin-r :margin-v :effect :text))
-         (text (princ-to-string (getf args :text ""))))
+         (text (getf args :text "")))
     (remf args :text)
+    (unless (stringp text) (setf text (princ-to-string text)))
     (apply 'claraoke:comment text args)))
 
 (defun picture-from-string (line)
   (check-type line string)
   (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
                                        :margin-r :margin-v :effect :text))
-         (text (princ-to-string (getf args :text ""))))
+         (text (getf args :text "")))
     (remf args :text)
+    (unless (stringp text) (setf text (princ-to-string text)))
     (apply 'claraoke:picture text args)))
 
 (defun sound-from-string (line)
   (check-type line string)
   (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
                                        :margin-r :margin-v :effect :text))
-         (text (princ-to-string (getf args :text ""))))
+         (text (getf args :text "")))
     (remf args :text)
+    (unless (stringp text) (setf text (princ-to-string text)))
     (apply 'claraoke:sound text args)))
 
 (defun movie-from-string (line)
   (check-type line string)
   (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
                                        :margin-r :margin-v :effect :text))
-         (text (princ-to-string (getf args :text ""))))
+         (text (getf args :text "")))
     (remf args :text)
+    (unless (stringp text) (setf text (princ-to-string text)))
     (apply 'claraoke:movie text args)))
 
 (defun command-from-string (line)
   (check-type line string)
   (let* ((args (split-line-values line :layer :start :end :style :name :margin-l
                                        :margin-r :margin-v :effect :text))
-         (text (princ-to-string (getf args :text ""))))
+         (text (getf args :text "")))
     (remf args :text)
+    (unless (stringp text) (setf text (princ-to-string text)))
     (apply 'claraoke:command text args)))
 
 (defun info-from-string (line)
