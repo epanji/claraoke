@@ -495,4 +495,21 @@
     ;; Drawing baseline offset
     (increase-modifier dmod02 1)
     (decrease-modifier dmod02 1)))
+
+(test checking-overrides-generations
+  (let* ((str0 "Hello world!")
+         (str1 "こんにちは世界！")
+         (str2 "你好世界！")
+         (str3 "Jangan lupa 快乐的 setiap hari.")
+         (str4 "⁣There is invisible separator.")
+         (txt0 (text str0 :generate-overrides-p t :spell-duration 15))
+         (txt1 (text str1 :generate-overrides-p t :spell-duration 15))
+         (txt2 (text str2 :generate-overrides-p t :spell-duration 15))
+         (txt3 (text str3 :generate-overrides-p t :spell-duration 15))
+         (txt4 (text str4 :generate-overrides-p t :spell-duration 15)))
+    (is (string= "{\\k15}Hel{\\k15}lo {\\k15}world!" (ps-string txt0)))
+    (is (string= "{\\k15}こ{\\k15}ん{\\k15}に{\\k15}ち{\\k15}は{\\k15}世{\\k15}界{\\k15}！" (ps-string txt1)))
+    (is (string= "{\\k15}你{\\k15}好{\\k15}世{\\k15}界{\\k15}！" (ps-string txt2)))
+    (is (string= "{\\k15}Ja{\\k15}ngan {\\k15}lu{\\k15}pa {\\k15}快{\\k15}乐{\\k15}的 {\\k15}se{\\k30}tiap {\\k15}ha{\\k15}ri." (ps-string txt3)))
+    (is (string= "{\\k15}⁣{\\k15}The{\\k15}re {\\k15}is {\\k15}in{\\k15}vi{\\k15}si{\\k15}ble {\\k15}se{\\k15}pa{\\k15}ra{\\k15}tor." (ps-string txt4)))))
 

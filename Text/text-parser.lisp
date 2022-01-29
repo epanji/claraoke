@@ -91,18 +91,16 @@ For example, unknown modifier {\\note} will not be parsed as newline.")
 
 (defun consume-override ()
   (loop with start = *index*
-        for char = (consume)
-        until (or (null char)
-                  (end-override-matcher))
-        finally (consume)
-                (return (subseq *string* start *index*))))
+        for char = (peek) then (consume)
+        when (or (null char) (end-override-matcher))
+          do (consume)
+             (return (subseq *string* start *index*))))
 
 (defun consume-text ()
   (loop with start = *index*
-        for char = (consume)
-        until (or (null char)
-                  (start-override-matcher))
-        finally (return (subseq *string* start *index*))))
+        for char = (peek) then (consume)
+        when (or (null char) (start-override-matcher))
+          return (subseq *string* start *index*)))
 
 (defun build-string-or-override ()
   (let ((*batch-predicate* nil))
@@ -219,7 +217,8 @@ G in RANGE, H in THE, L in FLOW and R in WRITE.")
     (and (characterp char0)
          (or (member char0 separators)
              ;; Check non-ASCII
-             (not (standard-char-p char0))
+             (and (not (standard-char-p char0))
+                  (not (member char1 separators)))
              ;; Check vowels
              (and (find char0 *vowels*)
                   (find char-1 *consonants*)
@@ -247,11 +246,10 @@ G in RANGE, H in THE, L in FLOW and R in WRITE.")
 
 (defun consume-spelling ()
   (loop with start = *index*
-        for char = (consume)
-        until (or (null char)
-                  (end-spelling-matcher))
-        finally (consume)
-                (return (subseq *string* start *index*))))
+        for char = (peek) then (consume)
+        when (or (null char) (end-spelling-matcher))
+          do (consume)
+             (return (subseq *string* start *index*))))
 
 (defun compute-override ()
   (let* ((text (consume-spelling))
@@ -298,13 +296,11 @@ G in RANGE, H in THE, L in FLOW and R in WRITE.")
 
 (defun consume-modifier ()
   (loop with start = *index*
-        for end = *index*
-        and char = (peek)
-        until (or (null char)
-                  (end-modifier-matcher))
-        do (consume)
-        finally (consume)
-                (return (subseq *string* start end))))
+        for char = (peek) then (consume)
+        and end = *index*
+        when (or (null char) (end-modifier-matcher))
+          do (consume)
+             (return (subseq *string* start end))))
 
 (defun split-modifier (string)
   (setf string (remove-if
