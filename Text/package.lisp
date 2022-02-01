@@ -27,10 +27,8 @@
    #:alpha2
    #:alpha3
    #:alpha4
-   #:batch
    #:blur
    #:blur-edges
-   #:bold
    #:border
    #:border-x
    #:border-y
@@ -38,11 +36,6 @@
    #:clip-drawing
    #:clip-drawing-scaled
    #:clip-rectangle
-   #:color
-   #:color1
-   #:color2
-   #:color3
-   #:color4
    #:compute-override
    #:consume
    #:consume-modifier
@@ -70,36 +63,40 @@
    #:iclip-drawing-scaled
    #:iclip-rectangle
    #:insert-karaoke
-   #:italic
    #:karaoke
    #:karaoke-capital
    #:karaoke-fill
    #:karaoke-outline
    #:move
-   #:newline
    #:origin
    #:peek
    #:pos
-   #:reset
    #:shadow-x
    #:shadow-y
    #:split-modifier
-   #:strikeout
    #:symbol-from-string
    #:transformation1
    #:transformation2
    #:transformation3
    #:transformation4
-   #:underline
    #:unknown
    #:valid-index-p
    #:wrapping-style)
   (:export
+   #:batch
+   #:bold
+   #:color
+   #:color1
+   #:color2
+   #:color3
+   #:color4
    #:defile-text
    #:duplicate-modifier-p
+   #:italic
    #:merge-overrides
    #:modifier
    #:modifier-from-string
+   #:newline
    #:normalize-overrides
    #:override
    #:override-from-string
@@ -107,6 +104,9 @@
    #:override-lessp
    #:print-override
    #:purify-text
+   #:reset
    #:same-override-p
-   #:text))
+   #:strikeout
+   #:text
+   #:underline))
 
