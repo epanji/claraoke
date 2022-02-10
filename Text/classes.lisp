@@ -174,61 +174,61 @@
 (defclass color (modifier)
   ()
   (:default-initargs
-   :format-control "~@[\\c~A~]"
+   :format-control "\\c~@[~A~]"
    :arg1 "&HFF0011&"))
 
 (defclass color1 (modifier)
   ()
   (:default-initargs
-   :format-control "~@[\\1c~A~]"
+   :format-control "\\1c~@[~A~]"
    :arg1 "&HFF0011&"))
 
 (defclass color2 (modifier)
   ()
   (:default-initargs
-   :format-control "~@[\\2c~A~]"
+   :format-control "\\2c~@[~A~]"
    :arg1 "&HFF0011&"))
 
 (defclass color3 (modifier)
   ()
   (:default-initargs
-   :format-control "~@[\\3c~A~]"
+   :format-control "\\3c~@[~A~]"
    :arg1 "&HFF0011&"))
 
 (defclass color4 (modifier)
   ()
   (:default-initargs
-   :format-control "~@[\\4c~A~]"
+   :format-control "\\4c~@[~A~]"
    :arg1 "&HFF0011&"))
 
 (defclass alpha (modifier)
   ()
   (:default-initargs
-   :format-control "~@[\\alpha~A~]"
+   :format-control "\\alpha~@[~A~]"
    :arg1 "&H00&"))
 
 (defclass alpha1 (modifier)
   ()
   (:default-initargs
-   :format-control "~@[\\1a~A~]"
+   :format-control "\\1a~@[~A~]"
    :arg1 "&H00&"))
 
 (defclass alpha2 (modifier)
   ()
   (:default-initargs
-   :format-control "~@[\\2a~A~]"
+   :format-control "\\2a~@[~A~]"
    :arg1 "&H00&"))
 
 (defclass alpha3 (modifier)
   ()
   (:default-initargs
-   :format-control "~@[\\3a~A~]"
+   :format-control "\\3a~@[~A~]"
    :arg1 "&H00&"))
 
 (defclass alpha4 (modifier)
   ()
   (:default-initargs
-   :format-control "~@[\\4a~A~]"
+   :format-control "\\4a~@[~A~]"
    :arg1 "&H00&"))
 
 (defclass alignment (modifier)

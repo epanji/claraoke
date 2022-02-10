@@ -512,4 +512,28 @@
     (is (string= "{\\k15}你{\\k15}好{\\k15}世{\\k15}界{\\k15}！" (ps-string txt2)))
     (is (string= "{\\k15}Ja{\\k15}ngan {\\k15}lu{\\k15}pa {\\k15}快{\\k15}乐{\\k15}的 {\\k15}se{\\k30}tiap {\\k15}ha{\\k15}ri." (ps-string txt3)))
     (is (string= "{\\k15}⁣{\\k15}The{\\k15}re {\\k15}is {\\k15}in{\\k15}vi{\\k15}si{\\k15}ble {\\k15}se{\\k15}pa{\\k15}ra{\\k15}tor." (ps-string txt4)))))
+
+(test checking-empty-argument-for-color-and-alpha
+  (let ((strc0 "{\\c&H00FFFF&\\u1}Hello {\\c}world{\\u0}!")
+        (strc1 "{\\1c&H00FFFF&\\u1}Hello {\\1c}world{\\u0}!")
+        (strc2 "{\\2c&H00FFFF&\\u1}Hello {\\2c}world{\\u0}!")
+        (strc3 "{\\3c&H00FFFF&\\u1}Hello {\\3c}world{\\u0}!")
+        (strc4 "{\\4c&H00FFFF&\\u1}Hello {\\4c}world{\\u0}!")
+        (stra0 "{\\alpha&HC0&\\u1}Hello {\\alpha}world{\\u0}!")
+        (stra1 "{\\1a&HC0&\\u1}Hello {\\1a}world{\\u0}!")
+        (stra2 "{\\2a&HC0&\\u1}Hello {\\2a}world{\\u0}!")
+        (stra3 "{\\3a&HC0&\\u1}Hello {\\3a}world{\\u0}!")
+        (stra4 "{\\4a&HC0&\\u1}Hello {\\4a}world{\\u0}!"))
+    ;; Empty argument needed to close previous color or alpha
+    ;; It is not like reset modifier because other styles still applied
+    (is (string-equal strc0 (ps-string (text strc0 :remove-unknown-modifier-p t :keep-original-modifier-p t))))
+    (is (string-equal strc1 (ps-string (text strc1 :remove-unknown-modifier-p t))))
+    (is (string-equal strc2 (ps-string (text strc2 :remove-unknown-modifier-p t))))
+    (is (string-equal strc3 (ps-string (text strc3 :remove-unknown-modifier-p t))))
+    (is (string-equal strc4 (ps-string (text strc4 :remove-unknown-modifier-p t))))
+    (is (string-equal stra0 (ps-string (text stra0 :remove-unknown-modifier-p t :keep-original-modifier-p t))))
+    (is (string-equal stra1 (ps-string (text stra1 :remove-unknown-modifier-p t))))
+    (is (string-equal stra2 (ps-string (text stra2 :remove-unknown-modifier-p t))))
+    (is (string-equal stra3 (ps-string (text stra3 :remove-unknown-modifier-p t))))
+    (is (string-equal stra4 (ps-string (text stra4 :remove-unknown-modifier-p t))))))
 
