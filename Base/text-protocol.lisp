@@ -91,5 +91,5 @@ If KARAOKE, KARAOKE-FILL, KARAOKE-OUTLINE object exists, it will be change to KA
   (:documentation "Return OBJECT argument after any TYPE karaoke has been founded and decreased by DELTA argument."))
 
 (defgeneric claraoke:update-karaoke (object value)
-  (:documentation "Return OBJECT argument after any TYPE karaoke has been founded and updated by DELTA argument."))
+  (:documentation "Return OBJECT argument after any TYPE karaoke has been founded and updated by VALUE argument."))
 

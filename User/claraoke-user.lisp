@@ -42,7 +42,7 @@
                             (value (find-info object "PlayResY"))
                             (namestring subtitle)
                             (ceiling max 100))))
-         (output (merger-pathnames (format nil "~A-hardsub.mp4" (pathname-name subtitle)) subtitle)))
+         (output (merge-pathnames (format nil "~A-hardsub.mp4" (pathname-name subtitle)) subtitle)))
     (if (probe-file output)
         (format t "~&File ~A already exists.~%" (namestring output))
         (uiop:run-program (format nil "ffmpeg ~A ~S" input (namestring output)) :force-shell t))
