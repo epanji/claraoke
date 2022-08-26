@@ -54,7 +54,11 @@ Write BODY if necessary for returning specializer on T otherwise it will returni
          (input (string-trim '(#\Space #\Tab) limit)))
     (multiple-value-bind (val len) (handler-case (read-from-string input)
                                      (error () (values nil 0)))
-      (and (numberp val) (= (length input) len)))))
+      (and (numberp val)
+           (= (length input) len)
+           ;; No error from (read-from-string "1:") in ECL 21.2.1
+           ;; Ensure input "1:" being read as String
+           (not (find #\: input))))))
 
 (defun claraoke-internal:number-or-string (string)
   (check-type string string)

@@ -138,5 +138,6 @@ Dialogue: 0,0:00:00.00,0:00:03.00,Default,,0,0,0,,This is first dialogue~2%"
   (is-false (claraoke-internal:number-string-p "1;2"))
   (is-false (claraoke-internal:number-string-p "1'2"))
   (is-false (claraoke-internal:number-string-p "1,2"))
-  (is-false (claraoke-internal:number-string-p " 1 2 ")))
+  (is-false (claraoke-internal:number-string-p " 1 2 "))
+  (is-false (claraoke-internal:number-string-p "1:")))
 
