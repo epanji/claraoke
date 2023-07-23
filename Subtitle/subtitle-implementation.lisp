@@ -2,59 +2,101 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Subtitle
+;;; Subtitle & Script info
 ;;;
-(defmethod claraoke:subtitle
-    ((object string) &rest initargs
-     &key
-       (title "Untitled")
-       (original-script nil)
-       (original-translation nil)
-       (original-editing nil)
-       (original-timing nil)
-       (synch-point nil)
-       (script-updated-by nil)
-       (update-details nil)
-       (script-type "v4.00+")
-       (collisions "Normal")
-       (play-res-x 1280)
-       (play-res-y 720)
-       (play-depth 0)
-       (timer "100.0000")
-       (wrap-style 0)
-       (scaled-border-and-shadow nil)
-       (last-style-storage nil)
-       (video-aspect-ratio nil)
-       (video-zoom nil)
-       (video-position nil)
-       (style-name "Default")
-       (text "This is first dialogue")
-     &allow-other-keys)
-  (apply 'make-instance 'subtitle
-         :allow-other-keys t
-         :title (if (zerop (length object)) title object)
-         :original-script original-script
-         :original-translation original-translation
-         :original-editing original-editing
-         :original-timing original-timing
-         :synch-point synch-point
-         :script-updated-by script-updated-by
-         :update-details update-details
-         :script-type script-type
-         :collisions collisions
-         :play-res-x play-res-x
-         :play-res-y play-res-y
-         :play-depth play-depth
-         :timer timer
-         :wrap-style wrap-style
-         :scaled-border-and-shadow scaled-border-and-shadow
-         :last-style-storage last-style-storage
-         :video-aspect-ratio video-aspect-ratio
-         :video-zoom video-zoom
-         :video-position video-position
-         :style-name style-name
-         :text text
-         initargs))
+(macrolet ((define-method-specialize-for-string (name)
+             `(defmethod ,name
+                  ((object string) &rest initargs
+                   &key
+                     (title "Untitled")
+                     (original-script nil)
+                     (original-translation nil)
+                     (original-editing nil)
+                     (original-timing nil)
+                     (synch-point nil)
+                     (script-updated-by nil)
+                     (update-details nil)
+                     (script-type "v4.00+")
+                     (collisions "Normal")
+                     (play-res-x 1280)
+                     (play-res-y 720)
+                     (play-depth 0)
+                     (timer "100.0000")
+                     (wrap-style 0)
+                     (scaled-border-and-shadow nil)
+                     (layout-res-x nil)
+                     (layout-res-y nil)
+                     (kerning nil)
+                     (ycbcr-matrix nil)
+                     (language nil)
+                     (last-style-storage nil)
+                     (video-aspect-ratio nil)
+                     (video-zoom nil)
+                     (video-position nil)
+                     (style-name "Default")
+                     (text "This is first dialogue")
+                   &allow-other-keys)
+                (remf initargs :title)
+                (remf initargs :original-script)
+                (remf initargs :original-translation)
+                (remf initargs :original-editing)
+                (remf initargs :original-timing)
+                (remf initargs :synch-point)
+                (remf initargs :script-updated-by)
+                (remf initargs :update-details)
+                (remf initargs :script-type)
+                (remf initargs :collisions)
+                (remf initargs :play-res-x)
+                (remf initargs :play-res-y)
+                (remf initargs :play-depth)
+                (remf initargs :timer)
+                (remf initargs :wrap-style)
+                (remf initargs :scaled-border-and-shadow)
+                (remf initargs :layout-res-x)
+                (remf initargs :layout-res-y)
+                (remf initargs :kerning)
+                (remf initargs :ycbcr-matrix)
+                (remf initargs :language)
+                (remf initargs :last-style-storage)
+                (remf initargs :video-aspect-ratio)
+                (remf initargs :video-zoom)
+                (remf initargs :video-position)
+                (remf initargs :style-name)
+                (remf initargs :text)
+                (apply 'make-instance
+                       ',(find-symbol (string name) :claraoke-subtitle)
+                       :allow-other-keys t
+                       :title (if (zerop (length object)) title object)
+                       :original-script original-script
+                       :original-translation original-translation
+                       :original-editing original-editing
+                       :original-timing original-timing
+                       :synch-point synch-point
+                       :script-updated-by script-updated-by
+                       :update-details update-details
+                       :script-type script-type
+                       :collisions collisions
+                       :play-res-x play-res-x
+                       :play-res-y play-res-y
+                       :play-depth play-depth
+                       :timer timer
+                       :wrap-style wrap-style
+                       :scaled-border-and-shadow scaled-border-and-shadow
+                       :layout-res-x layout-res-x
+                       :layout-res-y layout-res-y
+                       :kerning kerning
+                       :ycbcr-matrix ycbcr-matrix
+                       :language language
+                       :last-style-storage last-style-storage
+                       :video-aspect-ratio video-aspect-ratio
+                       :video-zoom video-zoom
+                       :video-position video-position
+                       :style-name style-name
+                       :text text
+                       initargs))))
+  ;; Avoid mismatch for default arguments
+  (define-method-specialize-for-string claraoke:subtitle)
+  (define-method-specialize-for-string claraoke:script-info))
 
 (defmethod claraoke:subtitle ((object subtitle) &key)
   object)
@@ -88,54 +130,6 @@
 ;;;
 ;;; Script info
 ;;;
-(defmethod claraoke:script-info
-    ((object string) &rest initargs
-     &key
-       (title "Untitled")
-       (original-script nil)
-       (original-translation nil)
-       (original-editing nil)
-       (original-timing nil)
-       (synch-point nil)
-       (script-updated-by nil)
-       (update-details nil)
-       (script-type "v4.00+")
-       (collisions "Normal")
-       (play-res-x 1280)
-       (play-res-y 720)
-       (play-depth 0)
-       (timer "100.0000")
-       (wrap-style 0)
-       (scaled-border-and-shadow nil)
-       (last-style-storage nil)
-       (video-aspect-ratio nil)
-       (video-zoom nil)
-       (video-position nil)
-     &allow-other-keys)
-  (apply 'make-instance 'script-info
-         :allow-other-keys t
-         :title (if (zerop (length object)) title object)
-         :original-script original-script
-         :original-translation original-translation
-         :original-editing original-editing
-         :original-timing original-timing
-         :synch-point synch-point
-         :script-updated-by script-updated-by
-         :update-details update-details
-         :script-type script-type
-         :collisions collisions
-         :play-res-x play-res-x
-         :play-res-y play-res-y
-         :play-depth play-depth
-         :timer timer
-         :wrap-style wrap-style
-         :scaled-border-and-shadow scaled-border-and-shadow
-         :last-style-storage last-style-storage
-         :video-aspect-ratio video-aspect-ratio
-         :video-zoom video-zoom
-         :video-position video-position
-         initargs))
-
 (defmethod claraoke:script-info ((object subtitle) &key)
   (aref (claraoke:lines object) 0))
 

@@ -47,7 +47,9 @@ Dialogue: 0,0:00:00.00,0:00:03.00,Default,,0,0,0,,This is first dialogue~2%"
 
 (test working-with-script-info-section
   (let* ((sub (subtitle "Script Info" :play-res-x 640 :play-res-y 320 ))
+         (inf (script-info "Script Info"))
          (cnt (length (lines (script-info sub)))))
+    (is-false (typep inf (type-of sub)))
     (is (= 640 (value (find-info sub "PlayResX"))))
     (is (= 320 (value (find-info sub "PlayResY"))))
     (is (= 200 (setf (value (find-info sub "PlayResX")) 200)))

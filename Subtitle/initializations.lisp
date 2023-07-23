@@ -43,6 +43,11 @@
        timer
        wrap-style
        scaled-border-and-shadow
+       layout-res-x
+       layout-res-y
+       kerning
+       ycbcr-matrix
+       language
        last-style-storage
        video-aspect-ratio
        video-zoom
@@ -71,6 +76,11 @@
       (pushline "Timer" timer)
       (pushline "WrapStyle" wrap-style)
       (pushline "ScaledBorderAndShadow" scaled-border-and-shadow)
+      (pushline "LayoutResX" layout-res-x)
+      (pushline "LayoutResY" layout-res-y)
+      (pushline "Kerning" kerning)
+      (pushline "YCbCr Matrix" ycbcr-matrix)
+      (pushline "Language" language)
       (pushline "Last Style Storage" last-style-storage)
       (pushline "Video Aspect Ratio" video-aspect-ratio)
       (pushline "Video Zoom" video-zoom)
