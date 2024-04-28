@@ -304,19 +304,26 @@
   (let* ((string (claraoke:.text text))
          (index (min index (1- (length string))))
          (override (claraoke:find-override text index)))
-    (if (null override)
-        (let ((value (or value *spell-duration-in-centiseconds*)))
-          (claraoke:insert-override text (claraoke:override karaoke index :arg1 value)))
-        (let ((modifier (or (claraoke:find-modifier override :karaoke)
-                            (claraoke:find-modifier override :karaoke-fill)
-                            (claraoke:find-modifier override :karaoke-outline))))
-          (if (null modifier)
-              (let ((value (or value *spell-duration-in-centiseconds*)))
-                (claraoke:insert-modifier override (claraoke:modifier karaoke :arg1 value)))
-              (let ((control (format-control (make-instance karaoke)))
-                    (value (or value (claraoke:arg1 modifier) *spell-duration-in-centiseconds*)))
-                ;; Change karaoke type and it's value instead of error message
-                (change-class modifier karaoke :format-control control :arg1 value)))))
+    (etypecase override
+      (null
+       (let ((value (or value *spell-duration-in-centiseconds*)))
+         (claraoke:insert-override text (claraoke:override karaoke index :arg1 value))))
+      (newline
+       (let ((arg1 (claraoke:arg1 override))
+             (value (or value *spell-duration-in-centiseconds*)))
+         (change-class override 'batch :modifiers (list (claraoke:modifier 'newline :arg1 arg1)))
+         (claraoke:insert-modifier override (claraoke:modifier karaoke :arg1 value))))
+      (batch
+       (let ((modifier (or (claraoke:find-modifier override :karaoke)
+                           (claraoke:find-modifier override :karaoke-fill)
+                           (claraoke:find-modifier override :karaoke-outline))))
+         (if (null modifier)
+             (let ((value (or value *spell-duration-in-centiseconds*)))
+               (claraoke:insert-modifier override (claraoke:modifier karaoke :arg1 value)))
+             (let ((control (format-control (make-instance karaoke)))
+                   (value (or value (claraoke:arg1 modifier) *spell-duration-in-centiseconds*)))
+               ;; Change karaoke type and it's value instead of error message
+               (change-class modifier karaoke :format-control control :arg1 value))))))
     text))
 
 (defmethod claraoke:insert-karaoke ((object text) (index integer) &optional value)
