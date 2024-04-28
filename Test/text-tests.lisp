@@ -536,4 +536,21 @@
     (is (string-equal stra2 (ps-string (text stra2 :remove-unknown-modifier-p t))))
     (is (string-equal stra3 (ps-string (text stra3 :remove-unknown-modifier-p t))))
     (is (string-equal stra4 (ps-string (text stra4 :remove-unknown-modifier-p t))))))
+
+(test checking-insert-karaoke-for-newline
+  (let ((txt1 (text "Hello\\Nworld!"))
+        (txt2 (text "Hello\\Nworld!"))
+        (txt3 (text "Hello\\nworld!"))
+        (str1 "{\\k100}Hello\\N{\\k100}world!")
+        (str2 "{\\kf100}Hello\\N{\\kf100}world!")
+        (str3 "{\\ko100}Hello\\n{\\ko100}world!"))
+    (insert-karaoke txt1 0 100)
+    (insert-karaoke txt1 "world" 100)
+    (insert-karaoke-fill txt2 5 100)
+    (insert-karaoke-fill txt2 "Hello" 100)
+    (insert-karaoke-outline txt3 0 100)
+    (insert-karaoke-outline txt3 "world" 100)
+    (is (string= str1 (ps-string txt1)))
+    (is (string= str2 (ps-string txt2)))
+    (is (string= str3 (ps-string txt3)))))
 
