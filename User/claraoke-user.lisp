@@ -4,7 +4,7 @@
 ;;;;
 ;;;; This system purpose just for example when using CLARAOKE system.
 ;;;; It is designed with minimum dependencies for user experiences.
-;;;; Some functions only execute on unix/like operation system and
+;;;; Some functions only execute on unix/like operating system and
 ;;;; only return command string for others.
 ;;;;
 
