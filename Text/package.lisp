@@ -13,6 +13,8 @@
    #:*length*
    #:*remove-unknown-modifier-predicate*
    #:*spell-duration-in-centiseconds*
+   #:*stream*
+   #:*stream-endp*
    #:*string*
    #:*strong-consonants*
    #:*text-index*

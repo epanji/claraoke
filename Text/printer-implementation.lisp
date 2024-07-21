@@ -6,8 +6,7 @@
 ;;;
 (defmethod claraoke:print-script ((object text) &optional stream)
   (let ((overrides (claraoke:overrides object))
-        (string (claraoke:.text object))
-        (stream (claraoke-internal:output-stream-from-designator stream)))
+        (string (claraoke:.text object)))
     (loop for index from 0
           for char across string
           and override = (claraoke:find-override overrides index)
@@ -22,7 +21,21 @@
 ;;;
 ;;; Print override (Internal)
 ;;;
+(defvar *stream* nil)
+(defvar *stream-endp* nil)
+
 (defgeneric print-override (object &optional stream)
+  (:method :around (object &optional stream)
+    (let ((*stream-endp* (not (streamp *stream*)))
+          (*stream* (if (streamp *stream*)
+                        *stream*
+                        (make-string-output-stream))))
+      (unwind-protect (call-next-method object *stream*)
+        (when *stream-endp*
+          (princ (get-output-stream-string *stream*)
+                 (claraoke-internal:output-stream-from-designator stream))
+          (close *stream*)
+          object))))
   (:method ((object null) &optional stream)
     (declare (ignore stream))
     object)
@@ -31,8 +44,7 @@
           do (print-override override stream))
     object)
   (:method ((object modifier) &optional stream)
-    (let ((stream (claraoke-internal:output-stream-from-designator stream))
-          (control (format-control object))
+    (let ((control (format-control object))
           (arg1 (claraoke:arg1 object))
           (arg2 (claraoke:arg2 object))
           (arg3 (claraoke:arg3 object))
@@ -45,8 +57,7 @@
   (:method ((object override) &optional stream)
     (call-next-method object stream))
   (:method ((object batch) &optional stream)
-    (let ((stream (claraoke-internal:output-stream-from-designator stream))
-          (newline (claraoke:find-modifier object 'newline))
+    (let ((newline (claraoke:find-modifier object 'newline))
           (modifiers (claraoke:modifiers object)))
       (when (typep newline 'newline)
         (print-override newline stream)

@@ -125,14 +125,29 @@ Write BODY if necessary for returning specializer on T otherwise it will returni
 ;;;
 ;;; Methods
 ;;;
+(defvar *stream* nil)
+(defvar *stream-endp* nil)
+
+(defmethod claraoke:print-script :around (object &optional stream)
+  (let ((*stream-endp* (not (streamp *stream*)))
+        (*stream* (if (streamp *stream*)
+                      *stream*
+                      (make-string-output-stream))))
+    (unwind-protect (call-next-method object *stream*)
+      (when *stream-endp*
+        (princ (get-output-stream-string *stream*)
+               (claraoke-internal:output-stream-from-designator stream))
+        (close *stream*)
+        object))))
+
 (defmethod claraoke:print-script ((object string) &optional stream)
-  (princ object (claraoke-internal:output-stream-from-designator stream)))
+  (princ object stream))
 
 (defmethod claraoke:print-script ((object number) &optional stream)
-  (princ object (claraoke-internal:output-stream-from-designator stream)))
+  (princ object stream))
 
 (defmethod claraoke:print-script ((object character) &optional stream)
-  (princ object (claraoke-internal:output-stream-from-designator stream)))
+  (princ object stream))
 
 (defmethod claraoke:print-script ((object null) &optional stream)
   (declare (ignore stream))
