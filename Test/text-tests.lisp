@@ -33,6 +33,10 @@
     (is (string= "{\\fr30}Hello {\\r\\frz-30}world!" str2))
     (is (string= "{\\fr30}Hello {\\r\\frz-30}world!" str3))))
 
+(test escape-nothing-in-string
+  (is (text "\\"))
+  (is (text "escape-nothing\\")))
+
 (test keep-last-duplicate-unique-modifier
   ;; Assuming first unique modifier is a mistake from overridden text
   (let ((str1 (ps-string (text "{\\k15}Hel{\\k15}lo {\\k15\\1c&H0000FF&}{\\k30\\1c&H00FFFF&}world!")))

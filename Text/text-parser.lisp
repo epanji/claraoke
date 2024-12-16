@@ -73,8 +73,9 @@ For example, unknown modifier {\\note} will not be parsed as newline.")
         ((nil #\{) (case char-1
                      (#\} nil)
                      (t (setf *batch-predicate* t) t)))
-        (#\\ (or (char= #\n char1)
-                 (char= #\N char1)))))))
+        (#\\ (case char1
+               (#\n t)
+               (#\N t)))))))
 
 (defun end-override-matcher ()
   (when (valid-index-p)
