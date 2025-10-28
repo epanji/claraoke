@@ -84,6 +84,23 @@
          (rgba (reverse (remove nil decs))))
     (apply 'claraoke:rgb rgba)))
 
+(defun integer-to-color (ub32)
+  (check-type ub32 (unsigned-byte 32))
+  (let ((red (ldb (byte 8 0) ub32))
+        (green (ldb (byte 8 8) ub32))
+        (blue (ldb (byte 8 16) ub32))
+        (alpha (ldb (byte 8 24) ub32)))
+    (claraoke:rgb red green blue (if (zerop alpha) nil alpha))))
+
+(defun color-to-integer (color)
+  (check-type color color)
+  (let ((ub32 #x00000000))
+    (setf (ldb (byte 8 0) ub32) (claraoke:red color))
+    (setf (ldb (byte 8 8) ub32) (claraoke:green color))
+    (setf (ldb (byte 8 16) ub32) (claraoke:blue color))
+    (setf (ldb (byte 8 24) ub32) (or (claraoke:alpha color) 0))
+    ub32))
+
 (defvar *color-names* (make-hash-table :test 'equalp))
 
 (defun normalize-color-name (string)
@@ -99,11 +116,13 @@
   (check-type name string)
   (check-type color string)
   (setf (gethash (keyword-from-name name) *color-names*)
-        (html-color color)))
+        (color-to-integer (html-color color))))
 
 (defun color-from-name (string)
   (check-type string string)
-  (identity (gethash (keyword-from-name string) *color-names* nil)))
+  (let ((value (gethash (keyword-from-name string) *color-names* nil)))
+    (unless (null value)
+      (integer-to-color value))))
 
 (defmethod claraoke:color ((object string))
   (cond ((html-color-p object)
@@ -113,8 +132,9 @@
         (t (or (color-from-name object)
                (claraoke:color 0)))))
 
-(defmethod claraoke:color ((object (eql 0)))
-  (claraoke:rgb 0 0 0 nil))
+(defmethod claraoke:color ((object integer))
+  (let ((ub32 (mod (abs object) #xFFFFFFFF)))
+    (integer-to-color ub32)))
 
 (defmethod claraoke:color ((object color))
   object)
@@ -156,6 +176,26 @@
   (ass-color-p object))
 
 (defmethod claraoke:colorstringp (object)
+  nil)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Color integer
+;;;
+(defmethod claraoke:colorinteger ((object color))
+  (color-to-integer object))
+
+(defmethod claraoke:colorinteger (object)
+  (claraoke:colorinteger (claraoke:color object)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Color integer predicate
+;;;
+(defmethod claraoke:colorintegerp ((object integer))
+  (typep object '(unsigned-byte 32)))
+
+(defmethod claraoke:colorintegerp (object)
   nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -243,4 +283,103 @@
                 (typecase alpha
                   ((or null integer) alpha)
                   (otherwise (claraoke:alpha alpha)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Synch color
+;;;
+(defmethod claraoke:synch-color ((color color) (source color))
+  (setf (claraoke:red color) (claraoke:red source))
+  (setf (claraoke:green color) (claraoke:green source))
+  (setf (claraoke:blue color) (claraoke:blue source))
+  (setf (claraoke:alpha color) (claraoke:alpha source))
+  color)
+
+(defmethod claraoke:synch-color ((color color) source)
+  (claraoke:synch-color color (claraoke:color source)))
+
+(defmethod claraoke:synch-color (color source)
+  (error 'claraoke:object-must-be-color :object color))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Increase color
+;;;
+(defmethod claraoke:increase-color ((object color) addition)
+  (let ((source (claraoke:increase-color (claraoke:colorinteger object) addition)))
+    (claraoke:synch-color object source)))
+
+(defmethod claraoke:increase-color ((object integer) (addition integer))
+  (claraoke:color (+ object addition)))
+
+(defmethod claraoke:increase-color ((object integer) addition)
+  (claraoke:increase-color object (claraoke:colorinteger addition)))
+
+(defmethod claraoke:increase-color (object addition)
+  (claraoke:increase-color (claraoke:colorinteger object) addition))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Decrease color
+;;;
+(defmethod claraoke:decrease-color ((object color) subtraction)
+  (let ((source (claraoke:decrease-color (claraoke:colorinteger object) subtraction)))
+    (claraoke:synch-color object source)))
+
+(defmethod claraoke:decrease-color ((object integer) (subtraction integer))
+  (claraoke:color (- object subtraction)))
+
+(defmethod claraoke:decrease-color ((object integer) subtraction)
+  (claraoke:decrease-color object (claraoke:colorinteger subtraction)))
+
+(defmethod claraoke:decrease-color (object subtraction)
+  (claraoke:decrease-color (claraoke:colorinteger object) subtraction))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Color bitwise
+;;; logand, logandc1, logandc2, logeqv, logior, lognand, lognor, logorc1, logorc2, logxor
+;;;
+(defmethod claraoke:bitwise-color ((bitwise function) (object1 integer) (object2 integer))
+  (claraoke:color (funcall bitwise object1 object2)))
+
+(defmethod claraoke:bitwise-color ((bitwise function) (object1 integer) object2)
+  (claraoke:bitwise-color bitwise  object1 (claraoke:colorinteger object2)))
+
+(defmethod claraoke:bitwise-color ((bitwise function) object1 object2)
+  (claraoke:bitwise-color bitwise (claraoke:colorinteger object1) object2))
+
+(defmethod claraoke:bitwise-color ((bitwise (eql :and)) object1 object2)
+  (claraoke:bitwise-color #'logand object1 object2))
+
+(defmethod claraoke:bitwise-color ((bitwise (eql :andc1)) object1 object2)
+  (claraoke:bitwise-color #'logandc1 object1 object2))
+
+(defmethod claraoke:bitwise-color ((bitwise (eql :andc2)) object1 object2)
+  (claraoke:bitwise-color #'logandc2 object1 object2))
+
+(defmethod claraoke:bitwise-color ((bitwise (eql :eqv)) object1 object2)
+  (claraoke:bitwise-color #'logeqv object1 object2))
+
+(defmethod claraoke:bitwise-color ((bitwise (eql :ior)) object1 object2)
+  (claraoke:bitwise-color #'logior object1 object2))
+
+(defmethod claraoke:bitwise-color ((bitwise (eql :nand)) object1 object2)
+  (claraoke:bitwise-color #'lognand object1 object2))
+
+(defmethod claraoke:bitwise-color ((bitwise (eql :nor)) object1 object2)
+  (claraoke:bitwise-color #'lognor object1 object2))
+
+(defmethod claraoke:bitwise-color ((bitwise (eql :orc1)) object1 object2)
+  (claraoke:bitwise-color #'logorc1 object1 object2))
+
+(defmethod claraoke:bitwise-color ((bitwise (eql :orc2)) object1 object2)
+  (claraoke:bitwise-color #'logorc2 object1 object2))
+
+(defmethod claraoke:bitwise-color ((bitwise (eql :xor)) object1 object2)
+  (claraoke:bitwise-color #'logxor object1 object2))
+
+(defmethod claraoke:bitwise-color (bitwise object1 object2)
+  (when (functionp bitwise)
+    (claraoke:bitwise-color bitwise object1 object2)))
 

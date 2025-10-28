@@ -12,7 +12,9 @@
    #:ass-color-p
    #:color
    #:color-from-name
+   #:color-to-integer
    #:dec-from-hexstring
    #:html-color
-   #:html-color-p))
+   #:html-color-p
+   #:integer-to-color))
 

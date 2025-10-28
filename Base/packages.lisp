@@ -20,16 +20,20 @@
    #:arg6
    #:arg7
    #:back-colour
+   #:bitwise-color
    #:blue
    #:bold
    #:border-style
    #:centiseconds
    #:color
+   #:colorinteger
+   #:colorintegerp
    #:colorp
    #:colorstring
    #:colorstringp
    #:command
    #:comment
+   #:decrease-color
    #:decrease-duration
    #:decrease-karaoke
    #:decrease-modifier
@@ -90,6 +94,7 @@
    #:green
    #:header
    #:hours
+   #:increase-color
    #:increase-duration
    #:increase-karaoke
    #:increase-modifier
@@ -173,6 +178,7 @@
    #:style
    #:styles
    #:subtitle
+   #:synch-color
    #:synch-duration
    #:table-line
    #:text
