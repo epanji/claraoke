@@ -42,7 +42,16 @@
     (is (durationp (decrease-duration obj "1:2:3.4")))
     (is (= (durationinteger obj) 1234))
     (is (durationp (decrease-duration obj "1:2:3.4")))
-    (is (zerop (durationinteger obj)))))
+    (is (zerop (durationinteger obj))))
+  (let ((obj1 (duration "1:2:3.047"))
+        (obj2 (duration "1:2:3.047"))
+        (obj3 (duration ".009")))
+    (increase-duration obj1 obj3)
+    (is (string= "1:02:03.05" (durationstring obj1)))
+    (is (= 6 (extradigit obj1)))
+    (decrease-duration obj2 obj3)
+    (is (string= "1:02:03.03" (durationstring obj2)))
+    (is (= 8 (extradigit obj2)))))
 
 (test string-duration-from-various-data
   (let ((obj (duration 1234567)))
@@ -59,7 +68,8 @@
 (test string-duration-predicate
   (is-true (durationstringp "0:01:02.03"))
   (is-true (durationstringp "123:01:02.03"))
-  (is-false (durationstringp "0:01:02.123"))
+  (is-true (durationstringp "0:01:02.123")) ; True with extra digit
+  (is-false (durationstringp "0:01:02.1234"))
   (is-false (durationstringp "0:1:2.3"))
   (is-false (durationstringp "123"))
   (is-true (durationstringp (durationstring "0:1:2.3")))
