@@ -63,6 +63,7 @@
    #:encoding
    #:end
    #:events
+   #:extradigit
    #:failed-to-create-color
    #:failed-to-create-duration
    #:failed-to-create-events

@@ -13,5 +13,7 @@
 ;;;
 (defmethod print-object ((object duration) stream)
   (print-unreadable-object (object stream :type nil :identity nil)
-    (princ (claraoke:durationstring object) stream)))
+    (princ (claraoke:durationstring object) stream)
+    (princ "_" stream)
+    (princ (claraoke:extradigit object) stream)))
 

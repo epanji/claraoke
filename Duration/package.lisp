@@ -2,5 +2,6 @@
 
 (defpackage #:claraoke-duration
   (:use #:common-lisp)
+  (:intern #:extradigit)
   (:export #:duration))
 

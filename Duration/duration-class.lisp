@@ -20,5 +20,13 @@
     :initform 0
     :initarg :cs
     :initarg :centiseconds
-    :accessor claraoke:centiseconds)))
+    :accessor claraoke:centiseconds)
+   ;; Extra digit affect durationstringp, synch-duration,
+   ;; increase-duration, decrease-duration, #<duration object>,
+   ;; duration from string "0:00:00.00x" which x is optional.
+   (%extradigit
+    :initform 0
+    :initarg :ed
+    :initarg :extradigit
+    :accessor claraoke:extradigit)))
 
