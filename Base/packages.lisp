@@ -31,6 +31,7 @@
    #:colorp
    #:colorstring
    #:colorstringp
+   #:combine-colors
    #:command
    #:comment
    #:decrease-color

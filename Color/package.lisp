@@ -13,6 +13,7 @@
    #:color
    #:color-from-name
    #:color-to-integer
+   #:combine-colors
    #:dec-from-hexstring
    #:html-color
    #:html-color-p

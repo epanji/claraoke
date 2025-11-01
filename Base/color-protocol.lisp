@@ -53,4 +53,9 @@ If the value beyond upper or lower limit, ABS and MOD functions will modify the 
 (defgeneric claraoke:bitwise-color (bitwise color1 color2)
   (:documentation "Return COLOR object from calling function from BITWISE argument with two integers from COLOR1 and COLOR2 arguments.
 BITWISE could be a function which accept two arguments or member of keywords (:AND :ANDC1 :ANDC2 :EQV :IOR :NAND :NOR :ORC1 :ORC2 :XOR)."))
+
+(defgeneric claraoke:combine-colors (alpha &rest colors)
+  (:documentation "Return COLOR object after reduce colors with initial value black.
+ALPHA argument will applied to all colors if it an acceptable alpha value.
+Each alpha from colors will applied if ALPHA argument is NULL or keyword :EACH-ALPHA."))
 

@@ -382,4 +382,50 @@
 (defmethod claraoke:bitwise-color (bitwise object1 object2)
   (when (functionp bitwise)
     (claraoke:bitwise-color bitwise object1 object2)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Combine colors
+;;;
+(defun combine-colors (flat-alpha colors)
+  (declare (type (or null ratio (unsigned-byte 8)) flat-alpha))
+  (flet ((%combine-colors (layer0 layer1)
+           (let* ((color0 (claraoke:color layer0))
+                  (color1 (claraoke:color layer1))
+                  (alpha1 (if flat-alpha
+                              (claraoke:alpha flat-alpha)
+                              (claraoke:alpha color1)))
+                  (transparancy (/ (or alpha1 0) 255))
+                  (opacity (/ (- 255 (or alpha1 0)) 255)))
+             (claraoke:rgb (round
+                            (+ (* transparancy (claraoke:red color0))
+                               (* opacity (claraoke:red color1))))
+                           (round
+                            (+ (* transparancy (claraoke:green color0))
+                               (* opacity (claraoke:green color1))))
+                           (round
+                            (+ (* transparancy (claraoke:blue color0))
+                               (* opacity (claraoke:blue color1))))))))
+    (case (length colors)
+      (0 nil)
+      (1
+       (reduce #'%combine-colors colors
+               :initial-value "black"))
+      (otherwise
+       (if (and (null flat-alpha)
+                (claraoke:colorp (first colors))
+                (not (null (claraoke:alpha (first colors)))))
+           (reduce #'%combine-colors colors
+                   :initial-value "black")
+           (reduce #'%combine-colors (rest colors)
+                   :initial-value (first colors)))))))
+
+(defmethod claraoke:combine-colors ((object (eql :each-alpha)) &rest colors)
+  (combine-colors nil colors))
+
+(defmethod claraoke:combine-colors ((object null) &rest colors)
+  (combine-colors nil colors))
+
+(defmethod claraoke:combine-colors (object &rest colors)
+  (combine-colors object colors))
 
