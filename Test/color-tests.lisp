@@ -188,6 +188,30 @@
   (is (string= (colorstring "#008080") (colorstring (hsl 180 1 0.25))))
   (is (string= (colorstring "#000080") (colorstring (hsl 240 1 0.25)))))
 
+(test cmyk-from-color
+  (flet ((2fp (in)
+           (float
+            (/ (round (* 100 in))
+               100))))
+    (is (equal (mapcar #'2fp (cmyk-list "black")) '(0.0 0.0 0.0 1.0)))
+    (is (equal (mapcar #'2fp (cmyk-list "white")) '(0.0 0.0 0.0 0.0)))
+    (is (equal (mapcar #'2fp (cmyk-list "red")) '(0.0 1.0 1.0 0.0)))
+    (is (equal (mapcar #'2fp (cmyk-list "green")) '(1.0 0.0 1.0 0.0)))
+    (is (equal (mapcar #'2fp (cmyk-list "blue")) '(1.0 1.0 0.0 0.0)))
+    (is (equal (mapcar #'2fp (cmyk-list "yellow")) '(0.0 0.0 1.0 0.0)))
+    (is (equal (mapcar #'2fp (cmyk-list "cyan")) '(1.0 0.0 0.0 0.0)))
+    (is (equal (mapcar #'2fp (cmyk-list "magenta")) '(0.0 1.0 0.0 0.0)))))
+
+(test color-from-cmyk
+  (is (string= (colorstring "black") (colorstring (cmyk 0 0 0 1))))
+  (is (string= (colorstring "white") (colorstring (cmyk 0 0 0 0))))
+  (is (string= (colorstring "red") (colorstring (cmyk 0 1 1 0))))
+  (is (string= (colorstring "green") (colorstring (cmyk 1 0 1 0))))
+  (is (string= (colorstring "blue") (colorstring (cmyk 1 1 0 0))))
+  (is (string= (colorstring "yellow") (colorstring (cmyk 0 0 1 0))))
+  (is (string= (colorstring "cyan") (colorstring (cmyk 1 0 0 0))))
+  (is (string= (colorstring "magenta") (colorstring (cmyk 0 1 0 0)))))
+
 (test expecting-color-error
   (signals error (colorstring 1234567.89))
   (signals error (colorstring #c(123 456))))
