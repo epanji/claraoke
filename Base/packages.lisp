@@ -96,6 +96,9 @@
    #:green
    #:header
    #:hours
+   #:hsl
+   #:hsv
+   #:hsvsl-list
    #:increase-color
    #:increase-duration
    #:increase-karaoke

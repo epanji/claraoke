@@ -33,6 +33,15 @@
 (defgeneric claraoke:rgb (red green blue &optional alpha)
   (:documentation "Return COLOR object from RED, GREEN, BLUE and optional ALPHA arguments."))
 
+(defgeneric claraoke:hsv (hue saturation value)
+  (:documentation "Return COLOR object from HUE, SATURATION, and VALUE arguments."))
+
+(defgeneric claraoke:hsl (hue saturation lightness)
+  (:documentation "Return COLOR object from HUE, SATURATION, and LIGHTNESS arguments."))
+
+(defgeneric claraoke:hsvsl-list (color)
+  (:documentation "Return list of HUE, SATURATION-VALUE, VALUE, SATURATION-LIGHTNESS, and LIGHTNESS from COLOR argument."))
+
 (defgeneric claraoke:random-color (&optional alpha)
   (:documentation "Return COLOR object from random RGB and optional ALPHA argument."))
 

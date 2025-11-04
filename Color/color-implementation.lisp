@@ -428,4 +428,95 @@
 
 (defmethod claraoke:combine-colors (object &rest colors)
   (combine-colors object colors))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Color hue, saturation, value, lightness
+;;;
+(defun min-max-delta-color (color)
+  (let* ((color1 (combine-colors nil (list color))) ; color without alpha
+         (red (claraoke:red color1))
+         (green (claraoke:green color1))
+         (blue (claraoke:blue color1))
+         (cmin (min red green blue))
+         (cmax (max red green blue))
+         (delta (- cmax cmin)))
+    (values cmin cmax delta color1)))
+
+(defun hsvsl-values (color)
+  (multiple-value-bind (cmin cmax delta color1)
+      (min-max-delta-color color)
+    (let ((lightness (/ (/ (+ cmax cmin) 2) 255))
+          (value (/ cmax 255))
+          (saturation-v (if (zerop cmax) 0 (/ delta cmax)))
+          (hue (cond ((zerop delta) 0)
+                     ((= cmax (claraoke:red color1))
+                      (* 60
+                         (mod
+                          (/ (- (claraoke:green color1)
+                                (claraoke:blue color1))
+                             delta)
+                          6)))
+                     ((= cmax (claraoke:green color1))
+                      (* 60
+                         (+ 2
+                            (/ (- (claraoke:blue color1)
+                                  (claraoke:red color1))
+                               delta))))
+                     ((= cmax (claraoke:blue color1))
+                      (* 60
+                         (+ 4
+                            (/ (- (claraoke:red color1)
+                                  (claraoke:green color1))
+                               delta)))))))
+      ;; Prevent division-by-zero
+      (let ((saturation-l
+              (/ (/ delta 255)
+                 (- 1.001 (abs (- (* 2 lightness) 1))))))
+        (values (float hue)
+                (float saturation-v)
+                (float value)
+                (float saturation-l)
+                (float lightness))))))
+
+(macrolet
+    ((define-hsv-or-hsl (name n)
+       (declare (type (integer 0 1) n))
+       (let ((sn '(v l)))
+         `(defun ,name (h s ,(nth n sn))
+            (declare (type (integer 0 360) h)
+                     (type (real 0 1) s ,(nth n sn)))
+            (let* ((h (mod h 360))      ; 360 == 0
+                   (c (* ,(if (zerop n)
+                              (nth n sn)
+                              `(- 1 (abs (- (* 2 ,(nth n sn)) 1))))
+                         s))
+                   (x (* c (- 1 (abs (- (mod (/ h 60) 2) 1)))))
+                   (m (- ,(nth n sn) ,(if (zerop n) 'c '(/ c 2))))
+                   (r nil)
+                   (g nil)
+                   (b nil))
+              (cond ((<= 0 h 59) (setf r c g x b 0))
+                    ((<= 60 h 119) (setf r x g c b 0))
+                    ((<= 120 h 179) (setf r 0 g c b x))
+                    ((<= 180 h 239) (setf r 0 g x b c))
+                    ((<= 240 h 299) (setf r x g 0 b c))
+                    ((<= 300 h 359) (setf r c g 0 b x)))
+              (let ((red (* (+ r m) 255))
+                    (green (* (+ g m) 255))
+                    (blue (* (+ b m) 255)))
+                (claraoke:rgb (round red)
+                              (round green)
+                              (round blue))))))))
+  (define-hsv-or-hsl color-hsv 0)
+  (define-hsv-or-hsl color-hsl 1))
+
+(defmethod claraoke:hsv ((hue integer) (saturation real) (value real))
+  (color-hsv hue saturation value))
+
+(defmethod claraoke:hsl ((hue integer) (saturation real) (lightness real))
+  (color-hsl hue saturation lightness))
+
+(defmethod claraoke:hsvsl-list (color)
+  (multiple-value-list (hsvsl-values color)))
 
