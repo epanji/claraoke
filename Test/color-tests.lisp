@@ -110,6 +110,26 @@
   (is (= (colorinteger "green")
          (colorinteger (bitwise-color #'- "yellow" "red")))))
 
+(test combine-colors
+  (is (string= (colorstring "black")
+               (colorstring (combine-colors 255 "red")))) ; full red transparancy
+  (is (string= (colorstring "red")
+               (colorstring (combine-colors 0 "red"))))   ; full red opacity
+  (is (string= (colorstring "#CC0000")
+               (colorstring (combine-colors 51 "red"))))
+  (is (string= (colorstring "#000033")
+               (colorstring (combine-colors 204 "blue"))))
+  (is (string= (colorstring "#CC0033")
+               (colorstring (combine-colors 8/10 "red" "blue")))) ; bottom layer RED, top layer BLUE
+  (is (string= (colorstring "#3300CC")
+               (colorstring (combine-colors 8/10 "blue" "red"))))
+  (is (string= (colorstring "#3300CC")
+               (colorstring (combine-colors :each-alpha (rgb 0 0 255) (rgb 255 0 0 204)))))
+  (is (string= (colorstring "#330029")
+               (colorstring (combine-colors :each-alpha (rgb 0 0 255 204) (rgb 255 0 0 204)))))
+  (is (string= (colorstring "#A32933")
+               (colorstring (combine-colors 8/10 "red" "green" "blue"))))) ; reduce combine colors ((red green) blue)
+
 (test expecting-color-error
   (signals error (colorstring 1234567.89))
   (signals error (colorstring #c(123 456))))
