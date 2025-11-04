@@ -11,7 +11,9 @@
   (:export
    #:ass-color
    #:ass-color-p
+   #:cmyk-values
    #:color
+   #:color-cmyk
    #:color-from-name
    #:color-hsl
    #:color-hsv

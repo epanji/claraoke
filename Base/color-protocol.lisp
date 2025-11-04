@@ -42,6 +42,12 @@
 (defgeneric claraoke:hsvsl-list (color)
   (:documentation "Return list of HUE, SATURATION-VALUE, VALUE, SATURATION-LIGHTNESS, and LIGHTNESS from COLOR argument."))
 
+(defgeneric claraoke:cmyk (cyan magenta yellow key)
+  (:documentation "Return COLOR object from CYAN, MAGENTA, YELLOW, and KEY arguments."))
+
+(defgeneric claraoke:cmyk-list (color)
+  (:documentation "Return list of CYAN, MAGENTA, YELLOW, and KEY from COLOR argument."))
+
 (defgeneric claraoke:random-color (&optional alpha)
   (:documentation "Return COLOR object from random RGB and optional ALPHA argument."))
 

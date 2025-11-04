@@ -25,6 +25,8 @@
    #:bold
    #:border-style
    #:centiseconds
+   #:cmyk
+   #:cmyk-list
    #:color
    #:colorinteger
    #:colorintegerp

@@ -519,4 +519,40 @@
 
 (defmethod claraoke:hsvsl-list (color)
   (multiple-value-list (hsvsl-values color)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Color cyan, magenta, yellow, key (black)
+;;;
+(defun cmyk-values (color)
+  (multiple-value-bind (cmin cmax delta color1)
+      (min-max-delta-color color)
+    (declare (ignore cmin delta))
+    (let* ((ub8 (- 255 cmax))
+           (c (/ (- 255 (claraoke:red color1) ub8)
+                 (- 255.001 ub8)))      ; prevent division-by-zero
+           (m (/ (- 255 (claraoke:green color1) ub8)
+                 (- 255.001 ub8)))      ; prevent division-by-zero
+           (y (/ (- 255 (claraoke:blue color1) ub8)
+                 (- 255.001 ub8)))      ; prevent division-by-zero
+           (k (/ ub8 255)))
+      (values (float c)
+              (float m)
+              (float y)
+              (float k)))))
+
+(defun color-cmyk (c m y k)
+  (declare (type (real 0 1) c m y k))
+  (let ((red (* 255 (- 1 c) (- 1 k)))
+        (green (* 255 (- 1 m) (- 1 k)))
+        (blue (* 255 (- 1 y) (- 1 k))))
+    (claraoke:rgb (round red)
+                  (round green)
+                  (round blue))))
+
+(defmethod claraoke:cmyk ((cyan real) (magenta real) (yellow real) (key real))
+  (color-cmyk cyan magenta yellow key))
+
+(defmethod claraoke:cmyk-list (color)
+  (multiple-value-list (cmyk-values color)))
 
