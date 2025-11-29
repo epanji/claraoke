@@ -443,4 +443,38 @@
 
 (defmethod claraoke:update-karaoke ((object null) value)
   object)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Insert newline
+;;;
+(defun insert-newline (text index forcep)
+  (check-type text text)
+  (check-type index integer)
+  (check-type forcep boolean)
+  (let* ((string (claraoke:.text text))
+         (index (min index (1- (length string))))
+         (override (claraoke:find-override text index)))
+    (etypecase override
+      (null
+       (claraoke:insert-override text (claraoke:override 'newline index :arg1 forcep)))
+      (newline
+       (setf (claraoke:arg1 override) forcep))
+      (batch
+       (let ((modifier (claraoke:find-modifier override :newline)))
+         (if (null modifier)
+             (claraoke:insert-modifier override (claraoke:modifier 'newline :arg1 forcep))
+             (setf (claraoke:arg1 modifier) forcep)))))
+    text))
+
+(defmethod claraoke:insert-newline ((object text) (index integer) &optional forcep)
+  (insert-newline object index forcep))
+
+(defmethod claraoke:insert-newline ((object text) (index string) &optional forcep)
+  (let ((index (search index (claraoke:.text object))))
+    (claraoke:insert-newline object index forcep)))
+
+(defmethod claraoke:insert-newline (object index &optional forcep)
+  (declare (ignore forcep))
+  (error 'claraoke:object-must-be-text :object object))
 

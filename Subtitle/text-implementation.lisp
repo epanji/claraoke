@@ -98,4 +98,12 @@
       (claraoke:insert-karaoke-outline (claraoke:text object) index)
       (claraoke:insert-karaoke-outline (claraoke:text object) index value))
   object)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Insert newline
+;;;
+(defmethod claraoke:insert-newline ((object dialogue) index &optional forcep)
+  (claraoke:insert-newline (claraoke:text object) index forcep)
+  object)
 

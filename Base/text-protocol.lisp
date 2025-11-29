@@ -92,4 +92,13 @@ If KARAOKE, KARAOKE-FILL, KARAOKE-OUTLINE object exists, it will be change to KA
 
 (defgeneric claraoke:update-karaoke (object value)
   (:documentation "Return OBJECT argument after any TYPE karaoke has been founded and updated by VALUE argument."))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Convenient
+;;;
+(defgeneric claraoke:insert-newline (object index &optional forcep)
+  (:documentation "Return OBJECT argument after NEWLINE object with optional FORCEP argument has been inserted.
+If hint from INDEX argument is a BATCH, MODIFIER newline will be inserted.
+If hint from INDEX argument is not BATCH, OVERRIDE newline will be inserted."))
 

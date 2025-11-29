@@ -117,6 +117,7 @@
    #:insert-karaoke-outline
    #:insert-line
    #:insert-modifier
+   #:insert-newline
    #:insert-note
    #:insert-override
    #:insert-style
