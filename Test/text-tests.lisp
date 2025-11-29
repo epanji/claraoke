@@ -74,6 +74,24 @@
     (increase-karaoke (find-override txt2 "world") 3)
     (is (string= "{\\k12}Hel{\\k13}lo {\\k15}world!" (ps-string txt2)))))
 
+(test working-with-newline
+  (let ((txt1 (text "Hello world!"))
+        (txt2 (text "Hello \\nworld!"))
+        (txt3 (text "{\\k11}Hello {\\k12}world!"))
+        (dlg1 (dialogue "Hello world!" :start 0 :end 100))
+        (str1 "Hello \\nworld!")
+        (str2 "Hello \\Nworld!")
+        (str3 "{\\k11}Hello \\N{\\k12}world!")
+        (str4 (format nil "Dialogue: 0,0:00:00.00,0:00:01.00,Default,,0,0,0,,Hello \\Nworld!~%")))
+    (insert-newline txt1 "wo")
+    (insert-newline txt2 "wo" t)
+    (insert-newline txt3 "wo" t)
+    (insert-newline dlg1 "wo" t)
+    (is (string= str1 (ps-string txt1)))
+    (is (string= str2 (ps-string txt2)))
+    (is (string= str3 (ps-string txt3)))
+    (is (string= str4 (ps-string dlg1)))))
+
 (test working-with-overrides-and-modifiers
   (let* ((txt1 (text "Hello world!"
                      :overrides
