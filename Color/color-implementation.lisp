@@ -484,7 +484,7 @@
        (declare (type (integer 0 1) n))
        (let ((sn '(v l)))
          `(defun ,name (h s ,(nth n sn))
-            (declare (type (integer 0 360) h)
+            (declare (type (real 0 360) h)
                      (type (real 0 1) s ,(nth n sn)))
             (let* ((h (mod h 360))      ; 360 == 0
                    (c (* ,(if (zerop n)
@@ -511,10 +511,10 @@
   (define-hsv-or-hsl color-hsv 0)
   (define-hsv-or-hsl color-hsl 1))
 
-(defmethod claraoke:hsv ((hue integer) (saturation real) (value real))
+(defmethod claraoke:hsv ((hue real) (saturation real) (value real))
   (color-hsv hue saturation value))
 
-(defmethod claraoke:hsl ((hue integer) (saturation real) (lightness real))
+(defmethod claraoke:hsl ((hue real) (saturation real) (lightness real))
   (color-hsl hue saturation lightness))
 
 (defmethod claraoke:hsvsl-list (color)
