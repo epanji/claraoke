@@ -130,7 +130,7 @@
   (is (string= (colorstring "#A32933")
                (colorstring (combine-colors 8/10 "red" "green" "blue"))))) ; reduce combine colors ((red green) blue)
 
-(test hsvl-from-color
+(test hsvsl-from-color
   (flet ((2fp (in)
            (float
             (/ (round (* 100 in))
@@ -211,6 +211,14 @@
   (is (string= (colorstring "yellow") (colorstring (cmyk 0 0 1 0))))
   (is (string= (colorstring "cyan") (colorstring (cmyk 1 0 0 0))))
   (is (string= (colorstring "magenta") (colorstring (cmyk 0 1 0 0)))))
+
+(test color-hsv-hsl-and-cmyk
+  (let ((rcolor (random-color)))
+    (destructuring-bind (h sv v sl l) (hsvsl-list rcolor)
+      (is (string-equal (colorstring rcolor) (colorstring (hsv h sv v))))
+      (is (string-equal (colorstring rcolor) (colorstring (hsl h sl l)))))
+    (destructuring-bind (c m y k) (cmyk-list rcolor)
+      (is (string-equal (colorstring rcolor) (colorstring (cmyk c m y k)))))))
 
 (test expecting-color-error
   (signals error (colorstring 1234567.89))
