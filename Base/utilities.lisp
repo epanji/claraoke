@@ -151,4 +151,20 @@ Write BODY if necessary for returning specializer on T otherwise it will returni
 (defmethod claraoke:print-script ((object null) &optional stream)
   (declare (ignore stream))
   (warn 'claraoke:null-object-warning))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Print remake
+;;;
+(defmethod claraoke:print-remake :around (object &optional stream (name "*sub*"))
+  (let ((*stream-endp* (not (streamp *stream*)))
+        (*stream* (if (streamp *stream*)
+                      *stream*
+                      (make-string-output-stream))))
+    (unwind-protect (call-next-method object *stream* name)
+      (when *stream-endp*
+        (princ (get-output-stream-string *stream*)
+               (claraoke-internal:output-stream-from-designator stream))
+        (close *stream*)
+        object))))
 
