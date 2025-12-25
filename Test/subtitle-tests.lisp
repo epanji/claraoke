@@ -142,4 +142,27 @@ Dialogue: 0,0:00:00.00,0:00:03.00,Default,,0,0,0,,This is first dialogue~2%"
   (is-false (claraoke-internal:number-string-p "1,2"))
   (is-false (claraoke-internal:number-string-p " 1 2 "))
   (is-false (claraoke-internal:number-string-p "1:")))
+
+(defparameter *remake-subtitle-string* (format nil "~
+;;; SUBTITLE
+(defparameter *test* (subtitle \"Test\" :text nil :style-name nil))
+
+;;; STYLES
+(insert-style *test* (style \"Default\"))
+
+;;; DIALOGUES
+(setf (interval-counter *test*) (durationinteger \"0:00:00.00\"))
+(insert-event *test* (dialogue \"This is first dialogue\" :duration \"0:00:03.00\"))~2%"))
+
+(test remake-subtitle
+  (let ((sub1 (parse-script *subtitle-string*))
+        (sub2 (subtitle "Test"))
+        (sub3 (subtitle "" :title "Test"))
+        (sub4 (subtitle "" :title "Test" :style-name "Default"))
+        (sub5 (subtitle "" :title "Test" :style-name "Default" :generate-overrides-p t)))
+    (is (string= *remake-subtitle-string* (pr-string sub1)))
+    (is (string= *remake-subtitle-string* (pr-string sub2)))
+    (is (string= *remake-subtitle-string* (pr-string sub3)))
+    (is (string= *remake-subtitle-string* (pr-string sub4)))
+    (is (string= *remake-subtitle-string* (pr-string sub5)))))
 

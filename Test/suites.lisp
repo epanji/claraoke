@@ -14,6 +14,10 @@
   `(with-output-to-string (stream)
      (claraoke-text:print-override ,form stream)))
 
+(defmacro pr-string (form)
+  `(with-output-to-string (stream)
+     (print-remake ,form stream "*test*")))
+
 (def-suite duration-suite :description "Claraoke duration test suite.")
 (def-suite color-suite :description "Claraoke color test suite.")
 (def-suite text-suite :description "Claraoke text test suite.")
