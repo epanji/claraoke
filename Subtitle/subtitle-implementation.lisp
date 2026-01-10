@@ -369,6 +369,8 @@
     (let* ((interval (claraoke:interval object))
            (delta-delay (* interval (or interval-delay 1)))
            (delta-event (* interval (or interval-event (claraoke:interval-frequency object)))))
+      (when (and (zerop delta-delay) (zerop delta-event))
+        (setf delta-event (claraoke:durationinteger (claraoke:duration-length event))))
       (setf (claraoke:start event) (incf (claraoke:interval-counter object) delta-delay))
       (setf (claraoke:end event) (incf (claraoke:interval-counter object) delta-event))))
   (pushnew event (claraoke:lines object)))

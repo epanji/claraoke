@@ -151,18 +151,39 @@ Dialogue: 0,0:00:00.00,0:00:03.00,Default,,0,0,0,,This is first dialogue~2%"
 (insert-style *test* (style \"Default\"))
 
 ;;; DIALOGUES
+(setf (interval *test*) 0)
+
 (setf (interval-counter *test*) (durationinteger \"0:00:00.00\"))
-(insert-event *test* (dialogue \"This is first dialogue\" :duration \"0:00:03.00\"))~2%"))
+(insert-event *test* (dialogue \"This is first dialogue\" :duration \"0:00:03.00\"))
+
+(incf (interval-counter *test*) (durationinteger \"0:00:57.00\"))
+(insert-event *test* (dialogue \"Second dialogue\" :duration \"0:00:05.00\"))~2%"))
+
+(defparameter *test* nil)
 
 (test remake-subtitle
   (let ((sub1 (parse-script *subtitle-string*))
         (sub2 (subtitle "Test"))
         (sub3 (subtitle "" :title "Test"))
         (sub4 (subtitle "" :title "Test" :style-name "Default"))
-        (sub5 (subtitle "" :title "Test" :style-name "Default" :generate-overrides-p t)))
+        (sub5 (subtitle "" :title "Test" :style-name "Default" :generate-overrides-p t))
+        (dlg1 (dialogue "Second dialogue" :start "1:" :end "1:05")))
+    (insert-event sub1 dlg1)
+    (insert-event sub2 dlg1)
+    (insert-event sub3 dlg1)
+    (insert-event sub4 dlg1)
+    (insert-event sub5 dlg1)
     (is (string= *remake-subtitle-string* (pr-string sub1)))
     (is (string= *remake-subtitle-string* (pr-string sub2)))
     (is (string= *remake-subtitle-string* (pr-string sub3)))
     (is (string= *remake-subtitle-string* (pr-string sub4)))
-    (is (string= *remake-subtitle-string* (pr-string sub5)))))
+    (is (string= *remake-subtitle-string* (pr-string sub5)))
+    (with-input-from-string (virtual *remake-subtitle-string*)
+      (load virtual))
+    (is (string= (ps-string sub1) (ps-string *test*)))
+    (is (string= (ps-string sub2) (ps-string *test*)))
+    (is (string= (ps-string sub3) (ps-string *test*)))
+    (is (string= (ps-string sub4) (ps-string *test*)))
+    ;; Remake does not have KARAOKE
+    (is (string/= (ps-string sub5) (ps-string *test*)))))
 
