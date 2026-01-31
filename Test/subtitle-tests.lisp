@@ -101,7 +101,8 @@ Dialogue: 0,0:00:00.00,0:00:03.00,Default,,0,0,0,,This is first dialogue~2%"
         (dlg2 (dialogue "Hello world!" :start 100 :duration 300))
         (dlg3 (dialogue "Hello world!" :end 300))
         (dlg4 (dialogue "Hello world!" :duration 300))
-        (dlg5 (dialogue "Hello world!")))
+        (dlg5 (dialogue "Hello world!"))
+        (dlg6 (dialogue "Extra digit!" :start "0:00:01.234" :duration "0:00:00.567")))
     (= (durationinteger (end dlg1)) (durationinteger (end dlg2)))
     (= (durationinteger (duration-length dlg1)) (durationinteger (duration-length dlg2)))
     (= (durationinteger (duration-length dlg1)) (durationinteger (duration-length dlg3)))
@@ -113,7 +114,8 @@ Dialogue: 0,0:00:00.00,0:00:03.00,Default,,0,0,0,,This is first dialogue~2%"
     ;; Ensure time end always greater than time start after updating
     (is (duration-greaterp (end dlg5) (start dlg5)))
     (setf (duration-length dlg5) 300)
-    (is (string= (format nil "Dialogue: 0,0:00:09.00,0:00:12.00,Default,,0,0,0,,Hello world!~%") (ps-string dlg5)))))
+    (is (string= (format nil "Dialogue: 0,0:00:09.00,0:00:12.00,Default,,0,0,0,,Hello world!~%") (ps-string dlg5)))
+    (is (string= (format nil "Dialogue: 0,0:00:01.23,0:00:01.80,Default,,0,0,0,,Extra digit!~%") (ps-string dlg6)))))
 
 (test working-with-fonts-section
   (let ((sub (subtitle "Fonts" :font-filename "myfont_B0.ttf")))

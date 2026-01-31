@@ -11,8 +11,7 @@
     (unless (null duration)
       (claraoke:synch-duration
        duration2
-       (+ (claraoke:durationinteger duration1)
-          (claraoke:durationinteger (claraoke:duration duration)))))
+       (claraoke:increase-duration (claraoke:duration duration) duration1)))
     (setf (claraoke:start instance) duration1)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
