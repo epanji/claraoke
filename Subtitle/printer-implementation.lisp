@@ -197,14 +197,20 @@
     object))
 
 (defun string-keyword (string)
-  (with-output-to-string (stream)
-    (princ #\: stream)
-    (loop for i from 0
-          for char across string
-          when (and (plusp i) (upper-case-p char))
-            do (princ #\- stream)
-          do (unless (char-equal #\Space char)
-               (princ (char-downcase char) stream)))))
+  (let ((string1 (string-trim '(#\Space) string)))
+    (with-output-to-string (stream)
+      (princ #\: stream)
+      (loop with forcep = nil
+            for i from 0
+            for char across string1
+            when (and (plusp i) (or forcep (upper-case-p char)))
+              do (unless (char-equal #\Space char)
+                   (princ #\- stream))
+            do (cond ((char-equal #\Space char)
+                      (setf forcep t))
+                     (t
+                      (setf forcep nil)
+                      (princ (char-downcase char) stream)))))))
 
 (defmethod claraoke:print-remake ((object script-info) &optional stream name)
   (declare (ignore name))
