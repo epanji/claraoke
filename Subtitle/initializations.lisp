@@ -52,6 +52,7 @@
        video-aspect-ratio
        video-zoom
        video-position
+       video-duration
      &allow-other-keys)
   (let ((lines '()))
     (flet ((pushline (pretty-name value)
@@ -85,6 +86,7 @@
       (pushline "Video Aspect Ratio" video-aspect-ratio)
       (pushline "Video Zoom" video-zoom)
       (pushline "Video Position" video-position)
+      (pushline "Video Duration" video-duration)
       (setf (claraoke:lines object) lines))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

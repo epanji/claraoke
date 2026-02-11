@@ -378,6 +378,29 @@
     (princ #\) stream)
     object))
 
+(declaim (type (or claraoke-duration:duration null) *max-time* *combine-time*))
+
+(defvar *max-time* nil)
+
+(defvar *combine-time* nil)
+
+(defun max-time (&optional time)
+  (cond ((null time) *max-time*)
+        ((null *max-time*) nil)         ; do nothing
+        (t (let ((dt (claraoke:duration time))
+                 (dmt (claraoke:duration *max-time*)))
+             (when (claraoke:duration-greaterp dt dmt)
+               (claraoke:synch-duration dmt dt)))
+           *max-time*)))
+
+(defun combine-time (&optional time)
+  (cond ((null time) *combine-time*)
+        ((null *combine-time*) nil)     ; do nothing
+        (t (let ((dt (claraoke:duration time))
+                 (dct (claraoke:duration *combine-time*)))
+             (claraoke:increase-duration dct dt))
+           *combine-time*)))
+
 (defmethod claraoke:print-remake ((object events) &optional stream (name "*sub*"))
   (let ((events (claraoke:lines object))
         (ltime 0))
@@ -409,7 +432,11 @@
       (princ #\( stream)
       (princ "durationinteger" stream)
       (princ #\Space stream)
-      (prin1 (claraoke:durationstring 0) stream)
+      (cond ((combine-time (max-time))
+             (prin1 (claraoke:durationstring *combine-time*) stream)
+             (claraoke:synch-duration *max-time* 0))
+            (t
+             (prin1 (claraoke:durationstring 0) stream)))
       (princ #\) stream)
       (princ #\) stream)
       (princ #\Newline stream)
@@ -494,5 +521,68 @@
     (prin1 (claraoke:durationstring (claraoke:duration-length object)) stream)
     (princ #\) stream)
     (princ #\) stream)
+    (max-time (claraoke:end object))
     object))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Print combine remake
+;;;
+(defun combine-subtitles (name inputs)
+  (declare (type string name) (type list inputs))
+  (flet (;; Ensure input is subtitle object
+         (ensure-subtitle (input0)
+           (typecase input0
+             (subtitle input0)
+             (pathname (claraoke:parse-script input0))
+             (string (let* ((input1 (pathname input0))
+                            (input2 (probe-file input1)))
+                       (unless (null input2)
+                         (claraoke:parse-script input2))))))
+         ;; Video duration from info
+         (video-duration (subtitle0)
+           (let ((info (claraoke:find-info subtitle0 "Video Duration")))
+             (unless (null info)
+               (claraoke:duration (claraoke:value info))))))
+    ;; Always return string
+    (let ((subtitles (mapcar #'ensure-subtitle inputs))
+          (name1 (remove #\Space name)))
+      (with-output-to-string (stream)
+        (let ((*max-time* (claraoke:duration 0))
+              (*combine-time* (claraoke:duration 0)))
+          (unless (null (first subtitles))
+            (claraoke:print-remake (first subtitles) stream name1)
+            (max-time (video-duration (first subtitles))))
+          (loop for subtitle in (rest subtitles)
+                for i from 2
+                do (unless (null subtitle)
+                     (princ ";;;; " stream)
+                     (princ i stream)
+                     (princ #\Newline stream)
+                     (princ #\Newline stream)
+                     (claraoke:print-remake
+                      (claraoke:events subtitle)
+                      stream
+                      name1)
+                     (princ #\Newline stream)
+                     (max-time (video-duration subtitle)))))))))
+
+(defmethod claraoke:print-combine-remake ((stream stream) (name string) &rest subtitles)
+  (princ (combine-subtitles name subtitles) stream)
+  nil)
+
+(defmethod claraoke:print-combine-remake ((stream (eql t)) (name string) &rest subtitles)
+  (pprint (combine-subtitles name subtitles)))
+
+(defmethod claraoke:print-combine-remake ((stream null) (name string) &rest subtitles)
+  (combine-subtitles name subtitles))
+
+(defmethod claraoke:print-combine-remake (stream (name string) &rest subtitles)
+  (apply #'claraoke:print-combine-remake stream name subtitles))
+
+(defmethod claraoke:print-combine-remake (stream (name (eql t)) &rest subtitles)
+  (apply #'claraoke:print-combine-remake stream nil subtitles))
+
+(defmethod claraoke:print-combine-remake (stream (name null) &rest subtitles)
+  (apply #'claraoke:print-combine-remake stream "*sub*" subtitles))
 

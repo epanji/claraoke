@@ -33,6 +33,7 @@
                      (video-aspect-ratio nil)
                      (video-zoom nil)
                      (video-position nil)
+                     (video-duration nil)
                      (style-name "Default")
                      (text "This is first dialogue")
                    &allow-other-keys)
@@ -61,6 +62,7 @@
                 (remf initargs :video-aspect-ratio)
                 (remf initargs :video-zoom)
                 (remf initargs :video-position)
+                (remf initargs :video-duration)
                 (remf initargs :style-name)
                 (remf initargs :text)
                 (apply 'make-instance
@@ -91,6 +93,7 @@
                        :video-aspect-ratio video-aspect-ratio
                        :video-zoom video-zoom
                        :video-position video-position
+                       :video-duration video-duration
                        :style-name style-name
                        :text text
                        initargs))))

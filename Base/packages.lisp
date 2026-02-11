@@ -165,6 +165,7 @@
    #:parse-script
    #:picture
    #:primary-colour
+   #:print-combine-remake
    #:print-remake
    #:print-script
    #:random-color
