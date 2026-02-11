@@ -159,7 +159,7 @@ Dialogue: 0,0:00:00.00,0:00:03.00,Default,,0,0,0,,This is first dialogue~2%"
 (insert-event *test* (dialogue \"This is first dialogue\" :duration \"0:00:03.00\"))
 
 (incf (interval-counter *test*) (durationinteger \"0:00:57.00\"))
-(insert-event *test* (dialogue \"Second dialogue\" :duration \"0:00:05.00\"))~2%"))
+(insert-event *test* (dialogue \"Second\\\\Ndialogue\" :duration \"0:00:05.00\"))~2%"))
 
 (defparameter *test* nil)
 
@@ -169,7 +169,7 @@ Dialogue: 0,0:00:00.00,0:00:03.00,Default,,0,0,0,,This is first dialogue~2%"
         (sub3 (subtitle "" :title "Test"))
         (sub4 (subtitle "" :title "Test" :style-name "Default"))
         (sub5 (subtitle "" :title "Test" :style-name "Default" :generate-overrides-p t))
-        (dlg1 (dialogue "Second dialogue" :start "1:" :end "1:05")))
+        (dlg1 (dialogue "Second\\Ndialogue" :start "1:" :end "1:05")))
     (insert-event sub1 dlg1)
     (insert-event sub2 dlg1)
     (insert-event sub3 dlg1)
