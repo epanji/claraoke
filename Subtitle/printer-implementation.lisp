@@ -203,7 +203,8 @@
           for char across string
           when (and (plusp i) (upper-case-p char))
             do (princ #\- stream)
-          do (princ (char-downcase char) stream))))
+          do (unless (char-equal #\Space char)
+               (princ (char-downcase char) stream)))))
 
 (defmethod claraoke:print-remake ((object script-info) &optional stream name)
   (declare (ignore name))
