@@ -21,7 +21,7 @@ Style: Default,Arial,32,&H0000A5FF,&H00FFFFFF,&H00000000,&H00000000,-1,0,0,0,100
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 Dialogue: 0,0:00:00.00,0:00:03.00,Default,,0,0,0,,This is first dialogue~2%"
-                                  (claraoke-internal:version)))
+                                        (claraoke-internal:version)))
 
 (test working-with-subtitle
   (let ((sub (subtitle "Test"))
@@ -163,13 +163,86 @@ Dialogue: 0,0:00:00.00,0:00:03.00,Default,,0,0,0,,This is first dialogue~2%"
 
 (defparameter *test* nil)
 
-(test remake-subtitle
+(defparameter *combine-remake-string* (format nil "~
+;;; SUBTITLE
+(defparameter *sub* (subtitle \"Test\" :text nil :style-name nil :video-duration \"0:00:17.00\"))
+
+;;; STYLES
+(insert-style *sub* (style \"Default\"))
+
+;;; DIALOGUES
+(setf (interval *sub*) 0)
+
+(setf (interval-counter *sub*) (durationinteger \"0:00:00.00\"))
+(insert-event *sub* (dialogue \"This is first dialogue\" :duration \"0:00:03.00\"))
+
+(incf (interval-counter *sub*) (durationinteger \"0:00:57.00\"))
+(insert-event *sub* (dialogue \"Second\\\\Ndialogue\" :duration \"0:00:05.00\"))
+
+;;;; 2
+
+;;; DIALOGUES
+(setf (interval *sub*) 0)
+
+(setf (interval-counter *sub*) (durationinteger \"0:01:05.00\"))
+(insert-event *sub* (dialogue \"This is first dialogue\" :duration \"0:00:03.00\"))
+
+(incf (interval-counter *sub*) (durationinteger \"0:00:57.00\"))
+(insert-event *sub* (dialogue \"Second\\\\Ndialogue\" :duration \"0:00:05.00\"))
+
+;;;; 3
+
+;;; DIALOGUES
+(setf (interval *sub*) 0)
+
+(setf (interval-counter *sub*) (durationinteger \"0:02:10.00\"))
+(insert-event *sub* (dialogue \"This is first dialogue\" :duration \"0:00:03.00\"))
+
+(incf (interval-counter *sub*) (durationinteger \"0:00:57.00\"))
+(insert-event *sub* (dialogue \"Second\\\\Ndialogue\" :duration \"0:00:05.00\"))
+
+;;;; 4
+
+;;; DIALOGUES
+(setf (interval *sub*) 0)
+
+(setf (interval-counter *sub*) (durationinteger \"0:19:10.00\"))
+(insert-event *sub* (dialogue \"This is first dialogue\" :duration \"0:00:03.00\"))
+
+(incf (interval-counter *sub*) (durationinteger \"0:00:57.00\"))
+(insert-event *sub* (dialogue \"Second\\\\Ndialogue\" :duration \"0:00:05.00\"))
+
+;;;; 5
+
+;;; DIALOGUES
+(setf (interval *sub*) 0)
+
+(setf (interval-counter *sub*) (durationinteger \"0:20:15.00\"))
+(insert-event *sub* (dialogue \"This is first dialogue\" :duration \"0:00:03.00\"))
+
+(incf (interval-counter *sub*) (durationinteger \"0:00:57.00\"))
+(insert-event *sub* (dialogue \"Second\\\\Ndialogue\" :duration \"0:00:05.00\"))
+
+;;;; 6
+
+;;; DIALOGUES
+(setf (interval *sub*) 0)
+
+(setf (interval-counter *sub*) (durationinteger \"0:21:20.00\"))
+(insert-event *sub* (dialogue \"This is first dialogue\" :duration \"0:00:03.00\"))
+
+(incf (interval-counter *sub*) (durationinteger \"0:00:57.00\"))
+(insert-event *sub* (dialogue \"Second\\\\Ndialogue\" :duration \"0:00:05.00\"))~2%"))
+
+(test remake-and-combine-subtitle
   (let ((sub1 (parse-script *subtitle-string*))
         (sub2 (subtitle "Test"))
         (sub3 (subtitle "" :title "Test"))
         (sub4 (subtitle "" :title "Test" :style-name "Default"))
         (sub5 (subtitle "" :title "Test" :style-name "Default" :generate-overrides-p t))
-        (dlg1 (dialogue "Second\\Ndialogue" :start "1:" :end "1:05")))
+        (dlg1 (dialogue "Second\\Ndialogue" :start "1:" :end "1:05"))
+        (cmb1 (subtitle "Test"))
+        (cmb2 (subtitle "Test")))
     (insert-event sub1 dlg1)
     (insert-event sub2 dlg1)
     (insert-event sub3 dlg1)
@@ -187,5 +260,17 @@ Dialogue: 0,0:00:00.00,0:00:03.00,Default,,0,0,0,,This is first dialogue~2%"
     (is (string= (ps-string sub3) (ps-string *test*)))
     (is (string= (ps-string sub4) (ps-string *test*)))
     ;; Remake does not have KARAOKE
-    (is (string/= (ps-string sub5) (ps-string *test*)))))
+    (is (string/= (ps-string sub5) (ps-string *test*)))
+    ;; Combine remake
+    (insert-event cmb1 dlg1)
+    (insert-event cmb2 dlg1)
+    (insert-info cmb1 (info "Video Duration" :value "0:00:17.00")) ; ignore smaller duration
+    (insert-info cmb2 (info "Video Duration" :value "17:"))        ; "0:17:00.00"
+    (is (string-equal *combine-remake-string* (print-combine-remake nil nil cmb1 sub1 cmb2 sub2 sub3 sub4)))
+    (is (string-equal (print-combine-remake nil nil cmb1 sub1 cmb2 sub2 sub3 sub4)
+                      (print-combine-remake nil "*sub*" cmb1 sub1 cmb2 sub2 sub3 sub4)))
+    (is (string-equal (print-combine-remake nil nil cmb1 sub1 cmb2 sub2 sub3 sub4)
+                      (print-combine-remake nil t cmb1 sub1 cmb2 sub2 sub3 sub4)))
+    (is (string-equal (print-combine-remake nil "*  sub  *" cmb1 sub1 cmb2 sub2 sub3 sub4)
+                      (print-combine-remake nil "*sub*" cmb1 sub1 cmb2 sub2 sub3 sub4)))))
 
